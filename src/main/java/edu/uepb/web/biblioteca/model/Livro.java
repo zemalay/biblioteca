@@ -2,6 +2,7 @@ package edu.uepb.web.biblioteca.model;
 
 public class Livro {
 
+	private int id;
 	private String isbn;
 	private String titulo;
 	private String autor;
@@ -11,6 +12,14 @@ public class Livro {
 	private int numeroPagina;
 	private String area;
 	private String tema;
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
 
 	public String getIsbn() {
 		return isbn;

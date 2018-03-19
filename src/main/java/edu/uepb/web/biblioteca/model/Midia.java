@@ -3,10 +3,19 @@ package edu.uepb.web.biblioteca.model;
 import edu.uepb.web.biblioteca.enums.TipoMidia;
 
 public class Midia {
-	
+
+	private int id;
 	private String tituloMidia;
 	private TipoMidia tipoMidia;
 	private String dataGravacao;
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
 
 	public String getTituloMidia() {
 		return tituloMidia;

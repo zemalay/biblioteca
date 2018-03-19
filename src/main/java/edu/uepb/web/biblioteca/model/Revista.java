@@ -2,11 +2,20 @@ package edu.uepb.web.biblioteca.model;
 
 public class Revista {
 
+	private int id;
 	private String tituloRevista;
 	private String editoraRevista;
 	private String dataPublicacao;
 	private String edicao;
 	private int numeroPagina;
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
 
 	public String getTituloRevista() {
 		return tituloRevista;

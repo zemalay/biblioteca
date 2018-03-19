@@ -2,6 +2,7 @@ package edu.uepb.web.biblioteca.model;
 
 public class Jornal {
 
+	private int id;
 	private String tituloJornal;
 	private String dataJornal;
 	private String edicaoJornal;
@@ -29,4 +30,13 @@ public class Jornal {
 	public void setEdicaoJornal(String edicaoJornal) {
 		this.edicaoJornal = edicaoJornal;
 	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 }
