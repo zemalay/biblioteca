@@ -7,6 +7,6 @@ package edu.uepb.web.biblioteca.enums;
  *
  */
 public enum TipoAnais {
-	artigo, poster, resumo;
+	ARTIGO, POSTER, RESUMO;
 }
 

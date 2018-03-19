@@ -7,6 +7,6 @@ package edu.uepb.web.biblioteca.enums;
  *
  */
 public enum TipoFuncionario {
-	administrador, operador; 
+	ADMINISTRADOR, OPERADOR; 
 }
 

@@ -11,7 +11,7 @@ import edu.uepb.web.biblioteca.enums.TipoTrabalhoConclusao;
  */
 public class TrabalhoConclusao implements Item {
 
-	private Long id;
+	private int id;
 	private String titulo;
 	
 	private TipoTrabalhoConclusao tipo;
@@ -19,11 +19,11 @@ public class TrabalhoConclusao implements Item {
 	private String anoDefesa;
 	private String local;
 
-	public Long getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 

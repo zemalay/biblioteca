@@ -8,15 +8,15 @@ import edu.uepb.web.biblioteca.enums.TipoNivel;
  *
  */
 public class Curso {
-	private Long id;
+	private int id;
 	private String nome;
 	private TipoNivel nivel;
 
-	public Long getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 

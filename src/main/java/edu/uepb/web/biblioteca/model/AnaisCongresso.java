@@ -8,18 +8,18 @@ import edu.uepb.web.biblioteca.enums.TipoAnais;
  *
  */
 public class AnaisCongresso implements Item{
-	private Long id;
+	private int id;
 	private String titulo;
 	private TipoAnais tipo;
 	private String congresso;
 	private String anoPublicacao;
 	private String local;
 
-	public Long getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
