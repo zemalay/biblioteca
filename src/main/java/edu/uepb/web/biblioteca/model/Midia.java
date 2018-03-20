@@ -31,8 +31,8 @@ public class Midia implements Item{
 		return tipoMidia;
 	}
 
-	public void setTipoMidia(TipoMidia tipoMidia) {
-		this.tipoMidia = tipoMidia;
+	public void setTipoMidia(String  tipoMidia) {
+		this.tipoMidia = TipoMidia.valueOf(tipoMidia);
 	}
 
 	public Date getDataGravacao() {
