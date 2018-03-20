@@ -1,13 +1,15 @@
 package edu.uepb.web.biblioteca.model;
 
+import java.util.Date;
+
 import edu.uepb.web.biblioteca.enums.TipoMidia;
 
-public class Midia {
+public class Midia implements Item{
 
 	private int id;
 	private String tituloMidia;
 	private TipoMidia tipoMidia;
-	private String dataGravacao;
+	private Date dataGravacao;
 
 	public int getId() {
 		return id;
@@ -33,12 +35,13 @@ public class Midia {
 		this.tipoMidia = tipoMidia;
 	}
 
-	public String getDataGravacao() {
+	public Date getDataGravacao() {
 		return dataGravacao;
 	}
 
-	public void setDataGravacao(String dataGravacao) {
+	public void setDataGravacao(Date dataGravacao) {
 		this.dataGravacao = dataGravacao;
 	}
+
 
 }

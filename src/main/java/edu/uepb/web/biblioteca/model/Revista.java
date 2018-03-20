@@ -1,11 +1,13 @@
 package edu.uepb.web.biblioteca.model;
 
-public class Revista {
+import java.util.Date;
+
+public class Revista implements Item{
 
 	private int id;
 	private String tituloRevista;
 	private String editoraRevista;
-	private String dataPublicacao;
+	private Date dataPublicacao;
 	private String edicao;
 	private int numeroPagina;
 
@@ -33,11 +35,12 @@ public class Revista {
 		this.editoraRevista = editoraRevista;
 	}
 
-	public String getDataPublicacao() {
+
+	public Date getDataPublicacao() {
 		return dataPublicacao;
 	}
 
-	public void setDataPublicacao(String dataPublicacao) {
+	public void setDataPublicacao(Date dataPublicacao) {
 		this.dataPublicacao = dataPublicacao;
 	}
 

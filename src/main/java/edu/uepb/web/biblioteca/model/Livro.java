@@ -1,6 +1,6 @@
 package edu.uepb.web.biblioteca.model;
 
-public class Livro {
+public class Livro implements Item{
 
 	private int id;
 	private String isbn;
