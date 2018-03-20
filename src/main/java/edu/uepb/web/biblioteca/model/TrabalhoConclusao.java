@@ -13,7 +13,7 @@ public class TrabalhoConclusao implements Item {
 
 	private int id;
 	private String titulo;
-	
+	private Autor autor;
 	private TipoTrabalhoConclusao tipo;
 	private List<Orientador> listaorientadores;
 	private String anoDefesa;
@@ -35,12 +35,20 @@ public class TrabalhoConclusao implements Item {
 		this.titulo = titulo;
 	}
 
+	public Autor getAutor() {
+		return autor;
+	}
+
+	public void setAutor(Autor autor) {
+		this.autor = autor;
+	}
+
 	public TipoTrabalhoConclusao getTipo() {
 		return tipo;
 	}
 
-	public void setTipo(TipoTrabalhoConclusao tipo) {
-		this.tipo = tipo;
+	public void setTipo(String tipo) {
+		this.tipo = TipoTrabalhoConclusao.valueOf(tipo);
 	}
 
 	public List<Orientador> getListaorientadores() {

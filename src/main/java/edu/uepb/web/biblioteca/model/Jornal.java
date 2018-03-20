@@ -1,10 +1,12 @@
 package edu.uepb.web.biblioteca.model;
 
-public class Jornal {
+import java.util.Date;
+
+public class Jornal implements Item {
 
 	private int id;
 	private String tituloJornal;
-	private String dataJornal;
+	private Date dataJornal;
 	private String edicaoJornal;
 
 	public String getTituloJornal() {
@@ -15,11 +17,11 @@ public class Jornal {
 		this.tituloJornal = tituloJornal;
 	}
 
-	public String getDataJornal() {
+	public Date getDataJornal() {
 		return dataJornal;
 	}
 
-	public void setDataJornal(String dataJornal) {
+	public void setDataJornal(Date dataJornal) {
 		this.dataJornal = dataJornal;
 	}
 
