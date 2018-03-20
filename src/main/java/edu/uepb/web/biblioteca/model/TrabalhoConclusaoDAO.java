@@ -19,8 +19,7 @@ public class TrabalhoConclusaoDAO extends DAO<TrabalhoConclusao> {
 		super.connection = new Conexao().getConexao();
 
 		String sql = "SELECT trabalhoconclusao.idtrabalho, trabalhoconclusao.titulo, trabalhoconclusao.tipo, "
-				+ "trabalhoconclusao.anoDefesa, trabalhoconclusao.local, autor.idautor, autor.nome FROM trabalhoconclusao "
-				+ "INNER JOIN autor ON autor.idautor = trabalhoconclusao.autor_idautor "
+				+ "trabalhoconclusao.anoDefesa, trabalhoconclusao.local, trabalhoconclusao.autor , trabalhoconclusao.orientador "
 				+ "WHERE trabalhoconclusao.idtrabalho = ?";
 
 		TrabalhoConclusao trabalhoConclusao = null;
@@ -32,18 +31,15 @@ public class TrabalhoConclusaoDAO extends DAO<TrabalhoConclusao> {
 
 			if (resultSet.next()) {
 				trabalhoConclusao = new TrabalhoConclusao();
-				Autor autor = new Autor();
 
 				trabalhoConclusao.setId(resultSet.getInt(1));
 				trabalhoConclusao.setTitulo(resultSet.getString(2));
 				trabalhoConclusao.setTipo(resultSet.getString(3));
 				trabalhoConclusao.setAnoDefesa(resultSet.getString(4));
 				trabalhoConclusao.setLocal(resultSet.getString(5));
-				
-//				trabalhoConclusao.setListaorientadores(listaorientadores);
+				trabalhoConclusao.setAutor(resultSet.getString(6));
+				trabalhoConclusao.setOrientador(resultSet.getString(7));
 
-				autor.setId(resultSet.getInt(6));
-				autor.setNome(resultSet.getString(7));
 			}
 			super.closeConnections();
 		} catch (SQLException e) {
@@ -57,17 +53,13 @@ public class TrabalhoConclusaoDAO extends DAO<TrabalhoConclusao> {
 		List<TrabalhoConclusao> listaTrabalhos = new ArrayList<TrabalhoConclusao>();
 
 		String sql = "SELECT trabalhoconclusao.idtrabalho, trabalhoconclusao.titulo, trabalhoconclusao.tipo, "
-				+ "trabalhoconclusao.anoDefesa, trabalhoconclusao.local, autor.idautor, autor.nome FROM trabalhoconclusao "
-				+ "INNER JOIN autor ON autor.idautor = trabalhoconclusao.autor_idautor";
+				+ "trabalhoconclusao.anoDefesa, trabalhoconclusao.local, trabalhoconclusao.autor, trabalhoconclusao.orientador";
 
 		try {
 			super.statement = super.connection.prepareStatement(sql);
 			super.resultSet = super.statement.executeQuery();
 
 			while (resultSet.next()) {
-				Autor autor = new Autor();
-				autor.setId(resultSet.getInt(6));
-				autor.setNome(resultSet.getString(7));
 
 				TrabalhoConclusao trabalhoConclusao = new TrabalhoConclusao();
 				trabalhoConclusao.setId(resultSet.getInt(1));
@@ -75,7 +67,8 @@ public class TrabalhoConclusaoDAO extends DAO<TrabalhoConclusao> {
 				trabalhoConclusao.setTipo(resultSet.getString(3));
 				trabalhoConclusao.setAnoDefesa(resultSet.getString(4));
 				trabalhoConclusao.setLocal(resultSet.getString(5));
-				trabalhoConclusao.setAutor(autor);
+				trabalhoConclusao.setAutor(resultSet.getString(6));
+				trabalhoConclusao.setOrientador(resultSet.getString(7));
 
 				listaTrabalhos.add(trabalhoConclusao);
 
@@ -90,7 +83,7 @@ public class TrabalhoConclusaoDAO extends DAO<TrabalhoConclusao> {
 		int id = -1;
 		super.connection = new Conexao().getConexao();
 
-		String sql = "INSERT INTO trabalhoconclusao (titulo, tipo, anoDefesa, local, autor_idautor) VALUES (?,?,?,?,?)";
+		String sql = "INSERT INTO trabalhoconclusao (titulo, tipo, anoDefesa, local, autor, orientador) VALUES (?,?,?,?,?,?)";
 
 		if (!obj.equals(null)) {
 			try {
@@ -99,7 +92,8 @@ public class TrabalhoConclusaoDAO extends DAO<TrabalhoConclusao> {
 				super.statement.setString(2, obj.getTipo().name());
 				super.statement.setString(3, obj.getAnoDefesa());
 				super.statement.setString(4, obj.getLocal());
-				super.statement.setInt(5, obj.getAutor().getId());
+				super.statement.setString(5, obj.getAutor());
+				super.statement.setString(6, obj.getOrientador());
 
 				if (resultSet.next()) {
 					id = super.resultSet.getInt(1);
@@ -132,7 +126,7 @@ public class TrabalhoConclusaoDAO extends DAO<TrabalhoConclusao> {
 	public void atualizar(TrabalhoConclusao obj) {
 		if (!obj.equals(null)) {
 			super.connection = new Conexao().getConexao();
-			String sql = "UPDATE trabalhoconclusao SET titulo = ?, tipo = ?, anoDefesa = ?, local = ?, autor_idautor = ?"
+			String sql = "UPDATE trabalhoconclusao SET titulo = ?, tipo = ?, anoDefesa = ?, local = ?, autor = ?, orientador = ?"
 					+ " WHERE idtrabalho = ?";
 
 			try {
@@ -141,7 +135,9 @@ public class TrabalhoConclusaoDAO extends DAO<TrabalhoConclusao> {
 				super.statement.setString(2, obj.getTipo().name());
 				super.statement.setString(3, obj.getAnoDefesa());
 				super.statement.setString(4, obj.getLocal());
-				super.statement.setInt(5, obj.getAutor().getId());
+				super.statement.setString(5, obj.getAutor());
+				super.statement.setString(6, obj.getOrientador());
+				
 
 				super.statement.execute();
 				super.closeConnections();

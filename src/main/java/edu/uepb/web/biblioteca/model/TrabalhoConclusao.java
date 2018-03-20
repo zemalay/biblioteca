@@ -1,7 +1,5 @@
 package edu.uepb.web.biblioteca.model;
 
-import java.util.List;
-
 import edu.uepb.web.biblioteca.enums.TipoTrabalhoConclusao;
 
 /**
@@ -13,11 +11,19 @@ public class TrabalhoConclusao implements Item {
 
 	private int id;
 	private String titulo;
-	private Autor autor;
+	private String autor;
 	private TipoTrabalhoConclusao tipo;
-	private List<Orientador> listaorientadores;
 	private String anoDefesa;
 	private String local;
+	private String orientador;
+
+	public String getOrientador() {
+		return orientador;
+	}
+
+	public void setOrientador(String orientador) {
+		this.orientador = orientador;
+	}
 
 	public int getId() {
 		return id;
@@ -35,11 +41,11 @@ public class TrabalhoConclusao implements Item {
 		this.titulo = titulo;
 	}
 
-	public Autor getAutor() {
+	public String getAutor() {
 		return autor;
 	}
 
-	public void setAutor(Autor autor) {
+	public void setAutor(String autor) {
 		this.autor = autor;
 	}
 
@@ -49,14 +55,6 @@ public class TrabalhoConclusao implements Item {
 
 	public void setTipo(String tipo) {
 		this.tipo = TipoTrabalhoConclusao.valueOf(tipo);
-	}
-
-	public List<Orientador> getListaorientadores() {
-		return listaorientadores;
-	}
-
-	public void setListaorientadores(List<Orientador> listaorientadores) {
-		this.listaorientadores = listaorientadores;
 	}
 
 	public String getAnoDefesa() {
