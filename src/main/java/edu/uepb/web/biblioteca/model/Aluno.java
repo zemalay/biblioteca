@@ -1,21 +1,16 @@
 package edu.uepb.web.biblioteca.model;
 
-import javax.persistence.*;
 
 /**
  * @autor geovanniovinhas <vinhasgeovannio@gmail.com
  *
  *
  */
-@Entity
-@Table(name = "aluno")
 public class Aluno {
 
 	private Long id;
 	private String nome;
 
-	@Id
-	@GeneratedValue
 	public Long getId() {
 		return id;
 	}
@@ -24,7 +19,6 @@ public class Aluno {
 		this.id = id;
 	}
 
-	@Column(length = 100)
 	public String getNome() {
 		return nome;
 	}

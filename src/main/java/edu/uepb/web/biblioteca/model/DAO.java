@@ -74,5 +74,15 @@ public abstract class DAO<T> {
 	 *            O objeto com os dados sa serem atualizados
 	 */
 	public abstract void atualizar(T obj);
+	
+	/**
+	 * Verifica se o objeto (informacao) ja existe no banco de dados. Se a operação for realizada
+	 * com sucesso é retornado true, caso contrário false
+	 * 
+	 * @param obj 
+	 * 
+	 * @return boolean
+	 */
+	public abstract boolean isItemExiste(T obj);
 
 }

@@ -17,6 +17,20 @@ public class TrabalhoConclusao implements Item {
 	private String local;
 	private String orientador;
 
+	public TrabalhoConclusao(String titulo, String autor, TipoTrabalhoConclusao tipo, String anoDefesa, String local,
+			String orientador) {
+		this.titulo = titulo;
+		this.autor = autor;
+		this.tipo = tipo;
+		this.anoDefesa = anoDefesa;
+		this.local = local;
+		this.orientador = orientador;
+	}
+
+	public TrabalhoConclusao() {
+
+	}
+
 	public String getOrientador() {
 		return orientador;
 	}
@@ -53,6 +67,10 @@ public class TrabalhoConclusao implements Item {
 		return tipo;
 	}
 
+	public void setTipo(TipoTrabalhoConclusao tipo) {
+		this.tipo = tipo;
+	}
+
 	public void setTipo(String tipo) {
 		this.tipo = TipoTrabalhoConclusao.valueOf(tipo);
 	}
@@ -72,4 +90,39 @@ public class TrabalhoConclusao implements Item {
 	public void setLocal(String local) {
 		this.local = local;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + id;
+		result = prime * result + ((titulo == null) ? 0 : titulo.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		TrabalhoConclusao other = (TrabalhoConclusao) obj;
+		if (id != other.id)
+			return false;
+		if (titulo == null) {
+			if (other.titulo != null)
+				return false;
+		} else if (!titulo.equals(other.titulo))
+			return false;
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "TrabalhoConclusao [id=" + id + ", titulo=" + titulo + ", autor=" + autor + ", tipo=" + tipo
+				+ ", anoDefesa=" + anoDefesa + ", local=" + local + ", orientador=" + orientador + "]";
+	}
+
 }
