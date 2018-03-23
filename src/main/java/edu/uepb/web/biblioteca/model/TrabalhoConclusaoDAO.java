@@ -94,7 +94,9 @@ public class TrabalhoConclusaoDAO extends DAO<TrabalhoConclusao> {
 				super.statement.setString(4, obj.getLocal());
 				super.statement.setString(5, obj.getAutor());
 				super.statement.setString(6, obj.getOrientador());
-
+				super.statement.execute();
+				super.resultSet = super.statement.getGeneratedKeys();
+				
 				if (resultSet.next()) {
 					id = super.resultSet.getInt(1);
 				}

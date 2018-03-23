@@ -6,6 +6,12 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @autor Larrissa Dantas 
+ *
+ *
+ */
+
 public class MidiaDAO extends DAO<Midia> {
 
 	/**
@@ -48,7 +54,7 @@ public class MidiaDAO extends DAO<Midia> {
 	@Override
 	public List<Midia> getLista() {
 		super.connection = new Conexao().getConexao();
-		List<Midia> listaMidia = new ArrayList<Midia>();
+		List<Midia> listaMidias = new ArrayList<Midia>();
 		String sql = "SELECT midia.idmidia, midia.tituloMidia, midia.dataGravacao, midia.tipoMidia";
 		
 		
@@ -71,7 +77,7 @@ public class MidiaDAO extends DAO<Midia> {
 				e.printStackTrace();
 			}
 		
-		return listaMidia;
+		return listaMidias;
 
 	}
 	
@@ -80,7 +86,7 @@ public class MidiaDAO extends DAO<Midia> {
 	 */
 	@Override
 	public int inserir(Midia obj) {
-		// TODO Auto-generated method stub
+	
 		int id = -1;
 		super.connection = new Conexao().getConexao();
 		String sql = "INSERT INTO midia( tituloMidia, dataGravacao, tipoMidia) VALUES (?,?,?)";
@@ -90,6 +96,9 @@ public class MidiaDAO extends DAO<Midia> {
 				super.statement.setString(1, obj.getTituloMidia());
 				super.statement.setDate(2, (Date) obj.getDataGravacao());
 				super.statement.setString(3,obj.getTipoMidia().name());
+				
+				super.statement.execute();
+				super.resultSet = super.statement.getGeneratedKeys();
 		
 				if (resultSet.next()) {
 					id = super.resultSet.getInt(1);
@@ -142,7 +151,7 @@ public class MidiaDAO extends DAO<Midia> {
 				super.statement.execute();
 				super.closeConnections();
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 		}

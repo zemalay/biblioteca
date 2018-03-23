@@ -1,5 +1,11 @@
 package edu.uepb.web.biblioteca.model;
 
+/**
+ * @autor Larrissa Dantas 
+ *
+ *
+ */
+
 public class Livro implements Item{
 
 	private int id;
@@ -12,6 +18,24 @@ public class Livro implements Item{
 	private int numeroPagina;
 	private String area;
 	private String tema;
+
+	public Livro(String isbn, String titulo, String autor, String editora, String anoPublicacao, String edicao,
+			int numeroPagina, String area, String tema) {
+		super();
+		this.isbn = isbn;
+		this.titulo = titulo;
+		this.autor = autor;
+		this.editora = editora;
+		this.anoPublicacao = anoPublicacao;
+		this.edicao = edicao;
+		this.numeroPagina = numeroPagina;
+		this.area = area;
+		this.tema = tema;
+	}
+	
+	public Livro() {
+	}
+	
 
 	public int getId() {
 		return id;
@@ -93,4 +117,40 @@ public class Livro implements Item{
 		this.tema = tema;
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + id;
+		result = prime * result + ((isbn == null) ? 0 : isbn.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Livro other = (Livro) obj;
+		if (id != other.id)
+			return false;
+		if (isbn == null) {
+			if (other.isbn != null)
+				return false;
+		} else if (!isbn.equals(other.isbn))
+			return false;
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "Livro [id=" + id + ", isbn=" + isbn + ", titulo=" + titulo + ", autor=" + autor + ", editora=" + editora
+				+ ", anoPublicacao=" + anoPublicacao + ", edicao=" + edicao + ", numeroPagina=" + numeroPagina
+				+ ", area=" + area + ", tema=" + tema + "]";
+	}
+
+	
 }
