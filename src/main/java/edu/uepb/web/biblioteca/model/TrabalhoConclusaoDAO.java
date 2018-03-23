@@ -15,12 +15,11 @@ public class TrabalhoConclusaoDAO extends DAO<TrabalhoConclusao> {
 	/**
 	 * @see edu.uepb.web.biblioteca.model.DAO#get(int)
 	 */
+	@Override
 	public TrabalhoConclusao get(int id) {
 		super.connection = new Conexao().getConexao();
 
-		String sql = "SELECT trabalhoconclusao.idtrabalho, trabalhoconclusao.titulo, trabalhoconclusao.tipo, "
-				+ "trabalhoconclusao.anoDefesa, trabalhoconclusao.local, trabalhoconclusao.autor , trabalhoconclusao.orientador "
-				+ "WHERE trabalhoconclusao.idtrabalho = ?";
+		String sql = "SELECT * FROM trabalhoconclusao WHERE trabalhoconclusao.idtrabalho = ?";
 
 		TrabalhoConclusao trabalhoConclusao = null;
 
@@ -48,6 +47,10 @@ public class TrabalhoConclusaoDAO extends DAO<TrabalhoConclusao> {
 		return trabalhoConclusao;
 	}
 
+	/**
+	 * @see edu.uepb.web.biblioteca.model.DAO#getLista()
+	 */
+	@Override
 	public List<TrabalhoConclusao> getLista() {
 		super.connection = new Conexao().getConexao();
 		List<TrabalhoConclusao> listaTrabalhos = new ArrayList<TrabalhoConclusao>();
@@ -73,12 +76,17 @@ public class TrabalhoConclusaoDAO extends DAO<TrabalhoConclusao> {
 				listaTrabalhos.add(trabalhoConclusao);
 
 			}
+			super.connection.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return listaTrabalhos;
 	}
 
+	/**
+	 * @see edu.uepb.web.biblioteca.model.DAO#inserir(Object)
+	 */
+	@Override
 	public int inserir(TrabalhoConclusao obj) {
 		int id = -1;
 		super.connection = new Conexao().getConexao();
@@ -94,10 +102,12 @@ public class TrabalhoConclusaoDAO extends DAO<TrabalhoConclusao> {
 				super.statement.setString(4, obj.getLocal());
 				super.statement.setString(5, obj.getAutor());
 				super.statement.setString(6, obj.getOrientador());
-
+				super.statement.execute();
+				super.resultSet = super.statement.getGeneratedKeys();
 				if (resultSet.next()) {
 					id = super.resultSet.getInt(1);
 				}
+				super.connection.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -105,6 +115,11 @@ public class TrabalhoConclusaoDAO extends DAO<TrabalhoConclusao> {
 		return id;
 	}
 
+	/**
+	 * @return
+	 * @see edu.uepb.web.biblioteca.model.DAO#remover(Object)
+	 */
+	@Override
 	public void remover(TrabalhoConclusao obj) {
 		if (!obj.equals(null)) {
 			super.connection = new Conexao().getConexao();
@@ -117,12 +132,15 @@ public class TrabalhoConclusaoDAO extends DAO<TrabalhoConclusao> {
 
 				super.closeConnections();
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
 	}
 
+	/**
+	 * @see edu.uepb.web.biblioteca.model.DAO#atualizar(Object)
+	 */
+	@Override
 	public void atualizar(TrabalhoConclusao obj) {
 		if (!obj.equals(null)) {
 			super.connection = new Conexao().getConexao();
@@ -137,7 +155,7 @@ public class TrabalhoConclusaoDAO extends DAO<TrabalhoConclusao> {
 				super.statement.setString(4, obj.getLocal());
 				super.statement.setString(5, obj.getAutor());
 				super.statement.setString(6, obj.getOrientador());
-				
+				super.statement.setInt(7, obj.getId());
 
 				super.statement.execute();
 				super.closeConnections();
@@ -146,7 +164,35 @@ public class TrabalhoConclusaoDAO extends DAO<TrabalhoConclusao> {
 				e.printStackTrace();
 			}
 		}
+	}
 
+	/**
+	 * @see edu.uepb.web.biblioteca.model.DAO#isItemExiste(Object)
+	 */
+	@Override
+	public boolean isItemExiste(TrabalhoConclusao obj) {
+		if (!obj.equals(null)) {
+			super.connection = new Conexao().getConexao();
+			String sql = "SELECT trabalhoconclusao.titulo FROM trabalhoconclusao WHERE trabalhoconclusao.titulo = ?";
+
+			try {
+				super.statement = super.connection.prepareStatement(sql);
+				super.statement.setString(1, obj.getTitulo());
+				super.resultSet = super.statement.executeQuery();
+
+				if (resultSet.next()) {
+					super.closeConnections();
+					return true;
+				}
+				super.closeConnections();
+				return false;
+
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+
+		}
+		return false;
 	}
 
 }
