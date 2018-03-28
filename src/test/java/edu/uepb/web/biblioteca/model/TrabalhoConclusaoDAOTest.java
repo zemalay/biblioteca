@@ -2,6 +2,8 @@ package edu.uepb.web.biblioteca.model;
 
 import static org.junit.Assert.*;
 import java.sql.Connection;
+import java.util.List;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -52,15 +54,28 @@ public class TrabalhoConclusaoDAOTest {
 	/**
 	 * Caso de teste para pegar dados
 	 */
-	@Test
-	public void get() {
-		assertNotEquals(monografia, manager.get(27));
-
-		monografia = manager.get(27);
-
-		assertNotEquals("Joao", monografia.getAutor());
-	}
-
+//	@Test
+//	public void get() {
+//		assertNotEquals(monografia, manager.get(27));
+//
+//		monografia = manager.get(27);
+//
+//		assertNotEquals("Joao", monografia.getAutor());
+//	}
+	
+	/**
+	 * caso de teste para pegar todos os dados
+	 */
+//	@Test
+//	public void getLista() {
+//		List<TrabalhoConclusao> listaTCC = manager.getLista();
+//		
+//		assertNotEquals(listaTCC.size(), 0);
+//		for (TrabalhoConclusao trabalhoConclusao : listaTCC) {
+//			System.out.println(trabalhoConclusao.toString());
+//		}
+//		
+//	}
 	/**
 	 * caso de teste para remove dados
 	 */
@@ -68,7 +83,7 @@ public class TrabalhoConclusaoDAOTest {
 //	public void remover() {
 //		manager.remover(manager.get(4));
 //
-//		assertEquals(manager.get(3), null);
+//		assertEquals(manager.get(4), null);
 //
 //	}
 //

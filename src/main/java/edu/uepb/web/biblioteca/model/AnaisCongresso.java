@@ -6,9 +6,10 @@ import java.util.List;
 import edu.uepb.web.biblioteca.enums.TipoAnais;
 
 /**
+ * 
+ * A classe POJO do item Anais do Congresso
+ * 
  * @autor geovanniovinhas <vinhasgeovannio@gmail.com
- *
- *
  */
 public class AnaisCongresso implements Item {
 	private int id;
@@ -20,7 +21,6 @@ public class AnaisCongresso implements Item {
 	private List<Autor> listaAutores = new ArrayList<Autor>();
 
 	public AnaisCongresso(String titulo, TipoAnais tipo, String congresso, String anoPublicacao, String local) {
-		super();
 		this.titulo = titulo;
 		this.tipo = tipo;
 		this.congresso = congresso;
@@ -54,6 +54,10 @@ public class AnaisCongresso implements Item {
 
 	public void setTipo(String tipo) {
 		this.tipo = TipoAnais.valueOf(tipo);
+	}
+
+	public void setTipo(TipoAnais tipo) {
+		this.tipo = tipo;
 	}
 
 	public String getCongresso() {

@@ -3,8 +3,9 @@ package edu.uepb.web.biblioteca.model;
 import edu.uepb.web.biblioteca.enums.TipoTrabalhoConclusao;
 
 /**
+ * A classe POJO do item Trabalho de Conclusao do Curso
+ * 
  * @autor geovanniovinhas <vinhasgeovannio@gmail.com
- *
  *
  */
 public class TrabalhoConclusao implements Item {

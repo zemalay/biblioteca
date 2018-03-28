@@ -71,11 +71,11 @@ public class AutorDAOTest {
 //		assertEquals(manager.get(3), autor);
 //	}
 	
-	@Test
-	public void getList(){
-		List<Autor> listaAutor =  manager.getLista(1);
-		
+//	@Test
+//	public void getList(){
+//		List<Autor> listaAutor =  manager.getLista(1);
+//		
 //		assertEquals(listaAutor.size(), 1);
-	}
+//	}
 
 }

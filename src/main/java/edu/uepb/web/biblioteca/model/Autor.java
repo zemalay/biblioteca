@@ -1,8 +1,9 @@
 package edu.uepb.web.biblioteca.model;
 
 /**
- * @autor geovanniovinhas <vinhasgeovannio@gmail.com
+ * A classe POJO do Autor, representa como uma entidade de um autor
  *
+ * @autor geovanniovinhas <vinhasgeovannio@gmail.com>
  *
  */
 public class Autor {
@@ -10,15 +11,14 @@ public class Autor {
 	private String nome;
 	private AnaisCongresso anaisCongresso;
 
-	
 	public Autor(String nome, AnaisCongresso anaisCongresso) {
 		super();
 		this.nome = nome;
 		this.anaisCongresso = anaisCongresso;
 	}
-	
+
 	public Autor() {
-		
+
 	}
 
 	public AnaisCongresso getAnaisCongresso() {
@@ -71,5 +71,5 @@ public class Autor {
 	public String toString() {
 		return "Autor [id=" + id + ", nome=" + nome + "]";
 	}
-	
+
 }

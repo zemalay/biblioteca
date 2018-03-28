@@ -1,33 +1,29 @@
 package edu.uepb.web.biblioteca.model;
 
-import java.util.Date;
-
 import edu.uepb.web.biblioteca.enums.TipoMidia;
 
 /**
- * @autor Larrissa Dantas 
- *
+ * A classe POJO do item Midia
+ * 
+ * @autor Larrissa Dantas
  *
  */
-
-public class Midia implements Item{
+public class Midia implements Item {
 
 	private int id;
-	private String tituloMidia;
-	private TipoMidia tipoMidia;
-	private Date dataGravacao;
-	
-	
+	private String titulo;
+	private TipoMidia tipo;
+	private String dataGravacao;
 
-	public Midia(String tituloMidia, TipoMidia tipoMidia, Date dataGravacao) {
+	public Midia(String tituloMidia, TipoMidia tipoMidia, String dataGravacao) {
 		super();
-		this.tituloMidia = tituloMidia;
-		this.tipoMidia = tipoMidia;
+		this.titulo = tituloMidia;
+		this.tipo = tipoMidia;
 		this.dataGravacao = dataGravacao;
 	}
-	
+
 	public Midia() {
-		
+
 	}
 
 	public int getId() {
@@ -38,27 +34,31 @@ public class Midia implements Item{
 		this.id = id;
 	}
 
-	public String getTituloMidia() {
-		return tituloMidia;
+	public String getTitulo() {
+		return titulo;
 	}
 
-	public void setTituloMidia(String tituloMidia) {
-		this.tituloMidia = tituloMidia;
+	public void setTitulo(String titulo) {
+		this.titulo = titulo;
 	}
 
-	public TipoMidia getTipoMidia() {
-		return tipoMidia;
+	public TipoMidia getTipo() {
+		return tipo;
 	}
 
-	public void setTipoMidia(String  tipoMidia) {
-		this.tipoMidia = TipoMidia.valueOf(tipoMidia);
+	public void setTipo(String tipo) {
+		this.tipo = TipoMidia.valueOf(tipo);
 	}
 
-	public Date getDataGravacao() {
+	public void setTipo(TipoMidia tipo) {
+		this.tipo = tipo;
+	}
+
+	public String getDataGravacao() {
 		return dataGravacao;
 	}
 
-	public void setDataGravacao(Date dataGravacao) {
+	public void setDataGravacao(String dataGravacao) {
 		this.dataGravacao = dataGravacao;
 	}
 
@@ -67,7 +67,7 @@ public class Midia implements Item{
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + id;
-		result = prime * result + ((tituloMidia == null) ? 0 : tituloMidia.hashCode());
+		result = prime * result + ((titulo == null) ? 0 : titulo.hashCode());
 		return result;
 	}
 
@@ -82,19 +82,18 @@ public class Midia implements Item{
 		Midia other = (Midia) obj;
 		if (id != other.id)
 			return false;
-		if (tituloMidia == null) {
-			if (other.tituloMidia != null)
+		if (titulo == null) {
+			if (other.titulo != null)
 				return false;
-		} else if (!tituloMidia.equals(other.tituloMidia))
+		} else if (!titulo.equals(other.titulo))
 			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "Midia [id=" + id + ", tituloMidia=" + tituloMidia + ", tipoMidia=" + tipoMidia + ", dataGravacao="
-				+ dataGravacao + "]";
+		return "Midia [id=" + id + ", tituloMidia=" + titulo + ", tipoMidia=" + tipo + ", dataGravacao=" + dataGravacao
+				+ "]";
 	}
-
 
 }
