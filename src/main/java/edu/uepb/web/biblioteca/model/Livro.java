@@ -1,12 +1,13 @@
 package edu.uepb.web.biblioteca.model;
 
 /**
- * @autor Larrissa Dantas 
+ * A classe POJO do item Livro
+ * 
+ * @autor Larrissa Dantas
  *
  *
  */
-
-public class Livro implements Item{
+public class Livro implements Item {
 
 	private int id;
 	private String isbn;
@@ -21,7 +22,6 @@ public class Livro implements Item{
 
 	public Livro(String isbn, String titulo, String autor, String editora, String anoPublicacao, String edicao,
 			int numeroPagina, String area, String tema) {
-		super();
 		this.isbn = isbn;
 		this.titulo = titulo;
 		this.autor = autor;
@@ -32,10 +32,9 @@ public class Livro implements Item{
 		this.area = area;
 		this.tema = tema;
 	}
-	
+
 	public Livro() {
 	}
-	
 
 	public int getId() {
 		return id;
@@ -121,7 +120,6 @@ public class Livro implements Item{
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + id;
 		result = prime * result + ((isbn == null) ? 0 : isbn.hashCode());
 		return result;
 	}
@@ -135,8 +133,6 @@ public class Livro implements Item{
 		if (getClass() != obj.getClass())
 			return false;
 		Livro other = (Livro) obj;
-		if (id != other.id)
-			return false;
 		if (isbn == null) {
 			if (other.isbn != null)
 				return false;
@@ -152,5 +148,4 @@ public class Livro implements Item{
 				+ ", area=" + area + ", tema=" + tema + "]";
 	}
 
-	
 }

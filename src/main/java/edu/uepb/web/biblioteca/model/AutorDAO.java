@@ -5,12 +5,15 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 /**
+ * A classe para acessar os dados no banco associando ao {@link Autor}
+ * 
  * @autor geovanniovinhas <vinhasgeovannio@gmail.com
- *
- *
  */
 public class AutorDAO extends DAO<Autor> {
+	private Logger logger = Logger.getLogger(AutorDAO.class);
 
 	/**
 	 * 
@@ -18,16 +21,17 @@ public class AutorDAO extends DAO<Autor> {
 	 */
 	@Override
 	public Autor get(int id) {
+		logger.info("Executa o metodo 'get' com param id : " + id);
 		super.connection = new Conexao().getConexao();
 		String sql = "SELECT * FROM autor WHERE autor.idautor = ?";
-		
+
 		Autor autor = null;
-		
+
 		try {
 			super.statement = super.connection.prepareStatement(sql);
 			super.statement.setInt(1, id);
-			super.resultSet =  super.statement.executeQuery();
-			
+			super.resultSet = super.statement.executeQuery();
+
 			if (resultSet.next()) {
 				autor = new Autor();
 				autor.setId(resultSet.getInt(1));
@@ -41,6 +45,9 @@ public class AutorDAO extends DAO<Autor> {
 	}
 
 	/**
+	 * Este metodo nao esta usado
+	 * 
+	 * @return null
 	 * @see edu.uepb.web.biblioteca.model.DAO#getLista()
 	 */
 	@Override
@@ -53,6 +60,7 @@ public class AutorDAO extends DAO<Autor> {
 	 */
 	@Override
 	public int inserir(Autor obj) {
+		logger.info("Executa o metodo 'inserir' com param objeto : " + obj);
 		int id = -1;
 		super.connection = new Conexao().getConexao();
 
@@ -78,6 +86,8 @@ public class AutorDAO extends DAO<Autor> {
 	}
 
 	/**
+	 * Este metodo nao esta usado
+	 * 
 	 * @see edu.uepb.web.biblioteca.model.DAO#remover(Object)
 	 */
 	@Override
@@ -89,6 +99,7 @@ public class AutorDAO extends DAO<Autor> {
 	 */
 	@Override
 	public void atualizar(Autor obj) {
+		logger.info("Executa o metodo 'atualizar' com param objeto : " + obj);
 		if (!obj.equals(null)) {
 			super.connection = new Conexao().getConexao();
 			String sql = "UPDATE autor SET nome = ? WHERE idautor = ?";
@@ -115,6 +126,8 @@ public class AutorDAO extends DAO<Autor> {
 	 * @return List lista dos autores
 	 */
 	public List<Autor> getLista(int idAnais) {
+		logger.info("Executa o metodo 'getLista' com param id : " + idAnais);
+
 		super.connection = new Conexao().getConexao();
 		String sql = "SELECT * FROM autor WHERE autor.anaisCongresso_id = ?";
 		List<Autor> listaAutor = new ArrayList<Autor>();
@@ -135,14 +148,6 @@ public class AutorDAO extends DAO<Autor> {
 			e.printStackTrace();
 		}
 		return listaAutor;
-	}
-
-	/**
-	 * @see edu.uepb.web.biblioteca.model.DAO#isItemExiste(Object)
-	 */
-	@Override
-	public boolean isItemExiste(Autor obj) {
-		return false;
 	}
 
 }

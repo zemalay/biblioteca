@@ -5,18 +5,25 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 /**
+ * A classe para acessar os dados no banco associando ao objeto
+ * {@link TrabalhoConclusao}
+ * 
  * @autor geovanniovinhas <vinhasgeovannio@gmail.com
  *
- *
  */
-public class TrabalhoConclusaoDAO extends DAO<TrabalhoConclusao> {
+public class TrabalhoConclusaoDAO extends ItemDAO<TrabalhoConclusao> {
+	private static Logger logger = Logger.getLogger(TrabalhoConclusaoDAO.class);
 
 	/**
-	 * @see edu.uepb.web.biblioteca.model.DAO#get(int)
+	 * @see edu.uepb.web.biblioteca.model.ItemDAO#get(int)
 	 */
 	@Override
 	public TrabalhoConclusao get(int id) {
+		logger.info("Executa o metodo 'get' com param id : " + id);
+
 		super.connection = new Conexao().getConexao();
 
 		String sql = "SELECT * FROM trabalhoconclusao WHERE trabalhoconclusao.idtrabalho = ?";
@@ -48,15 +55,17 @@ public class TrabalhoConclusaoDAO extends DAO<TrabalhoConclusao> {
 	}
 
 	/**
-	 * @see edu.uepb.web.biblioteca.model.DAO#getLista()
+	 * @see edu.uepb.web.biblioteca.model.ItemDAO#getLista()
 	 */
 	@Override
-	public List<TrabalhoConclusao> getLista() {
+	public List<Item> getLista() {
+		logger.info("Executa o metodo 'getLista' ");
 		super.connection = new Conexao().getConexao();
-		List<TrabalhoConclusao> listaTrabalhos = new ArrayList<TrabalhoConclusao>();
+		List<Item> listaTrabalhos = new ArrayList<Item>();
 
 		String sql = "SELECT trabalhoconclusao.idtrabalho, trabalhoconclusao.titulo, trabalhoconclusao.tipo, "
-				+ "trabalhoconclusao.anoDefesa, trabalhoconclusao.local, trabalhoconclusao.autor, trabalhoconclusao.orientador";
+				+ "trabalhoconclusao.anoDefesa, trabalhoconclusao.local, trabalhoconclusao.autor, trabalhoconclusao.orientador"
+				+ " FROM trabalhoconclusao";
 
 		try {
 			super.statement = super.connection.prepareStatement(sql);
@@ -84,10 +93,13 @@ public class TrabalhoConclusaoDAO extends DAO<TrabalhoConclusao> {
 	}
 
 	/**
-	 * @see edu.uepb.web.biblioteca.model.DAO#inserir(Object)
+	 * @see edu.uepb.web.biblioteca.model.ItemDAO#inserir(Item)
 	 */
 	@Override
-	public int inserir(TrabalhoConclusao obj) {
+	public int inserir(Item item) {
+		logger.info("Executa o metodo 'inserir' com param objeto : " + item);
+
+		TrabalhoConclusao obj = (TrabalhoConclusao) item;
 		int id = -1;
 		super.connection = new Conexao().getConexao();
 
@@ -104,7 +116,7 @@ public class TrabalhoConclusaoDAO extends DAO<TrabalhoConclusao> {
 				super.statement.setString(6, obj.getOrientador());
 				super.statement.execute();
 				super.resultSet = super.statement.getGeneratedKeys();
-				
+
 				if (resultSet.next()) {
 					id = super.resultSet.getInt(1);
 				}
@@ -117,11 +129,13 @@ public class TrabalhoConclusaoDAO extends DAO<TrabalhoConclusao> {
 	}
 
 	/**
-	 * @return
-	 * @see edu.uepb.web.biblioteca.model.DAO#remover(Object)
+	 * @see edu.uepb.web.biblioteca.model.ItemDAO#remover(Item)
 	 */
 	@Override
-	public void remover(TrabalhoConclusao obj) {
+	public void remover(Item item) {
+		logger.info("Executa o metodo 'remover' com param objeto : " + item);
+
+		TrabalhoConclusao obj = (TrabalhoConclusao) item;
 		if (!obj.equals(null)) {
 			super.connection = new Conexao().getConexao();
 			String sql = "DELETE FROM trabalhoconclusao WHERE idtrabalho = ?";
@@ -139,10 +153,13 @@ public class TrabalhoConclusaoDAO extends DAO<TrabalhoConclusao> {
 	}
 
 	/**
-	 * @see edu.uepb.web.biblioteca.model.DAO#atualizar(Object)
+	 * @see edu.uepb.web.biblioteca.model.ItemDAO#atualizar(Item)
 	 */
 	@Override
-	public void atualizar(TrabalhoConclusao obj) {
+	public void atualizar(Item item) {
+		logger.info("Executa o metodo 'autalizar' com param objeto : " + item);
+
+		TrabalhoConclusao obj = (TrabalhoConclusao) item;
 		if (!obj.equals(null)) {
 			super.connection = new Conexao().getConexao();
 			String sql = "UPDATE trabalhoconclusao SET titulo = ?, tipo = ?, anoDefesa = ?, local = ?, autor = ?, orientador = ?"
@@ -168,10 +185,13 @@ public class TrabalhoConclusaoDAO extends DAO<TrabalhoConclusao> {
 	}
 
 	/**
-	 * @see edu.uepb.web.biblioteca.model.DAO#isItemExiste(Object)
+	 * @see edu.uepb.web.biblioteca.model.ItemDAO#isItemExiste(Item)
 	 */
 	@Override
-	public boolean isItemExiste(TrabalhoConclusao obj) {
+	public boolean isItemExiste(Item item) {
+		logger.info("Executa o metodo 'isItemExiste' com param objeto : " + item);
+
+		TrabalhoConclusao obj = (TrabalhoConclusao) item;
 		if (!obj.equals(null)) {
 			super.connection = new Conexao().getConexao();
 			String sql = "SELECT trabalhoconclusao.titulo FROM trabalhoconclusao WHERE trabalhoconclusao.titulo = ?";

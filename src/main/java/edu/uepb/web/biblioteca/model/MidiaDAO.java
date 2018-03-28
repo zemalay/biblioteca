@@ -1,105 +1,111 @@
 package edu.uepb.web.biblioteca.model;
 
-import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @autor Larrissa Dantas 
- *
- *
- */
+import org.apache.log4j.Logger;
 
-public class MidiaDAO extends DAO<Midia> {
+/**
+ * A classe para acessar os dados no banco associando ao objeto {@link Midia}
+ * 
+ * @autor Larrissa Dantas
+ * 
+ */
+public class MidiaDAO extends ItemDAO<Midia> {
+	private static Logger logger = Logger.getLogger(MidiaDAO.class);
 
 	/**
-	 * @see edu.uepb.web.biblioteca.model.DAO#get(int);
+	 * @see edu.uepb.web.biblioteca.model.ItemDAO#get(int)
 	 */
 	@Override
 	public Midia get(int id) {
+		logger.info("Executa o metodo 'get' com param id : " + id);
+
 		super.connection = new Conexao().getConexao();
-		String sql = "SELECT midia.idmidia, midia.tituloMidia, midia.dataGravacao, midia.tipoMidia"
-				+ "WHERE midia.idmidia = ?";
+		String sql = "SELECT * FROM midia WHERE midia.id = ?";
 		Midia midia = null;
-		
+
 		try {
 			super.statement = super.connection.prepareStatement(sql);
 			super.statement.setInt(1, id);
 			super.resultSet = super.statement.executeQuery();
-			
+
 			if (resultSet.next()) {
 				midia = new Midia();
 
 				midia.setId(resultSet.getInt(1));
-				midia.setTituloMidia(resultSet.getString(2));
-				midia.setDataGravacao(resultSet.getDate(3));
-				midia.setTipoMidia(resultSet.getString(4));
+				midia.setTitulo(resultSet.getString(2));
+				midia.setDataGravacao(resultSet.getString(3));
+				midia.setTipo(resultSet.getString(4));
 
 			}
 			super.closeConnections();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
-		
+
 		return midia;
 	}
-	
-	/**
-	 * @see edu.uepb.web.biblioteca.model.DAO#get(int);
-	 */
-	
-	@Override
-	public List<Midia> getLista() {
-		super.connection = new Conexao().getConexao();
-		List<Midia> listaMidias = new ArrayList<Midia>();
-		String sql = "SELECT midia.idmidia, midia.tituloMidia, midia.dataGravacao, midia.tipoMidia";
-		
-		
-			try {
-				super.statement = super.connection.prepareStatement(sql);
-				super.resultSet = super.statement.executeQuery();
 
-				while (resultSet.next()) {
-					Midia midia = new Midia();
-					midia.setId(resultSet.getInt(1));
-					midia.setTituloMidia(resultSet.getString(2));
-					midia.setDataGravacao(resultSet.getDate(3));
-					midia.setTipoMidia(resultSet.getString(4));
-				
-					
-				}
-			
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+	/**
+	 * @see edu.uepb.web.biblioteca.model.ItemDAO#getLista()
+	 */
+	@Override
+	public List<Item> getLista() {
+		logger.info("Executa o metodo 'getLista'");
+
+		super.connection = new Conexao().getConexao();
+		List<Item> listaMidias = new ArrayList<Item>();
+		String sql = "SELECT * FROM midia";
+
+		try {
+			super.statement = super.connection.prepareStatement(sql);
+			super.resultSet = super.statement.executeQuery();
+
+			while (resultSet.next()) {
+				Midia midia = new Midia();
+				midia.setId(resultSet.getInt(1));
+				midia.setTitulo(resultSet.getString(2));
+				midia.setDataGravacao(resultSet.getString(3));
+				midia.setTipo(resultSet.getString(4));
+
+				listaMidias.add(midia);
+
 			}
-		
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		return listaMidias;
 
 	}
-	
+
 	/**
-	 * @see edu.uepb.web.biblioteca.model.DAO#get(int);
+	 * @see edu.uepb.web.biblioteca.model.ItemDAO#inserir(Item)
 	 */
 	@Override
-	public int inserir(Midia obj) {
-	
+	public int inserir(Item item) {
+		logger.info("Executa o metodo 'inserir' com param objeto : " + item);
+
+		Midia obj = (Midia) item;
+
 		int id = -1;
 		super.connection = new Conexao().getConexao();
-		String sql = "INSERT INTO midia( tituloMidia, dataGravacao, tipoMidia) VALUES (?,?,?)";
+		String sql = "INSERT INTO midia( titulo, data_gravacao, tipo) VALUES (?,?,?)";
 		if (!obj.equals(null)) {
 			try {
 				super.statement = super.connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-				super.statement.setString(1, obj.getTituloMidia());
-				super.statement.setDate(2, (Date) obj.getDataGravacao());
-				super.statement.setString(3,obj.getTipoMidia().name());
-				
+				super.statement.setString(1, obj.getTitulo());
+				super.statement.setString(2, obj.getDataGravacao());
+				super.statement.setString(3, obj.getTipo().name());
+
 				super.statement.execute();
 				super.resultSet = super.statement.getGeneratedKeys();
-		
+
 				if (resultSet.next()) {
 					id = super.resultSet.getInt(1);
 				}
@@ -109,14 +115,18 @@ public class MidiaDAO extends DAO<Midia> {
 		}
 		return id;
 	}
+
 	/**
-	 * @see edu.uepb.web.biblioteca.model.DAO#get(int);
+	 * @see edu.uepb.web.biblioteca.model.ItemDAO#remover(Item)
 	 */
 	@Override
-	public void remover(Midia obj) {
+	public void remover(Item item) {
+		logger.info("Executa o metodo 'remover' com param objeto : " + item);
+
+		Midia obj = (Midia) item;
 		if (!obj.equals(null)) {
 			super.connection = new Conexao().getConexao();
-			String sql = "DELETE FROM midia WHERE idmidia = ?";
+			String sql = "DELETE FROM midia WHERE midia.id = ?";
 
 			try {
 				super.statement = super.connection.prepareStatement(sql);
@@ -130,35 +140,63 @@ public class MidiaDAO extends DAO<Midia> {
 			}
 		}
 	}
-	
+
 	/**
-	 * @see edu.uepb.web.biblioteca.model.DAO#get(int);
+	 * @see edu.uepb.web.biblioteca.model.ItemDAO#atualizar(Item)
 	 */
 	@Override
-	public void atualizar(Midia obj) {
+	public void atualizar(Item item) {
+		logger.info("Executa o metodo 'autalizar' com param objeto : " + item);
+
+		Midia obj = (Midia) item;
 		if (!obj.equals(null)) {
 			super.connection = new Conexao().getConexao();
-			String sql = "UPDATE midia SET tituloMidia = ?, dataGravacao = ?, tipoMidia = ?"
-					+ " WHERE idtrabalho = ?";
+			String sql = "UPDATE midia SET titulo = ?, data_gravacao = ?, tipo = ?" + " WHERE midia.id = ?";
 
 			try {
 				super.statement = super.connection.prepareStatement(sql);
-				super.statement.setString(1, obj.getTituloMidia());
-				super.statement.setDate(2, (Date) obj.getDataGravacao());
-				super.statement.setString(3, obj.getTipoMidia().name());
-		
-			
+				super.statement.setString(1, obj.getTitulo());
+				super.statement.setString(2, obj.getDataGravacao());
+				super.statement.setString(3, obj.getTipo().name());
+				super.statement.setInt(4, obj.getId());
+
 				super.statement.execute();
 				super.closeConnections();
 			} catch (SQLException e) {
-				
+
 				e.printStackTrace();
 			}
 		}
 
 	}
-		
+
+	/**
+	 * @see edu.uepb.web.biblioteca.model.ItemDAO#isItemExiste(Item)
+	 */
+	@Override
+	public boolean isItemExiste(Item item) {
+		logger.info("Executa o metodo 'isItemExiste' com param objeto : " + item);
+
+		Midia obj = (Midia) item;
+		if (!obj.equals(null)) {
+			super.connection = new Conexao().getConexao();
+			String sql = "SELECT midia.titulo FROM midia WHERE midia.titulo = ?";
+			try {
+				super.statement = super.connection.prepareStatement(sql);
+				super.statement.setString(1, obj.getTitulo());
+				super.resultSet = super.statement.executeQuery();
+				if (resultSet.next()) {
+					super.closeConnections();
+					return true;
+				}
+				super.closeConnections();
+				return false;
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+
+		}
+		return false;
 	}
-	
 
-
+}

@@ -7,19 +7,19 @@ import java.sql.SQLException;
 import java.util.List;
 
 /**
- * Classe abstrato DAO para todas as entidades no sistema biblioteca (excepto
- * para os itens) A classe tem a assinatura dos metodos basicos (CRUD).
+ * Classe abstrato DAO especifico para os itens. Alem dos metodos (CRUD)
+ * adicionamos tambem metodo para verificar se o item ja existe
  * 
  * @autor geovanniovinhas <vinhasgeovannio@gmail.com
  * 
  */
-public abstract class DAO<T> {
+public abstract class ItemDAO<T> {
 	public Connection connection;
 	public PreparedStatement statement;
 	public ResultSet resultSet;
 
 	/**
-	 * Fecha todas conexões que foram abertas na consulta
+	 * Fecha todas conexões que foram aberats na consulta
 	 *
 	 * @throws SQLException
 	 */
@@ -43,38 +43,48 @@ public abstract class DAO<T> {
 	public abstract T get(int id);
 
 	/**
-	 * Retorna uma lista com todos objetos cadastrados no banco de dados
+	 * Retorna uma lista com todos objeto cadastrados no banco de dados
 	 *
-	 * @return List<T> Lista de objetos
+	 * @return List<Item> Lista de objetos
 	 */
-	public abstract List<T> getLista();
+	public abstract List<Item> getLista();
 
 	/**
 	 * Insere um novo objeto no banco de dados. Se a operação for realizada com
 	 * sucesso é retornado o id
 	 *
-	 * @param obj
+	 * @param item
 	 *            O objeto a ser inserido
 	 * @return int
 	 */
-	public abstract int inserir(T obj);
+	public abstract int inserir(Item item);
 
 	/**
 	 * Remove o objeto do banco de dados. Se a operação for realizada com sucesso é
 	 * retornado true, caso contrário false
 	 *
-	 * @param obj
+	 * @param item
 	 *            O objeto a ser removido
 	 */
-	public abstract void remover(T obj);
+	public abstract void remover(Item item);
 
 	/**
 	 * Atualiza os dados do objeto no banco de dados. Se a operação for realizada
 	 * com sucesso é retornado true, caso contrário false
 	 *
-	 * @param obj
+	 * @param item
 	 *            O objeto com os dados sa serem atualizados
 	 */
-	public abstract void atualizar(T obj);
+	public abstract void atualizar(Item item);
+
+	/**
+	 * Verifica se o objeto (item) ja existe no banco de dados. Se a operação for
+	 * realizada com sucesso é retornado true, caso contrário false
+	 * 
+	 * @param item
+	 * 
+	 * @return boolean
+	 */
+	public abstract boolean isItemExiste(Item item);
 
 }
