@@ -76,7 +76,6 @@ public class MidiaDAO extends ItemDAO<Midia> {
 			}
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -96,7 +95,7 @@ public class MidiaDAO extends ItemDAO<Midia> {
 		int id = -1;
 		super.connection = new Conexao().getConexao();
 		String sql = "INSERT INTO midia( titulo, data_gravacao, tipo) VALUES (?,?,?)";
-		if (!obj.equals(null)) {
+		if (obj != null) {
 			try {
 				super.statement = super.connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 				super.statement.setString(1, obj.getTitulo());
@@ -124,7 +123,7 @@ public class MidiaDAO extends ItemDAO<Midia> {
 		logger.info("Executa o metodo 'remover' com param objeto : " + item);
 
 		Midia obj = (Midia) item;
-		if (!obj.equals(null)) {
+		if (obj != null) {
 			super.connection = new Conexao().getConexao();
 			String sql = "DELETE FROM midia WHERE midia.id = ?";
 
@@ -135,7 +134,6 @@ public class MidiaDAO extends ItemDAO<Midia> {
 
 				super.closeConnections();
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -149,7 +147,7 @@ public class MidiaDAO extends ItemDAO<Midia> {
 		logger.info("Executa o metodo 'autalizar' com param objeto : " + item);
 
 		Midia obj = (Midia) item;
-		if (!obj.equals(null)) {
+		if (obj != null) {
 			super.connection = new Conexao().getConexao();
 			String sql = "UPDATE midia SET titulo = ?, data_gravacao = ?, tipo = ?" + " WHERE midia.id = ?";
 
@@ -163,7 +161,6 @@ public class MidiaDAO extends ItemDAO<Midia> {
 				super.statement.execute();
 				super.closeConnections();
 			} catch (SQLException e) {
-
 				e.printStackTrace();
 			}
 		}
@@ -178,7 +175,7 @@ public class MidiaDAO extends ItemDAO<Midia> {
 		logger.info("Executa o metodo 'isItemExiste' com param objeto : " + item);
 
 		Midia obj = (Midia) item;
-		if (!obj.equals(null)) {
+		if (obj != null) {
 			super.connection = new Conexao().getConexao();
 			String sql = "SELECT midia.titulo FROM midia WHERE midia.titulo = ?";
 			try {

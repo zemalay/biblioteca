@@ -89,7 +89,7 @@ public class JornalDAO extends ItemDAO<Jornal> {
 		int id = -1;
 		super.connection = new Conexao().getConexao();
 		String sql = "INSERT INTO jornal(titulo, data, edicao) VALUES (?,?,?)";
-		if (!obj.equals(null)) {
+		if (obj != null) {
 			try {
 				super.statement = super.connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 				super.statement.setString(1, obj.getTitulo());
@@ -117,7 +117,7 @@ public class JornalDAO extends ItemDAO<Jornal> {
 		logger.info("Executa o metodo 'remover' com param objeto : " + item);
 
 		Jornal obj = (Jornal) item;
-		if (!obj.equals(null)) {
+		if (obj != null) {
 			super.connection = new Conexao().getConexao();
 			String sql = "DELETE FROM jornal WHERE jornal.id = ?";
 
@@ -142,7 +142,7 @@ public class JornalDAO extends ItemDAO<Jornal> {
 		logger.info("Executa o metodo 'atualizar' com param objeto : " + item);
 
 		Jornal obj = (Jornal) item;
-		if (!obj.equals(null)) {
+		if (obj != null) {
 			super.connection = new Conexao().getConexao();
 			String sql = "UPDATE jornal SET titulo = ?, data = ?, edicao = ? WHERE jornal.id = ?";
 
@@ -170,7 +170,7 @@ public class JornalDAO extends ItemDAO<Jornal> {
 		logger.info("Executa o metodo 'isItemExiste' com param objeto : " + item);
 
 		Jornal obj = (Jornal) item;
-		if (!obj.equals(null)) {
+		if (obj != null) {
 			super.connection = new Conexao().getConexao();
 			String sql = "SELECT jornal.titulo FROM jornal WHERE jornal.titulo = ?";
 

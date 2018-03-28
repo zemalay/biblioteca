@@ -93,9 +93,9 @@ public class FuncionarioDAO extends DAO<Funcionario> {
 	 */
 	@Override
 	public int inserir(Funcionario obj) {
-		logger.info("Executa o metodo 'inserir' com param objeto : " + obj.toString());
+		logger.info("Executa o metodo 'inserir' com param objeto : " + obj);
 		int id = FuncionarioDAO.id_fake;
-		if (!obj.equals(null)) {
+		if (obj != null) {
 			super.connection = new Conexao().getConexao();
 			String sql = "INSERT INTO funcionario (nome, tipoFuncionario) VALUES (?,?)";
 
@@ -122,7 +122,7 @@ public class FuncionarioDAO extends DAO<Funcionario> {
 	@Override
 	public void remover(Funcionario obj) {
 		logger.info("Executa o metodo 'remover' com param objeto : " + obj);
-		if (!obj.equals(null)) {
+		if (obj != null) {
 			super.connection = new Conexao().getConexao();
 			String sql = "DELETE FROM funcionario WHERE funcionario.id = ?";
 
@@ -144,7 +144,7 @@ public class FuncionarioDAO extends DAO<Funcionario> {
 	@Override
 	public void atualizar(Funcionario obj) {
 		logger.info("Executa o metodo 'atualizar' com param objeto : " + obj);
-		if (!obj.equals(null)) {
+		if (obj != null) {
 			super.connection = new Conexao().getConexao();
 			String sql = "UPDATE funcionario SET nome = ?, tipoFuncionario = ? WHERE fucnionario.id = ?";
 
