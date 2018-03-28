@@ -110,7 +110,7 @@ public class LivroDAO extends ItemDAO<Livro> {
 		super.connection = new Conexao().getConexao();
 
 		String sql = "INSERT INTO livro (isbn, titulo, autor, editora, ano_publicacao, edicao, numero_pagina, area, tema) VALUES (?,?,?,?,?,?,?,?,?)";
-		if (!obj.equals(null)) {
+		if (obj != null) {
 			try {
 				super.statement = super.connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 				super.statement.setString(1, obj.getIsbn());
@@ -145,7 +145,7 @@ public class LivroDAO extends ItemDAO<Livro> {
 	public void remover(Item item) {
 		logger.info("Executa o metodo 'remover' com param objeto : " + item);
 		Livro obj = (Livro) item;
-		if (!obj.equals(null)) {
+		if (obj != null) {
 			super.connection = new Conexao().getConexao();
 			String sql = "DELETE FROM livro WHERE livro.id = ?";
 
@@ -170,7 +170,7 @@ public class LivroDAO extends ItemDAO<Livro> {
 		logger.info("Executa o metodo 'atualizar' com param objeto : " + item);
 
 		Livro obj = (Livro) item;
-		if (!obj.equals(null)) {
+		if (obj != null) {
 			super.connection = new Conexao().getConexao();
 			String sql = "UPDATE livro SET isbn = ?, titulo= ?, autor = ?, editora = ?, ano_publicacao = ?, "
 					+ "edicao = ?, numero_pagina = ?, area = ?, tema = ?" + "WHERE livro.id = ?";
@@ -206,7 +206,7 @@ public class LivroDAO extends ItemDAO<Livro> {
 		logger.info("Executa o metodo 'isItemExiste' com param objeto : " + item);
 
 		Livro obj = (Livro) item;
-		if (!obj.equals(null)) {
+		if (obj != null) {
 			super.connection = new Conexao().getConexao();
 			String sql = "SELECT livro.isbn FROM livro WHERE livro.isbn = ?";
 

@@ -88,7 +88,7 @@ public class CursoDAO extends DAO<Curso> {
 		int id = -1;
 		super.connection = new Conexao().getConexao();
 		String sql = "INSERT INTO curso (nome, tipoNivel, area) VALUES (?,?,?)";
-		if (!obj.equals(null)) {
+		if (obj != null) {
 			try {
 				super.statement = super.connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 				super.statement.setString(1, obj.getNome());
@@ -114,7 +114,7 @@ public class CursoDAO extends DAO<Curso> {
 	public void remover(Curso obj) {
 		logger.info("Executa o metodo 'remover' com param objeto : " + obj);
 
-		if (!obj.equals(null)) {
+		if (obj != null) {
 			super.connection = new Conexao().getConexao();
 			String sql = "DELETE FROM curso WHERE idcurso = ?";
 
@@ -137,7 +137,7 @@ public class CursoDAO extends DAO<Curso> {
 	@Override
 	public void atualizar(Curso obj) {
 		logger.info("Executa o metodo 'atualizar' com param objeto : " + obj);
-		if (!obj.equals(null)) {
+		if (obj != null) {
 			super.connection = new Conexao().getConexao();
 			String sql = "UPDATE curso SET nome = ?, tipoNivel = ? , area = ? WHERE curso.idcurso = ?";
 

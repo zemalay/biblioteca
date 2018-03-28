@@ -11,7 +11,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-
 /**
  * @autor geovanniovinhas <vinhasgeovannio@gmail.com
  *
@@ -29,40 +28,40 @@ public class JornalDAOTest {
 		manager = new JornalDAO();
 	}
 
-	// @Test
-	// public void inserir() {
-	// int id = manager.inserir(jornal);
-	//
-	// if (id < 0) {
-	// Assert.fail();
-	// }
-	// ((Jornal) jornal).setId(id);
-	// assertEquals(manager.get(id), jornal);
-	// }
+	@Test
+	public void inserir() {
+		int id = manager.inserir(jornal);
 
-	// @Test
-	// public void get() {
-	// assertNotEquals(manager.get(1), null);
-	// }
-	//
-	// @Test
-	// public void remover() {
-	// ((Jornal) jornal).setId(3);
-	// manager.remover(jornal);
-	// assertEquals(manager.get(3), null);
-	// }
+		if (id < 0) {
+			Assert.fail();
+		}
+		((Jornal) jornal).setId(id);
+		assertEquals(manager.get(id), jornal);
+	}
 
-//	@Test
-//	public void atualizar() {
-//		Jornal jornalUpdate = manager.get(1);
-//		jornalUpdate.setEdicao("2ª");
-//		manager.atualizar(jornalUpdate);
-//		assertEquals(manager.get(1).getEdicao(), "2ª");
-//	}
+	@Test
+	public void get() {
+		assertNotEquals(manager.get(1), null);
+	}
 
-//	@Test
-//	public void isItemExiste() {
-//		assertFalse(manager.isItemExiste(jornal));
-//	}
+	@Test
+	public void remover() {
+		((Jornal) jornal).setId(3);
+		manager.remover(jornal);
+		assertEquals(manager.get(3), null);
+	}
+
+	@Test
+	public void atualizar() {
+		Jornal jornalUpdate = manager.get(1);
+		jornalUpdate.setEdicao("2ª");
+		manager.atualizar(jornalUpdate);
+		assertEquals(manager.get(1).getEdicao(), "2ª");
+	}
+
+	@Test
+	public void isItemExiste() {
+		assertFalse(manager.isItemExiste(jornal));
+	}
 
 }

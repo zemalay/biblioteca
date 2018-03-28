@@ -101,13 +101,13 @@ public class AnaisCongressoDAO extends ItemDAO<Item> {
 	 */
 	@Override
 	public int inserir(Item item) {
-		logger.info("Executa o metodo 'inserir' com param objeto : " + item.toString());
+		logger.info("Executa o metodo 'inserir' com param objeto : " + item);
 
 		AnaisCongresso obj = (AnaisCongresso) item;
 		int id = -1;
 		super.connection = new Conexao().getConexao();
 		String sql = "INSERT INTO anaiscongresso (titulo, tipo, congresso, anoPublicacao, local) VALUES (?,?,?,?,?)";
-		if (!obj.equals(null)) {
+		if (obj != null) {
 			try {
 				super.statement = super.connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 				super.statement.setString(1, obj.getTitulo());
@@ -136,7 +136,7 @@ public class AnaisCongressoDAO extends ItemDAO<Item> {
 		logger.info("Executa o metodo 'remover' com param objeto : " + item);
 
 		AnaisCongresso obj = (AnaisCongresso) item;
-		if (!obj.equals(null)) {
+		if (obj != null) {
 			super.connection = new Conexao().getConexao();
 			String sql = "DELETE FROM anaiscongresso WHERE idanais = ?";
 
@@ -160,7 +160,7 @@ public class AnaisCongressoDAO extends ItemDAO<Item> {
 	public void atualizar(Item item) {
 		logger.info("Executa o metodo 'atualizar' com param objeto : " + item);
 		AnaisCongresso obj = (AnaisCongresso) item;
-		if (!obj.equals(null)) {
+		if (obj != null) {
 			super.connection = new Conexao().getConexao();
 			String sql = "UPDATE anaiscongresso SET titulo = ?, tipo = ?, congresso = ?, anoPublicacao = ?, local = ? "
 					+ "WHERE idanais = ?";
@@ -189,7 +189,7 @@ public class AnaisCongressoDAO extends ItemDAO<Item> {
 		logger.info("Executa o metodo 'isItemExiste' com param objeto : " + item);
 
 		AnaisCongresso obj = (AnaisCongresso) item;
-		if (!obj.equals(null)) {
+		if (obj != null) {
 			super.connection = new Conexao().getConexao();
 			String sql = "SELECT anaiscongresso.titulo FROM anaiscongresso WHERE anaiscongresso.titulo = ?";
 

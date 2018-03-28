@@ -36,54 +36,54 @@ public class FuncionarioDAOTest {
 		jornal = new Jornal("Hoje", "10/04/2000", "4º");
 	}
 
-//	@Test
-//	public void inserirFuncionario() {
-//		int id_fun = manager.inserir(funcionario);
-//		if (id_fun < 0) {
-//			Assert.fail();
-//		}
-//	}
+	@Test
+	public void inserirFuncionario() {
+		int id_fun = manager.inserir(funcionario);
+		if (id_fun < 0) {
+			Assert.fail();
+		}
+	}
 
-//	@Test
-//	public void cadastrarItem() {
-//		int id_midia = manager.cadastraItem(funcionario, midia);
-//		int id_jornal = manager.cadastraItem(funcionario, jornal);
-//
-//		if (id_midia < 0) {
-//			Assert.fail();
-//		}
-//
-//		if (id_jornal < 0) {
-//			Assert.fail();
-//		}
-//
-//	}
+	@Test
+	public void cadastrarItem() {
+		int id_midia = manager.cadastraItem(funcionario, midia);
+		int id_jornal = manager.cadastraItem(funcionario, jornal);
 
-//	@Test
-//	public void atualizarItem() {
-//		midia.setId(4);// midia com id = 4 ja existe no banco
-//		assertEquals(manager.atualizarItem(funcionario, midia), true);
-//	}
+		if (id_midia < 0) {
+			Assert.fail();
+		}
 
-//	@Test
-//	public void removerItem() {
-//		midia.setId(4);
-//		assertEquals(manager.removerItem(funcionario, midia), true);
-//	}
+		if (id_jornal < 0) {
+			Assert.fail();
+		}
+
+	}
+
+	@Test
+	public void atualizarItem() {
+		midia.setId(4);// midia com id = 4 ja existe no banco
+		assertEquals(manager.atualizarItem(funcionario, midia), true);
+	}
+
+	@Test
+	public void removerItem() {
+		midia.setId(4);
+		assertEquals(manager.removerItem(funcionario, midia), true);
+	}
 	
-//	@Test
-//	public void cadastraCurso() {
-//		int id_curso = manager.cadastraCurso(funcionario, curso);
-//
-//		if (id_curso < 0) {
-//			Assert.fail();
-//		}
-//	}
-//
-//	@Test
-//	public void removerCurso() {
-//		curso.setId(4);
-//		assertEquals(manager.removerCurso(funcionario, curso), true);
-//	}
+	@Test
+	public void cadastraCurso() {
+		int id_curso = manager.cadastraCurso(funcionario, curso);
+
+		if (id_curso < 0) {
+			Assert.fail();
+		}
+	}
+
+	@Test
+	public void removerCurso() {
+		curso.setId(4);
+		assertEquals(manager.removerCurso(funcionario, curso), true);
+	}
 
 }

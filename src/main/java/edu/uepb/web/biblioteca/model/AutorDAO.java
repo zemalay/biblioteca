@@ -66,7 +66,7 @@ public class AutorDAO extends DAO<Autor> {
 
 		String sql = "INSERT INTO autor (nome, anaisCongresso_id) VALUES(?,?)";
 
-		if (!obj.equals(null)) {
+		if (obj != null) {
 			try {
 				super.statement = super.connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 				super.statement.setString(1, obj.getNome());
@@ -78,7 +78,6 @@ public class AutorDAO extends DAO<Autor> {
 				}
 				super.connection.close();
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -100,7 +99,7 @@ public class AutorDAO extends DAO<Autor> {
 	@Override
 	public void atualizar(Autor obj) {
 		logger.info("Executa o metodo 'atualizar' com param objeto : " + obj);
-		if (!obj.equals(null)) {
+		if (obj != null) {
 			super.connection = new Conexao().getConexao();
 			String sql = "UPDATE autor SET nome = ? WHERE idautor = ?";
 
@@ -111,7 +110,6 @@ public class AutorDAO extends DAO<Autor> {
 				super.statement.execute();
 				super.connection.close();
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

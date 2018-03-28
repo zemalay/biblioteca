@@ -105,7 +105,7 @@ public class TrabalhoConclusaoDAO extends ItemDAO<TrabalhoConclusao> {
 
 		String sql = "INSERT INTO trabalhoconclusao (titulo, tipo, anoDefesa, local, autor, orientador) VALUES (?,?,?,?,?,?)";
 
-		if (!obj.equals(null)) {
+		if (obj != null) {
 			try {
 				super.statement = super.connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 				super.statement.setString(1, obj.getTitulo());
@@ -136,7 +136,7 @@ public class TrabalhoConclusaoDAO extends ItemDAO<TrabalhoConclusao> {
 		logger.info("Executa o metodo 'remover' com param objeto : " + item);
 
 		TrabalhoConclusao obj = (TrabalhoConclusao) item;
-		if (!obj.equals(null)) {
+		if (obj != null) {
 			super.connection = new Conexao().getConexao();
 			String sql = "DELETE FROM trabalhoconclusao WHERE idtrabalho = ?";
 
@@ -160,7 +160,7 @@ public class TrabalhoConclusaoDAO extends ItemDAO<TrabalhoConclusao> {
 		logger.info("Executa o metodo 'autalizar' com param objeto : " + item);
 
 		TrabalhoConclusao obj = (TrabalhoConclusao) item;
-		if (!obj.equals(null)) {
+		if (obj != null) {
 			super.connection = new Conexao().getConexao();
 			String sql = "UPDATE trabalhoconclusao SET titulo = ?, tipo = ?, anoDefesa = ?, local = ?, autor = ?, orientador = ?"
 					+ " WHERE idtrabalho = ?";
@@ -178,7 +178,6 @@ public class TrabalhoConclusaoDAO extends ItemDAO<TrabalhoConclusao> {
 				super.statement.execute();
 				super.closeConnections();
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -192,7 +191,7 @@ public class TrabalhoConclusaoDAO extends ItemDAO<TrabalhoConclusao> {
 		logger.info("Executa o metodo 'isItemExiste' com param objeto : " + item);
 
 		TrabalhoConclusao obj = (TrabalhoConclusao) item;
-		if (!obj.equals(null)) {
+		if (obj != null) {
 			super.connection = new Conexao().getConexao();
 			String sql = "SELECT trabalhoconclusao.titulo FROM trabalhoconclusao WHERE trabalhoconclusao.titulo = ?";
 

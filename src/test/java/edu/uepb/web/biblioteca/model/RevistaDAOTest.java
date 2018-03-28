@@ -28,39 +28,39 @@ public class RevistaDAOTest {
 		revista = new Revista("Titulo Revista", "EditoraRev", "20/05/2016", "4ª", 43);
 	}
 
-//	@Test
-//	public void inserir() {
-//		int id = manager.inserir(revista);
-//		if (id < 0) {
-//			Assert.fail();
-//		}
-//	}
-//
-//	@Test
-//	public void get() {
-//		Revista revista1 = manager.get(1);
-//		assertEquals(revista1.getTitulo(), revista.getTitulo());
-//	}
+	@Test
+	public void inserir() {
+		int id = manager.inserir(revista);
+		if (id < 0) {
+			Assert.fail();
+		}
+	}
+
+	@Test
+	public void get() {
+		Revista revista1 = manager.get(1);
+		assertEquals(revista1.getTitulo(), revista.getTitulo());
+	}
 	
-//	@Test
-//	public void getList() {
-//		List<Item> listaRevista = manager.getLista();
-//		assertNotEquals(listaRevista.size(), 0);
-//	}
+	@Test
+	public void getList() {
+		List<Item> listaRevista = manager.getLista();
+		assertNotEquals(listaRevista.size(), 0);
+	}
 	
-//	@Test
-//	public void remover() {
-//		manager.remover(manager.get(2));
-//		assertEquals(manager.get(2), null);
-//	}
+	@Test
+	public void remover() {
+		manager.remover(manager.get(2));
+		assertEquals(manager.get(2), null);
+	}
 	
-//	@Test
-//	public void atualizar() {
-//		Revista revista2 = manager.get(1);
-//		revista2.setNumeroPagina(200);
-//		manager.atualizar(revista2);
-//		assertEquals(manager.get(1).getNumeroPagina(), 200);
-//	}
+	@Test
+	public void atualizar() {
+		Revista revista2 = manager.get(1);
+		revista2.setNumeroPagina(200);
+		manager.atualizar(revista2);
+		assertEquals(manager.get(1).getNumeroPagina(), 200);
+	}
 	
 	@Test
 	public void isItemExiste() {

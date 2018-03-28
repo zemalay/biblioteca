@@ -37,45 +37,45 @@ public class AutorDAOTest {
 
 	}
 
-//	@Test
-//	public void inserir() {
-//
-//		artigo.setId(dao.inserir(artigo));
-//		autor = new Autor("Lucca", artigo);
-//		int id = manager.inserir(autor);
-//
-//		if (id < 0) {
-//			Assert.fail();
-//		}
-//	}
+	@Test
+	public void inserir() {
 
-//	@Test
-//	public void get() {
-//		
-//		assertNotEquals(manager.get(3), null);
-//	}
-//	
-//	@Test
-//	public void remover() {
-//		manager.remover(manager.get(1));
-//		
-//		assertEquals(manager.get(1), null);
-//	}
-//	
-//	@Test
-//	public void atualizar() {
-//		autor = manager.get(3);
-//		
-//		autor.setNome("Zeze");
-//		manager.atualizar(autor);
-//		assertEquals(manager.get(3), autor);
-//	}
+		artigo.setId(dao.inserir(artigo));
+		autor = new Autor("Lucca", artigo);
+		int id = manager.inserir(autor);
+
+		if (id < 0) {
+			Assert.fail();
+		}
+	}
+
+	@Test
+	public void get() {
+		
+		assertNotEquals(manager.get(3), null);
+	}
 	
-//	@Test
-//	public void getList(){
-//		List<Autor> listaAutor =  manager.getLista(1);
-//		
-//		assertEquals(listaAutor.size(), 1);
-//	}
+	@Test
+	public void remover() {
+		manager.remover(manager.get(1));
+		
+		assertEquals(manager.get(1), null);
+	}
+	
+	@Test
+	public void atualizar() {
+		autor = manager.get(3);
+		
+		autor.setNome("Zeze");
+		manager.atualizar(autor);
+		assertEquals(manager.get(3), autor);
+	}
+	
+	@Test
+	public void getList(){
+		List<Autor> listaAutor =  manager.getLista(1);
+		
+		assertEquals(listaAutor.size(), 1);
+	}
 
 }
