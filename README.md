@@ -18,6 +18,7 @@ Artefatos dos documentos do projeto:
     - biblioteca/doc/index.html
   - Arquivo SQL (para gerar as tabelas do sistema):
     - biblioteca/doc/SQL/
+    - Lembrando antes de importar precisa criar primeiro o schema com nome 'biblioteca'
  
 Executar o projeto:
  Para simular as funcionalidades de acordo com o pedido do Sprint 1, simulamos no arquivo FuncionarioDAOTest.
