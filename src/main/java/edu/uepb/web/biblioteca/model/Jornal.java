@@ -1,55 +1,27 @@
 package edu.uepb.web.biblioteca.model;
 
-import java.util.Date;
-
 /**
- * @autor Larrissa Dantas 
- *
- *
+ * A classe POJO do item Jornal
+ * 
+ * @autor Larrissa Dantas
+ * 
  */
-
 public class Jornal implements Item {
 
 	private int id;
-	private String tituloJornal;
-	private Date dataJornal;
-	private String edicaoJornal;
-	
-	
+	private String titulo;
+	private String data;
+	private String edicao;
 
-	public Jornal(String tituloJornal, Date dataJornal, String edicaoJornal) {
+	public Jornal(String tituloJornal, String dataJornal, String edicaoJornal) {
 		super();
-		this.tituloJornal = tituloJornal;
-		this.dataJornal = dataJornal;
-		this.edicaoJornal = edicaoJornal;
+		this.titulo = tituloJornal;
+		this.data = dataJornal;
+		this.edicao = edicaoJornal;
 	}
-	
+
 	public Jornal() {
-		
-	}
 
-	public String getTituloJornal() {
-		return tituloJornal;
-	}
-
-	public void setTituloJornal(String tituloJornal) {
-		this.tituloJornal = tituloJornal;
-	}
-
-	public Date getDataJornal() {
-		return dataJornal;
-	}
-
-	public void setDataJornal(Date dataJornal) {
-		this.dataJornal = dataJornal;
-	}
-
-	public String getEdicaoJornal() {
-		return edicaoJornal;
-	}
-
-	public void setEdicaoJornal(String edicaoJornal) {
-		this.edicaoJornal = edicaoJornal;
 	}
 
 	public int getId() {
@@ -60,12 +32,36 @@ public class Jornal implements Item {
 		this.id = id;
 	}
 
+	public String getTitulo() {
+		return titulo;
+	}
+
+	public void setTitulo(String titulo) {
+		this.titulo = titulo;
+	}
+
+	public String getData() {
+		return data;
+	}
+
+	public void setData(String data) {
+		this.data = data;
+	}
+
+	public String getEdicao() {
+		return edicao;
+	}
+
+	public void setEdicao(String edicao) {
+		this.edicao = edicao;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((edicaoJornal == null) ? 0 : edicaoJornal.hashCode());
 		result = prime * result + id;
+		result = prime * result + ((titulo == null) ? 0 : titulo.hashCode());
 		return result;
 	}
 
@@ -78,21 +74,20 @@ public class Jornal implements Item {
 		if (getClass() != obj.getClass())
 			return false;
 		Jornal other = (Jornal) obj;
-		if (edicaoJornal == null) {
-			if (other.edicaoJornal != null)
-				return false;
-		} else if (!edicaoJornal.equals(other.edicaoJornal))
-			return false;
 		if (id != other.id)
+			return false;
+		if (titulo == null) {
+			if (other.titulo != null)
+				return false;
+		} else if (!titulo.equals(other.titulo))
 			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "Jornal [id=" + id + ", tituloJornal=" + tituloJornal + ", dataJornal=" + dataJornal + ", edicaoJornal="
-				+ edicaoJornal + "]";
+		return "Jornal [id=" + id + ", tituloJornal=" + titulo + ", dataJornal=" + data + ", edicaoJornal=" + edicao
+				+ "]";
 	}
-	
 
 }

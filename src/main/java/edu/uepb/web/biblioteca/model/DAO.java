@@ -7,9 +7,11 @@ import java.sql.SQLException;
 import java.util.List;
 
 /**
+ * Classe abstrato DAO para todas as entidades no sistema biblioteca (excepto
+ * para os itens) A classe tem a assinatura dos metodos basicos (CRUD).
+ * 
  * @autor geovanniovinhas <vinhasgeovannio@gmail.com
- *
- *
+ * 
  */
 public abstract class DAO<T> {
 	public Connection connection;
@@ -17,7 +19,7 @@ public abstract class DAO<T> {
 	public ResultSet resultSet;
 
 	/**
-	 * Fecha todas conexões que foram aberats na consulta
+	 * Fecha todas conexões que foram abertas na consulta
 	 *
 	 * @throws SQLException
 	 */
@@ -31,8 +33,8 @@ public abstract class DAO<T> {
 	}
 
 	/**
-	 * Seleciona o objeto de acordo com seu id. Caso não seja encontrado é
-	 * retornado null
+	 * Seleciona o objeto de acordo com seu id. Caso não seja encontrado é retornado
+	 * null
 	 *
 	 * @param id
 	 *            O id do objeto no banco de dados

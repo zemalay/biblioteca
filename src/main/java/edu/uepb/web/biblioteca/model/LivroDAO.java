@@ -5,33 +5,38 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @autor Larrissa Dantas 
- *
- *
- */
+import org.apache.log4j.Logger;
 
-public class LivroDAO extends DAO<Livro> {
 /**
- * @see edu.uepb.web.biblioteca.model.DAO#get(int)
+ * A classe para acessar os dados no banco associando ao objeto {@link Livro}
+ * 
+ * @autor Larrissa Dantas
+ * 
  */
+public class LivroDAO extends ItemDAO<Livro> {
+	private static Logger logger = Logger.getLogger(LivroDAO.class);
+
+	/**
+	 * @see edu.uepb.web.biblioteca.model.ItemDAO#get(int)
+	 */
 	@Override
 	public Livro get(int id) {
+		logger.info("Executa o metodo 'get' com param id : " + id);
+
 		super.connection = new Conexao().getConexao();
-		String sql  = "SELECT livro.isbn, livro.titulo, livro.autor, livro.editora, livro.anoPublicacao, livro.edicao, livro.numeroPagina, livro.area, livro.tema"
-				+ "WHERE livro.idlivro = ?";
-		
+		String sql = "SELECT * FROM livro WHERE livro.id = ?";
+
 		Livro livro = null;
-		
+
 		try {
 			super.statement = super.connection.prepareStatement(sql);
 			super.statement.setInt(1, id);
 			super.resultSet = super.statement.executeQuery();
-			
-			if(resultSet.next()) {
-				
+
+			if (resultSet.next()) {
+
 				livro = new Livro();
-				
+
 				livro.setId(resultSet.getInt(1));
 				livro.setIsbn(resultSet.getString(2));
 				livro.setTitulo(resultSet.getString(3));
@@ -42,37 +47,36 @@ public class LivroDAO extends DAO<Livro> {
 				livro.setNumeroPagina(resultSet.getInt(8));
 				livro.setArea(resultSet.getString(9));
 				livro.setTema(resultSet.getString(10));
-				
-				
+
 			}
 			super.closeConnections();
-		}catch(SQLException e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-	
+
 		return livro;
 	}
-	
-/**
-* @see edu.uepb.web.biblioteca.model.DAO#get(int)
-*/
-	
+
+	/**
+	 * @see edu.uepb.web.biblioteca.model.ItemDAO#getLista()
+	 */
 	@Override
-	public List<Livro> getLista() {
+	public List<Item> getLista() {
+		logger.info("Executa o metodo 'getLista' ");
+
 		super.connection = new Conexao().getConexao();
-		List<Livro> listaLivros = new ArrayList<Livro>();
-		
-		String sql = "SELECT livro.idlivro, livro.isbn, livro.titulo, livro.autor, livro.editora, livro.anoPublicacao, livro.edição,"
-				+ "livro.numeroPagina, livro.area, livro.tema";
-		
+		List<Item> listaLivros = new ArrayList<Item>();
+
+		String sql = "SELECT * FROM livro";
+
 		try {
 			super.statement = super.connection.prepareStatement(sql);
 			super.resultSet = super.statement.executeQuery();
-			
+
 			while (resultSet.next()) {
-				
+
 				Livro livro = new Livro();
-				
+
 				livro.setId(resultSet.getInt(1));
 				livro.setIsbn(resultSet.getString(2));
 				livro.setTitulo(resultSet.getString(3));
@@ -83,27 +87,30 @@ public class LivroDAO extends DAO<Livro> {
 				livro.setNumeroPagina(resultSet.getInt(8));
 				livro.setArea(resultSet.getString(9));
 				livro.setTema(resultSet.getString(10));
-				
+
 				listaLivros.add(livro);
 			}
-		}catch (SQLException e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+
 		return listaLivros;
 	}
 
-/**
-* @see edu.uepb.web.biblioteca.model.DAO#get(int)
-*/
-	
+	/**
+	 * @see edu.uepb.web.biblioteca.model.ItemDAO#inserir(Item)
+	 */
+
 	@Override
-	public int inserir(Livro obj) {
+	public int inserir(Item item) {
+		logger.info("Executa o metodo 'inserir' com param objeto : " + item);
+
+		Livro obj = (Livro) item;
 		int id = -1;
 		super.connection = new Conexao().getConexao();
-		
-		String sql = "INSERT INTO livro (isbn, titulo, autor, editora, anoPublicacao, edicao, numeroPagina, area, tema) VALUES (?,?,?,?,?,?,?,?,?)";
-		if(!obj.equals(null)) {
+
+		String sql = "INSERT INTO livro (isbn, titulo, autor, editora, ano_publicacao, edicao, numero_pagina, area, tema) VALUES (?,?,?,?,?,?,?,?,?)";
+		if (!obj.equals(null)) {
 			try {
 				super.statement = super.connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 				super.statement.setString(1, obj.getIsbn());
@@ -117,55 +124,56 @@ public class LivroDAO extends DAO<Livro> {
 				super.statement.setString(9, obj.getTema());
 				super.statement.execute();
 				super.resultSet = super.statement.getGeneratedKeys();
-				
+
 				if (resultSet.next()) {
 					id = super.resultSet.getInt(1);
 				}
-				
-			}catch (SQLException e) {
+
+			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-			
+
 		}
 
 		return id;
 	}
 
-/**
-* @see edu.uepb.web.biblioteca.model.DAO#get(int)
-*/
-	
+	/**
+	 * @see edu.uepb.web.biblioteca.model.ItemDAO#remover(Item)
+	 */
 	@Override
-	public void remover(Livro obj) {
+	public void remover(Item item) {
+		logger.info("Executa o metodo 'remover' com param objeto : " + item);
+		Livro obj = (Livro) item;
 		if (!obj.equals(null)) {
 			super.connection = new Conexao().getConexao();
-			String sql = "DELETE FROM livro WHERE idlivro = ?";
-			
+			String sql = "DELETE FROM livro WHERE livro.id = ?";
+
 			try {
 				super.statement = super.connection.prepareStatement(sql);
 				super.statement.setInt(1, obj.getId());
 				super.statement.execute();
-				
+
 				super.closeConnections();
 
-			
-		}catch (SQLException e) {
-			e.printStackTrace();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 	}
-	}
-	
-/**
-* @see edu.uepb.web.biblioteca.model.DAO#get(int)
-*/
 
+	/**
+	 * @see edu.uepb.web.biblioteca.model.ItemDAO#atualizar(Item)
+	 */
 	@Override
-	public void atualizar(Livro obj) {
+	public void atualizar(Item item) {
+		logger.info("Executa o metodo 'atualizar' com param objeto : " + item);
+
+		Livro obj = (Livro) item;
 		if (!obj.equals(null)) {
 			super.connection = new Conexao().getConexao();
-			String sql = "UPDATE livro SET isbn = ?, titulo= ?, autor = ?, editora = ?, anoPublicacao = ?, "
-					+ "edicao = ?, numeroPagina = ?, area = ?, tema = ?"
-					+"WHERE idlivro = ?";
+			String sql = "UPDATE livro SET isbn = ?, titulo= ?, autor = ?, editora = ?, ano_publicacao = ?, "
+					+ "edicao = ?, numero_pagina = ?, area = ?, tema = ?" + "WHERE livro.id = ?";
 			try {
 				super.statement = super.connection.prepareStatement(sql);
 				super.statement.setString(1, obj.getIsbn());
@@ -177,15 +185,46 @@ public class LivroDAO extends DAO<Livro> {
 				super.statement.setInt(7, obj.getNumeroPagina());
 				super.statement.setString(8, obj.getArea());
 				super.statement.setString(9, obj.getTema());
-				
+
+				super.statement.setInt(10, obj.getId());
+
 				super.statement.execute();
 				super.closeConnections();
-			}catch (SQLException e) {
+			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-	
-		
+
+		}
+
 	}
 
+	/**
+	 * @see edu.uepb.web.biblioteca.model.ItemDAO#isItemExiste(Item)
+	 */
+	@Override
+	public boolean isItemExiste(Item item) {
+		logger.info("Executa o metodo 'isItemExiste' com param objeto : " + item);
+
+		Livro obj = (Livro) item;
+		if (!obj.equals(null)) {
+			super.connection = new Conexao().getConexao();
+			String sql = "SELECT livro.isbn FROM livro WHERE livro.isbn = ?";
+
+			try {
+				super.statement = super.connection.prepareStatement(sql);
+				super.statement.setString(1, obj.getIsbn());
+				super.resultSet = super.statement.executeQuery();
+
+				if (resultSet.next()) {
+					super.closeConnections();
+					return true;
+				}
+				super.closeConnections();
+				return false;
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return false;
 	}
 }

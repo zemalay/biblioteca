@@ -1,12 +1,11 @@
 package edu.uepb.web.biblioteca.model;
 
-
 /**
- * @autor geovanniovinhas <vinhasgeovannio@gmail.com
- *
- *
+ * A interface Item para generalizar todos os itens na biblioteca
+ * 
+ * @autor geovanniovinhas <vinhasgeovannio@gmail.com>
+ * 
  */
 public interface Item {
 
 }
-
