@@ -28,50 +28,50 @@ public class AnaisCongressoDAOTest {
 		
 	}
 
-//	@Test
-//	public void inserir() {
-//		int id = manager.inserir(poster);
-//		if(id<0) {
-//			Assert.fail();
-//		}
-//	}
+	@Test
+	public void inserir() {
+		int id = manager.inserir(poster);
+		if(id<0) {
+			Assert.fail();
+		}
+	}
 	
-//	@Test 
-//	public void get() {
-//		assertNotEquals(poster, manager.get(1));
-//	}
+	@Test 
+	public void get() {
+		assertNotEquals(poster, manager.get(1));
+	}
 	
-//	@Test
-//	public void remover() {
-//		manager.remover(manager.get(3));
-//		
-//		assertEquals(manager.get(3), null);
-//		
-//	}
+	@Test
+	public void remover() {
+		manager.remover(manager.get(3));
+		
+		assertEquals(manager.get(3), null);
+		
+	}
 	
-//	@Test
-//	public void getLista() {
-//		List<Item> listaAnais = manager.getLista();
-//		
-//		assertNotEquals(listaAnais.size(), 0);
-//		
-//		for (Item anaisCongresso : listaAnais) {
-//			System.out.println(anaisCongresso.toString());
-//		}
-//	}
+	@Test
+	public void getLista() {
+		List<Item> listaAnais = manager.getLista();
+		
+		assertNotEquals(listaAnais.size(), 0);
+		
+		for (Item anaisCongresso : listaAnais) {
+			System.out.println(anaisCongresso.toString());
+		}
+	}
 	
-//	@Test
-//	public void atualizar() {
-//		AnaisCongresso anais =  manager.get(2);
-//		anais.setLocal("UFRN");
-//		manager.atualizar(anais);
-//		System.out.println(manager.get(2));
-//		assertNotEquals(manager.get(2).getLocal(), "UEPB");
-//	}
+	@Test
+	public void atualizar() {
+		AnaisCongresso anais =  manager.get(2);
+		anais.setLocal("UFRN");
+		manager.atualizar(anais);
+		System.out.println(manager.get(2));
+		assertNotEquals(manager.get(2).getLocal(), "UEPB");
+	}
 	
-//	@Test
-//	public void isItemExiste() {
-//		assertTrue(manager.isItemExiste(poster));
-//	}
+	@Test
+	public void isItemExiste() {
+		assertTrue(manager.isItemExiste(poster));
+	}
 }
 

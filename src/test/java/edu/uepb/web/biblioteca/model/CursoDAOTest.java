@@ -28,45 +28,45 @@ public class CursoDAOTest {
 		curso = new Curso("Odontologia", TipoNivel.GRADUACAO, "Saude");
 	}
 
-//	@Test
-//	public void inserir() {
-//		int id = manager.inserir(curso);
-//		if(id<0) {
-//			Assert.fail();
-//		}
-//	}
+	@Test
+	public void inserir() {
+		int id = manager.inserir(curso);
+		if(id<0) {
+			Assert.fail();
+		}
+	}
 	
-//	@Test
-//	public void get() {
-//		assertEquals(manager.get(1).getNome(), curso.getNome());
-//	}
+	@Test
+	public void get() {
+		assertEquals(manager.get(1).getNome(), curso.getNome());
+	}
 	
-//	@Test
-//	public void getLista() {
-//		List<Curso> listaCurso = manager.getLista();
-//		
-//		assertNotEquals(listaCurso.size(), 0);
-//		
-//		for (Curso curso : listaCurso) {
-//			System.out.println(curso.toString());
-//		}
-//	}
+	@Test
+	public void getLista() {
+		List<Curso> listaCurso = manager.getLista();
+		
+		assertNotEquals(listaCurso.size(), 0);
+		
+		for (Curso curso : listaCurso) {
+			System.out.println(curso.toString());
+		}
+	}
 	
-//	@Test
-//	public void remover() {
-//		manager.remover(manager.get(1));
-//		
-//		assertEquals(manager.get(1), null);
-//	}
+	@Test
+	public void remover() {
+		manager.remover(manager.get(1));
+		
+		assertEquals(manager.get(1), null);
+	}
 	
-//	@Test
-//	public void atualizar() {
-//		Curso curso1 = manager.get(3);
-//		curso1.setNome("Direito");
-//		manager.atualizar(curso1);
-//		System.out.println(manager.get(3));
-//		assertNotEquals(curso1.getNome(), manager.get(3));
-//	}
+	@Test
+	public void atualizar() {
+		Curso curso1 = manager.get(3);
+		curso1.setNome("Direito");
+		manager.atualizar(curso1);
+		System.out.println(manager.get(3));
+		assertNotEquals(curso1.getNome(), manager.get(3));
+	}
 
 }
 
