@@ -11,6 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import edu.uepb.web.biblioteca.enums.TipoNivel;
+import edu.uepb.web.biblioteca.exception.DAOException;
 
 /**
  * @autor geovanniovinhas <vinhasgeovannio@gmail.com
@@ -29,7 +30,7 @@ public class CursoDAOTest {
 	}
 
 	@Test
-	public void inserir() {
+	public void inserir() throws DAOException {
 		int id = manager.inserir(curso);
 		if(id<0) {
 			Assert.fail();
@@ -37,12 +38,12 @@ public class CursoDAOTest {
 	}
 	
 	@Test
-	public void get() {
+	public void get() throws DAOException {
 		assertEquals(manager.get(1).getNome(), curso.getNome());
 	}
 	
 	@Test
-	public void getLista() {
+	public void getLista() throws DAOException {
 		List<Curso> listaCurso = manager.getLista();
 		
 		assertNotEquals(listaCurso.size(), 0);
@@ -53,14 +54,14 @@ public class CursoDAOTest {
 	}
 	
 	@Test
-	public void remover() {
+	public void remover() throws DAOException {
 		manager.remover(manager.get(1));
 		
 		assertEquals(manager.get(1), null);
 	}
 	
 	@Test
-	public void atualizar() {
+	public void atualizar() throws DAOException {
 		Curso curso1 = manager.get(3);
 		curso1.setNome("Direito");
 		manager.atualizar(curso1);

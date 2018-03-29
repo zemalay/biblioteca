@@ -11,6 +11,9 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import edu.uepb.web.biblioteca.exception.DAOException;
+import edu.uepb.web.biblioteca.exception.ItemExistException;
+
 /**
  * @autor geovanniovinhas <vinhasgeovannio@gmail.com
  *
@@ -29,7 +32,7 @@ public class RevistaDAOTest {
 	}
 
 	@Test
-	public void inserir() {
+	public void inserir() throws DAOException {
 		int id = manager.inserir(revista);
 		if (id < 0) {
 			Assert.fail();
@@ -37,25 +40,25 @@ public class RevistaDAOTest {
 	}
 
 	@Test
-	public void get() {
+	public void get() throws DAOException {
 		Revista revista1 = manager.get(1);
 		assertEquals(revista1.getTitulo(), revista.getTitulo());
 	}
 	
 	@Test
-	public void getList() {
+	public void getList() throws DAOException {
 		List<Item> listaRevista = manager.getLista();
 		assertNotEquals(listaRevista.size(), 0);
 	}
 	
 	@Test
-	public void remover() {
+	public void remover() throws DAOException {
 		manager.remover(manager.get(2));
 		assertEquals(manager.get(2), null);
 	}
 	
 	@Test
-	public void atualizar() {
+	public void atualizar() throws DAOException {
 		Revista revista2 = manager.get(1);
 		revista2.setNumeroPagina(200);
 		manager.atualizar(revista2);
@@ -63,7 +66,7 @@ public class RevistaDAOTest {
 	}
 	
 	@Test
-	public void isItemExiste() {
+	public void isItemExiste() throws ItemExistException, DAOException {
 		revista.setId(1);
 		assertTrue(manager.isItemExiste(revista));
 	}

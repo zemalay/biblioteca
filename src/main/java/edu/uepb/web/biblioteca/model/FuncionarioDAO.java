@@ -8,6 +8,9 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import edu.uepb.web.biblioteca.enums.TipoFuncionario;
+import edu.uepb.web.biblioteca.exception.AutenticacaoException;
+import edu.uepb.web.biblioteca.exception.DAOException;
+import edu.uepb.web.biblioteca.exception.ItemExistException;
 
 /**
  * A classe para acessar os dados no banco associando ao objeto
@@ -28,10 +31,11 @@ public class FuncionarioDAO extends DAO<Funcionario> {
 	private TrabalhoConclusaoDAO trabalhoDAO;
 
 	/**
+	 * @throws DAOException 
 	 * @see edu.uepb.web.biblioteca.model.DAO#get(int)
 	 */
 	@Override
-	public Funcionario get(int id) {
+	public Funcionario get(int id) throws DAOException {
 		logger.info("Executa o metodo 'get' com param id : " + id);
 		super.connection = new Conexao().getConexao();
 
@@ -52,16 +56,17 @@ public class FuncionarioDAO extends DAO<Funcionario> {
 			}
 			super.closeConnections();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new DAOException(e.getMessage());
 		}
 		return funcionario;
 	}
 
 	/**
+	 * @throws DAOException 
 	 * @see edu.uepb.web.biblioteca.model.DAO#getLista()
 	 */
 	@Override
-	public List<Funcionario> getLista() {
+	public List<Funcionario> getLista() throws DAOException {
 		logger.info("Executa o metodo 'getLista'");
 		super.connection = new Conexao().getConexao();
 
@@ -83,16 +88,17 @@ public class FuncionarioDAO extends DAO<Funcionario> {
 
 			super.closeConnections();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new DAOException(e.getMessage());
 		}
 		return listaFuncionario;
 	}
 
 	/**
+	 * @throws DAOException 
 	 * @see edu.uepb.web.biblioteca.model.DAO#inserir(Object)
 	 */
 	@Override
-	public int inserir(Funcionario obj) {
+	public int inserir(Funcionario obj) throws DAOException {
 		logger.info("Executa o metodo 'inserir' com param objeto : " + obj);
 		int id = FuncionarioDAO.id_fake;
 		if (obj != null) {
@@ -110,17 +116,18 @@ public class FuncionarioDAO extends DAO<Funcionario> {
 				}
 				super.closeConnections();
 			} catch (SQLException e) {
-				e.printStackTrace();
+				throw new DAOException(e.getMessage());
 			}
 		}
 		return id;
 	}
 
 	/**
+	 * @throws DAOException 
 	 * @see edu.uepb.web.biblioteca.model.DAO#remover(Object)
 	 */
 	@Override
-	public void remover(Funcionario obj) {
+	public void remover(Funcionario obj) throws DAOException {
 		logger.info("Executa o metodo 'remover' com param objeto : " + obj);
 		if (obj != null) {
 			super.connection = new Conexao().getConexao();
@@ -133,16 +140,17 @@ public class FuncionarioDAO extends DAO<Funcionario> {
 
 				super.closeConnections();
 			} catch (SQLException e) {
-				e.printStackTrace();
+				throw new DAOException(e.getMessage());
 			}
 		}
 	}
 
 	/**
+	 * @throws DAOException 
 	 * @see edu.uepb.web.biblioteca.model.DAO#atualizar(Object)
 	 */
 	@Override
-	public void atualizar(Funcionario obj) {
+	public void atualizar(Funcionario obj) throws DAOException {
 		logger.info("Executa o metodo 'atualizar' com param objeto : " + obj);
 		if (obj != null) {
 			super.connection = new Conexao().getConexao();
@@ -157,7 +165,7 @@ public class FuncionarioDAO extends DAO<Funcionario> {
 
 				super.closeConnections();
 			} catch (SQLException e) {
-				e.printStackTrace();
+				throw new DAOException(e.getMessage());
 			}
 		}
 	}
@@ -172,11 +180,14 @@ public class FuncionarioDAO extends DAO<Funcionario> {
 	 * @param funcionario
 	 * @param item
 	 * @return int
+	 * @throws AutenticacaoException
+	 * @throws DAOException
+	 * @throws ItemExistException
 	 */
-	public int cadastraItem(Funcionario funcionario, Item item) {
+	public int cadastraItem(Funcionario funcionario, Item item) throws AutenticacaoException, DAOException, ItemExistException {
 		logger.info("Executa o metodo 'cadastraItem' com param fucionario : " + funcionario + " e item : " + item);
 		if (!funcionario.getTipoFunc().equals(TipoFuncionario.ADMINISTRADOR)) {
-			return FuncionarioDAO.id_fake;
+			throw new AutenticacaoException("Este funcionario nao esta autorizado");
 		} else {
 
 			// Cadastra Item de tipo Anais Congresso
@@ -244,11 +255,13 @@ public class FuncionarioDAO extends DAO<Funcionario> {
 	 * @param funcionario
 	 * @param item
 	 * @return boolean
+	 * @throws AutenticacaoException
+	 * @throws DAOException 
 	 */
-	public boolean atualizarItem(Funcionario funcionario, Item item) {
+	public boolean atualizarItem(Funcionario funcionario, Item item) throws AutenticacaoException, DAOException {
 		logger.info("Executa o metodo 'atualizarItem' com param fucionario : " + funcionario + " e item : " + item);
 		if (!funcionario.getTipoFunc().equals(TipoFuncionario.ADMINISTRADOR)) {
-			return false;
+			throw new AutenticacaoException("Este funcionario nao esta autorizado");
 		} else {
 			if (item instanceof AnaisCongresso) {
 				anaisDAO = new AnaisCongressoDAO();
@@ -291,11 +304,13 @@ public class FuncionarioDAO extends DAO<Funcionario> {
 	 * @param funcionario
 	 * @param item
 	 * @return boolean
+	 * @throws AutenticacaoException
+	 * @throws DAOException 
 	 */
-	public boolean removerItem(Funcionario funcionario, Item item) {
+	public boolean removerItem(Funcionario funcionario, Item item) throws AutenticacaoException, DAOException {
 		logger.info("Executa o metodo 'removerItem' com param fucionario : " + funcionario + " e item : " + item);
 		if (!funcionario.getTipoFunc().equals(TipoFuncionario.ADMINISTRADOR)) {
-			return false;
+			throw new AutenticacaoException("Este funcionario nao esta autorizado");
 		} else {
 			if (item instanceof AnaisCongresso) {
 				anaisDAO = new AnaisCongressoDAO();
@@ -342,11 +357,13 @@ public class FuncionarioDAO extends DAO<Funcionario> {
 	 * @param funcionariro
 	 * @param curso
 	 * @return
+	 * @throws AutenticacaoException
+	 * @throws DAOException 
 	 */
-	public int cadastraCurso(Funcionario funcionario, Curso curso) {
+	public int cadastraCurso(Funcionario funcionario, Curso curso) throws AutenticacaoException, DAOException {
 		logger.info("Executa o metodo 'cadastraCurso' com param fucionario : " + funcionario + " e curso : " + curso);
 		if (!funcionario.getTipoFunc().equals(TipoFuncionario.ADMINISTRADOR)) {
-			return FuncionarioDAO.id_fake;
+			throw new AutenticacaoException("Este funcionario nao esta autorizado");
 		} else {
 			cursoDAO = new CursoDAO();
 			return cursoDAO.inserir(curso);
@@ -360,11 +377,13 @@ public class FuncionarioDAO extends DAO<Funcionario> {
 	 * @param funcionario
 	 * @param curso
 	 * @return
+	 * @throws AutenticacaoException
+	 * @throws DAOException 
 	 */
-	public boolean removerCurso(Funcionario funcionario, Curso curso) {
+	public boolean removerCurso(Funcionario funcionario, Curso curso) throws AutenticacaoException, DAOException {
 		logger.info("Executa o metodo 'removerCurso' com param fucionario : " + funcionario + " e item : " + curso);
 		if (!funcionario.getTipoFunc().equals(TipoFuncionario.ADMINISTRADOR)) {
-			return false;
+			throw new AutenticacaoException("Este funcionario nao esta autorizado");
 		} else {
 			cursoDAO = new CursoDAO();
 			cursoDAO.remover(curso);
