@@ -1,4 +1,4 @@
-package edu.uepb.web.biblioteca.model;
+package edu.uepb.web.biblioteca.dao;
 
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+
+import edu.uepb.web.biblioteca.model.Autor;
 
 /**
  * A classe para acessar os dados no banco associando ao {@link Autor}
@@ -17,7 +19,7 @@ public class AutorDAO extends DAO<Autor> {
 
 	/**
 	 * 
-	 * @see edu.uepb.web.biblioteca.model.DAO#get(int)
+	 * @see edu.uepb.web.biblioteca.dao.DAO#get(int)
 	 */
 	@Override
 	public Autor get(int id) {
@@ -48,7 +50,7 @@ public class AutorDAO extends DAO<Autor> {
 	 * Este metodo nao esta usado
 	 * 
 	 * @return null
-	 * @see edu.uepb.web.biblioteca.model.DAO#getLista()
+	 * @see edu.uepb.web.biblioteca.dao.DAO#getLista()
 	 */
 	@Override
 	public List<Autor> getLista() {
@@ -56,7 +58,7 @@ public class AutorDAO extends DAO<Autor> {
 	}
 
 	/**
-	 * @see edu.uepb.web.biblioteca.model.DAO#inserir(Object)
+	 * @see edu.uepb.web.biblioteca.dao.DAO#inserir(Object)
 	 */
 	@Override
 	public int inserir(Autor obj) {
@@ -87,14 +89,14 @@ public class AutorDAO extends DAO<Autor> {
 	/**
 	 * Este metodo nao esta usado
 	 * 
-	 * @see edu.uepb.web.biblioteca.model.DAO#remover(Object)
+	 * @see edu.uepb.web.biblioteca.dao.DAO#remover(Object)
 	 */
 	@Override
 	public void remover(Autor obj) {
 	}
 
 	/**
-	 * @see edu.uepb.web.biblioteca.model.DAO#atualizar(Object)
+	 * @see edu.uepb.web.biblioteca.dao.DAO#atualizar(Object)
 	 */
 	@Override
 	public void atualizar(Autor obj) {

@@ -1,4 +1,4 @@
-package edu.uepb.web.biblioteca.model;
+package edu.uepb.web.biblioteca.dao;
 
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+
+import edu.uepb.web.biblioteca.model.AnaisCongresso;
+import edu.uepb.web.biblioteca.model.Item;
 
 /**
  * A classe para acessar os dados no banco associando ao objeto
@@ -20,7 +23,7 @@ public class AnaisCongressoDAO extends ItemDAO<Item> {
 	private static Logger logger = Logger.getLogger(AnaisCongressoDAO.class);
 
 	/**
-	 * @see edu.uepb.web.biblioteca.model.ItemDAO#get(int)
+	 * @see edu.uepb.web.biblioteca.dao.ItemDAO#get(int)
 	 */
 	@Override
 	public AnaisCongresso get(int id) {
@@ -60,7 +63,7 @@ public class AnaisCongressoDAO extends ItemDAO<Item> {
 	}
 
 	/**
-	 * @see edu.uepb.web.biblioteca.model.ItemDAO#getLista()
+	 * @see edu.uepb.web.biblioteca.dao.ItemDAO#getLista()
 	 */
 	@Override
 	public List<Item> getLista() {
@@ -97,7 +100,7 @@ public class AnaisCongressoDAO extends ItemDAO<Item> {
 	}
 
 	/**
-	 * @see edu.uepb.web.biblioteca.model.ItemDAO#inserir(Object)
+	 * @see edu.uepb.web.biblioteca.dao.ItemDAO#inserir(Object)
 	 */
 	@Override
 	public int inserir(Item item) {
@@ -129,7 +132,7 @@ public class AnaisCongressoDAO extends ItemDAO<Item> {
 	}
 
 	/**
-	 * @see edu.uepb.web.biblioteca.model.ItemDAO#remover(Object)
+	 * @see edu.uepb.web.biblioteca.dao.ItemDAO#remover(Object)
 	 */
 	@Override
 	public void remover(Item item) {
@@ -154,7 +157,7 @@ public class AnaisCongressoDAO extends ItemDAO<Item> {
 	}
 
 	/**
-	 * @see edu.uepb.web.biblioteca.model.ItemDAO#atualizar(Object)
+	 * @see edu.uepb.web.biblioteca.dao.ItemDAO#atualizar(Object)
 	 */
 	@Override
 	public void atualizar(Item item) {
@@ -182,7 +185,7 @@ public class AnaisCongressoDAO extends ItemDAO<Item> {
 	}
 
 	/**
-	 * @see edu.uepb.web.biblioteca.model.ItemDAO#isItemExiste(Object)
+	 * @see edu.uepb.web.biblioteca.dao.ItemDAO#isItemExiste(Object)
 	 */
 	@Override
 	public boolean isItemExiste(Item item) {

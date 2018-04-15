@@ -1,4 +1,4 @@
-package edu.uepb.web.biblioteca.model;
+package edu.uepb.web.biblioteca.dao;
 
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -8,6 +8,16 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import edu.uepb.web.biblioteca.enums.TipoFuncionario;
+import edu.uepb.web.biblioteca.model.AnaisCongresso;
+import edu.uepb.web.biblioteca.model.Autor;
+import edu.uepb.web.biblioteca.model.Curso;
+import edu.uepb.web.biblioteca.model.Funcionario;
+import edu.uepb.web.biblioteca.model.Item;
+import edu.uepb.web.biblioteca.model.Jornal;
+import edu.uepb.web.biblioteca.model.Livro;
+import edu.uepb.web.biblioteca.model.Midia;
+import edu.uepb.web.biblioteca.model.Revista;
+import edu.uepb.web.biblioteca.model.TrabalhoConclusao;
 
 /**
  * A classe para acessar os dados no banco associando ao objeto
@@ -28,7 +38,7 @@ public class FuncionarioDAO extends DAO<Funcionario> {
 	private TrabalhoConclusaoDAO trabalhoDAO;
 
 	/**
-	 * @see edu.uepb.web.biblioteca.model.DAO#get(int)
+	 * @see edu.uepb.web.biblioteca.dao.DAO#get(int)
 	 */
 	@Override
 	public Funcionario get(int id) {
@@ -58,7 +68,7 @@ public class FuncionarioDAO extends DAO<Funcionario> {
 	}
 
 	/**
-	 * @see edu.uepb.web.biblioteca.model.DAO#getLista()
+	 * @see edu.uepb.web.biblioteca.dao.DAO#getLista()
 	 */
 	@Override
 	public List<Funcionario> getLista() {
@@ -89,7 +99,7 @@ public class FuncionarioDAO extends DAO<Funcionario> {
 	}
 
 	/**
-	 * @see edu.uepb.web.biblioteca.model.DAO#inserir(Object)
+	 * @see edu.uepb.web.biblioteca.dao.DAO#inserir(Object)
 	 */
 	@Override
 	public int inserir(Funcionario obj) {
@@ -117,7 +127,7 @@ public class FuncionarioDAO extends DAO<Funcionario> {
 	}
 
 	/**
-	 * @see edu.uepb.web.biblioteca.model.DAO#remover(Object)
+	 * @see edu.uepb.web.biblioteca.dao.DAO#remover(Object)
 	 */
 	@Override
 	public void remover(Funcionario obj) {
@@ -139,7 +149,7 @@ public class FuncionarioDAO extends DAO<Funcionario> {
 	}
 
 	/**
-	 * @see edu.uepb.web.biblioteca.model.DAO#atualizar(Object)
+	 * @see edu.uepb.web.biblioteca.dao.DAO#atualizar(Object)
 	 */
 	@Override
 	public void atualizar(Funcionario obj) {

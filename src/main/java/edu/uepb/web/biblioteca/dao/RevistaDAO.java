@@ -1,4 +1,4 @@
-package edu.uepb.web.biblioteca.model;
+package edu.uepb.web.biblioteca.dao;
 
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -7,25 +7,29 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import edu.uepb.web.biblioteca.model.Item;
+import edu.uepb.web.biblioteca.model.Revista;
+
 /**
- * A classe para acessar os dados no banco associando ao objeto {@link Midia}
+ * A classe para acessar os dados no banco associando ao objeto {@link Revista}
  * 
  * @autor Larrissa Dantas
- * 
+ *
  */
-public class MidiaDAO extends ItemDAO<Midia> {
-	private static Logger logger = Logger.getLogger(MidiaDAO.class);
+public class RevistaDAO extends ItemDAO<Revista> {
+	private static Logger logger = Logger.getLogger(RevistaDAO.class);
 
 	/**
-	 * @see edu.uepb.web.biblioteca.model.ItemDAO#get(int)
+	 * @see edu.uepb.web.biblioteca.dao.ItemDAO#get(int)
 	 */
 	@Override
-	public Midia get(int id) {
+	public Revista get(int id) {
 		logger.info("Executa o metodo 'get' com param id : " + id);
 
 		super.connection = new Conexao().getConexao();
-		String sql = "SELECT * FROM midia WHERE midia.id = ?";
-		Midia midia = null;
+
+		String sql = "SELECT * FROM revista WHERE revista.id = ?";
+		Revista revista = null;
 
 		try {
 			super.statement = super.connection.prepareStatement(sql);
@@ -33,12 +37,15 @@ public class MidiaDAO extends ItemDAO<Midia> {
 			super.resultSet = super.statement.executeQuery();
 
 			if (resultSet.next()) {
-				midia = new Midia();
 
-				midia.setId(resultSet.getInt(1));
-				midia.setTitulo(resultSet.getString(2));
-				midia.setDataGravacao(resultSet.getString(3));
-				midia.setTipo(resultSet.getString(4));
+				revista = new Revista();
+
+				revista.setId(resultSet.getInt(1));
+				revista.setTitulo(resultSet.getString(2));
+				revista.setEditora(resultSet.getString(3));
+				revista.setDataPublicacao(resultSet.getString(4));
+				revista.setEdicao(resultSet.getString(5));
+				revista.setNumeroPagina(resultSet.getInt(6));
 
 			}
 			super.closeConnections();
@@ -46,61 +53,66 @@ public class MidiaDAO extends ItemDAO<Midia> {
 			e.printStackTrace();
 		}
 
-		return midia;
+		return revista;
 	}
 
 	/**
-	 * @see edu.uepb.web.biblioteca.model.ItemDAO#getLista()
+	 * @see edu.uepb.web.biblioteca.dao.ItemDAO#getLista()
 	 */
 	@Override
 	public List<Item> getLista() {
-		logger.info("Executa o metodo 'getLista'");
+		logger.info("Executa o metodo 'getLista' ");
 
 		super.connection = new Conexao().getConexao();
-		List<Item> listaMidias = new ArrayList<Item>();
-		String sql = "SELECT * FROM midia";
+		List<Item> listaRevistas = new ArrayList<Item>();
+
+		String sql = "SELECT * FROM revista";
 
 		try {
 			super.statement = super.connection.prepareStatement(sql);
 			super.resultSet = super.statement.executeQuery();
 
 			while (resultSet.next()) {
-				Midia midia = new Midia();
-				midia.setId(resultSet.getInt(1));
-				midia.setTitulo(resultSet.getString(2));
-				midia.setDataGravacao(resultSet.getString(3));
-				midia.setTipo(resultSet.getString(4));
 
-				listaMidias.add(midia);
+				Revista revista = new Revista();
+				revista.setId(resultSet.getInt(1));
+				revista.setTitulo(resultSet.getString(2));
+				revista.setEditora(resultSet.getString(3));
+				revista.setDataPublicacao(resultSet.getString(4));
+				revista.setEdicao(resultSet.getString(5));
+				revista.setTitulo(resultSet.getString(6));
+
+				listaRevistas.add(revista);
 
 			}
 
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
-		return listaMidias;
-
+		return listaRevistas;
 	}
 
 	/**
-	 * @see edu.uepb.web.biblioteca.model.ItemDAO#inserir(Item)
+	 * @see edu.uepb.web.biblioteca.dao.ItemDAO#inserir(Item)
 	 */
 	@Override
 	public int inserir(Item item) {
 		logger.info("Executa o metodo 'inserir' com param objeto : " + item);
 
-		Midia obj = (Midia) item;
-
+		Revista obj = (Revista) item;
 		int id = -1;
 		super.connection = new Conexao().getConexao();
-		String sql = "INSERT INTO midia( titulo, data_gravacao, tipo) VALUES (?,?,?)";
+
+		String sql = "INSERT INTO revista(titulo, editora, data_publicacao, edicao, numero_pagina) VALUES (?,?,?,?,?)";
+
 		if (obj != null) {
 			try {
 				super.statement = super.connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 				super.statement.setString(1, obj.getTitulo());
-				super.statement.setString(2, obj.getDataGravacao());
-				super.statement.setString(3, obj.getTipo().name());
+				super.statement.setString(2, obj.getEditora());
+				super.statement.setString(3, obj.getDataPublicacao());
+				super.statement.setString(4, obj.getEdicao());
+				super.statement.setInt(5, obj.getNumeroPagina());
 
 				super.statement.execute();
 				super.resultSet = super.statement.getGeneratedKeys();
@@ -108,24 +120,26 @@ public class MidiaDAO extends ItemDAO<Midia> {
 				if (resultSet.next()) {
 					id = super.resultSet.getInt(1);
 				}
+
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		}
+
 		return id;
 	}
 
 	/**
-	 * @see edu.uepb.web.biblioteca.model.ItemDAO#remover(Item)
+	 * @see edu.uepb.web.biblioteca.dao.ItemDAO#remover(Item)
 	 */
 	@Override
 	public void remover(Item item) {
 		logger.info("Executa o metodo 'remover' com param objeto : " + item);
 
-		Midia obj = (Midia) item;
+		Revista obj = (Revista) item;
 		if (obj != null) {
 			super.connection = new Conexao().getConexao();
-			String sql = "DELETE FROM midia WHERE midia.id = ?";
+			String sql = "DELETE FROM revista WHERE revista.id = ?";
 
 			try {
 				super.statement = super.connection.prepareStatement(sql);
@@ -135,31 +149,37 @@ public class MidiaDAO extends ItemDAO<Midia> {
 				super.closeConnections();
 			} catch (SQLException e) {
 				e.printStackTrace();
+
 			}
+
 		}
+
 	}
 
 	/**
-	 * @see edu.uepb.web.biblioteca.model.ItemDAO#atualizar(Item)
+	 * @see edu.uepb.web.biblioteca.dao.ItemDAO#atualizar(Item)
 	 */
 	@Override
 	public void atualizar(Item item) {
 		logger.info("Executa o metodo 'autalizar' com param objeto : " + item);
 
-		Midia obj = (Midia) item;
+		Revista obj = (Revista) item;
 		if (obj != null) {
 			super.connection = new Conexao().getConexao();
-			String sql = "UPDATE midia SET titulo = ?, data_gravacao = ?, tipo = ?" + " WHERE midia.id = ?";
-
+			String sql = "UPDATE revista SET titulo = ?, editora = ?, data_publicacao = ?, edicao = ?, numero_pagina = ? "
+					+ "WHERE revista.id = ?";
 			try {
 				super.statement = super.connection.prepareStatement(sql);
 				super.statement.setString(1, obj.getTitulo());
-				super.statement.setString(2, obj.getDataGravacao());
-				super.statement.setString(3, obj.getTipo().name());
-				super.statement.setInt(4, obj.getId());
+				super.statement.setString(2, obj.getEditora());
+				super.statement.setString(3, obj.getDataPublicacao());
+				super.statement.setString(4, obj.getEdicao());
+				super.statement.setInt(5, obj.getNumeroPagina());
+				super.statement.setInt(6, obj.getId());
 
 				super.statement.execute();
 				super.closeConnections();
+
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -168,20 +188,22 @@ public class MidiaDAO extends ItemDAO<Midia> {
 	}
 
 	/**
-	 * @see edu.uepb.web.biblioteca.model.ItemDAO#isItemExiste(Item)
+	 * @see edu.uepb.web.biblioteca.dao.ItemDAO#isItemExiste(Item)
 	 */
 	@Override
 	public boolean isItemExiste(Item item) {
 		logger.info("Executa o metodo 'isItemExiste' com param objeto : " + item);
 
-		Midia obj = (Midia) item;
+		Revista obj = (Revista) item;
 		if (obj != null) {
 			super.connection = new Conexao().getConexao();
-			String sql = "SELECT midia.titulo FROM midia WHERE midia.titulo = ?";
+			String sql = "SELECT revista.titulo FROM revista WHERE revista.titulo = ?";
+
 			try {
 				super.statement = super.connection.prepareStatement(sql);
 				super.statement.setString(1, obj.getTitulo());
 				super.resultSet = super.statement.executeQuery();
+
 				if (resultSet.next()) {
 					super.closeConnections();
 					return true;
@@ -191,7 +213,6 @@ public class MidiaDAO extends ItemDAO<Midia> {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-
 		}
 		return false;
 	}

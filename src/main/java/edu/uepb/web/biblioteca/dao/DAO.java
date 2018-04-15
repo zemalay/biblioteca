@@ -1,4 +1,4 @@
-package edu.uepb.web.biblioteca.model;
+package edu.uepb.web.biblioteca.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

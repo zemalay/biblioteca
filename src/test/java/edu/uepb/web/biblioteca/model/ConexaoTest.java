@@ -6,6 +6,8 @@ import java.sql.SQLException;
 import org.junit.Assert;
 import org.junit.Test;
 
+import edu.uepb.web.biblioteca.dao.Conexao;
+
 
 /**
  * @autor geovanniovinhas <vinhasgeovannio@gmail.com

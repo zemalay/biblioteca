@@ -8,6 +8,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import edu.uepb.web.biblioteca.dao.Conexao;
+import edu.uepb.web.biblioteca.dao.TrabalhoConclusaoDAO;
 import edu.uepb.web.biblioteca.enums.TipoTrabalhoConclusao;
 
 /**

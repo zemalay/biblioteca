@@ -1,10 +1,12 @@
-package edu.uepb.web.biblioteca.model;
+package edu.uepb.web.biblioteca.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+
+import edu.uepb.web.biblioteca.model.Item;
 
 /**
  * Classe abstrato DAO especifico para os itens. Alem dos metodos (CRUD)

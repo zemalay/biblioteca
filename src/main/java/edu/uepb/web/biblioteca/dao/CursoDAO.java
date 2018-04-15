@@ -1,4 +1,4 @@
-package edu.uepb.web.biblioteca.model;
+package edu.uepb.web.biblioteca.dao;
 
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+
+import edu.uepb.web.biblioteca.model.Curso;
 
 /**
  * A classe para acessar os dados no banco associando ao objeto {@link Curso}
@@ -17,7 +19,7 @@ public class CursoDAO extends DAO<Curso> {
 	private static Logger logger = Logger.getLogger(CursoDAO.class);
 
 	/**
-	 * @see edu.uepb.web.biblioteca.model.DAO#get(int)
+	 * @see edu.uepb.web.biblioteca.dao.DAO#get(int)
 	 */
 	@Override
 	public Curso get(int id) {
@@ -49,7 +51,7 @@ public class CursoDAO extends DAO<Curso> {
 	}
 
 	/**
-	 * @see edu.uepb.web.biblioteca.model.DAO#getLista()
+	 * @see edu.uepb.web.biblioteca.dao.DAO#getLista()
 	 */
 	@Override
 	public List<Curso> getLista() {
@@ -80,7 +82,7 @@ public class CursoDAO extends DAO<Curso> {
 	}
 
 	/**
-	 * @see edu.uepb.web.biblioteca.model.DAO#inserir(Object)
+	 * @see edu.uepb.web.biblioteca.dao.DAO#inserir(Object)
 	 */
 	@Override
 	public int inserir(Curso obj) {
@@ -108,7 +110,7 @@ public class CursoDAO extends DAO<Curso> {
 	}
 
 	/**
-	 * @see edu.uepb.web.biblioteca.model.DAO#remover(Object)
+	 * @see edu.uepb.web.biblioteca.dao.DAO#remover(Object)
 	 */
 	@Override
 	public void remover(Curso obj) {
@@ -132,7 +134,7 @@ public class CursoDAO extends DAO<Curso> {
 	}
 
 	/**
-	 * @see edu.uepb.web.biblioteca.model.DAO#atualizar(Object)
+	 * @see edu.uepb.web.biblioteca.dao.DAO#atualizar(Object)
 	 */
 	@Override
 	public void atualizar(Curso obj) {
