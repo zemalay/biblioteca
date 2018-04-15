@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import edu.uepb.web.biblioteca.exception.DAOException;
 import edu.uepb.web.biblioteca.model.Aluno;
 import edu.uepb.web.biblioteca.model.Curso;
 
@@ -18,7 +19,7 @@ public class AlunoDAO extends DAO<Aluno> {
 	private static Logger logger = Logger.getLogger(AlunoDAO.class);
 
 	@Override
-	public Aluno get(int id) {
+	public Aluno get(int id) throws DAOException {
 		logger.info("Executa o metodo 'get' com param id : " + id);
 
 		super.connection = new Conexao().getConexao();

@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+import edu.uepb.web.biblioteca.exception.DAOException;
+import edu.uepb.web.biblioteca.exception.ItemExistException;
 import edu.uepb.web.biblioteca.model.Item;
 
 /**
@@ -41,15 +43,17 @@ public abstract class ItemDAO<T> {
 	 * @param id
 	 *            O id do objeto no banco de dados
 	 * @return T O objeto
+	 * @throws DAOException
 	 */
-	public abstract T get(int id);
+	public abstract T get(int id) throws DAOException;
 
 	/**
 	 * Retorna uma lista com todos objeto cadastrados no banco de dados
 	 *
 	 * @return List<Item> Lista de objetos
+	 * @throws DAOException
 	 */
-	public abstract List<Item> getLista();
+	public abstract List<Item> getLista() throws DAOException;
 
 	/**
 	 * Insere um novo objeto no banco de dados. Se a operação for realizada com
@@ -58,8 +62,9 @@ public abstract class ItemDAO<T> {
 	 * @param item
 	 *            O objeto a ser inserido
 	 * @return int
+	 * @throws DAOException
 	 */
-	public abstract int inserir(Item item);
+	public abstract int inserir(Item item) throws DAOException;
 
 	/**
 	 * Remove o objeto do banco de dados. Se a operação for realizada com sucesso é
@@ -67,8 +72,9 @@ public abstract class ItemDAO<T> {
 	 *
 	 * @param item
 	 *            O objeto a ser removido
+	 * @throws DAOException
 	 */
-	public abstract void remover(Item item);
+	public abstract void remover(Item item) throws DAOException;
 
 	/**
 	 * Atualiza os dados do objeto no banco de dados. Se a operação for realizada
@@ -76,8 +82,9 @@ public abstract class ItemDAO<T> {
 	 *
 	 * @param item
 	 *            O objeto com os dados sa serem atualizados
+	 * @throws DAOException
 	 */
-	public abstract void atualizar(Item item);
+	public abstract void atualizar(Item item) throws DAOException;
 
 	/**
 	 * Verifica se o objeto (item) ja existe no banco de dados. Se a operação for
@@ -86,7 +93,9 @@ public abstract class ItemDAO<T> {
 	 * @param item
 	 * 
 	 * @return boolean
+	 * @throws DAOException
+	 * @throws ItemExistException
 	 */
-	public abstract boolean isItemExiste(Item item);
+	public abstract boolean isItemExiste(Item item) throws DAOException, ItemExistException;
 
 }

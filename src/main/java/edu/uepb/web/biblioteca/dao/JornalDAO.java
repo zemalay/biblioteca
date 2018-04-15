@@ -7,6 +7,8 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import edu.uepb.web.biblioteca.exception.DAOException;
+import edu.uepb.web.biblioteca.exception.ItemExistException;
 import edu.uepb.web.biblioteca.model.Item;
 import edu.uepb.web.biblioteca.model.Jornal;
 
@@ -21,10 +23,11 @@ public class JornalDAO extends ItemDAO<Jornal> {
 	private static Logger logger = Logger.getLogger(JornalDAO.class);
 
 	/**
+	 * @throws DAOException 
 	 * @see edu.uepb.web.biblioteca.dao.ItemDAO#get(int)
 	 */
 	@Override
-	public Jornal get(int id) {
+	public Jornal get(int id) throws DAOException {
 		logger.info("Executa o metodo 'get' com param id : " + id);
 		super.connection = new Conexao().getConexao();
 
@@ -45,17 +48,18 @@ public class JornalDAO extends ItemDAO<Jornal> {
 			}
 			super.closeConnections();
 		} catch (SQLException e) {
-			e.printStackTrace();
+				
 		}
 
 		return jornal;
 	}
 
 	/**
+	 * @throws DAOException 
 	 * @see edu.uepb.web.biblioteca.dao.ItemDAO#getLista()
 	 */
 	@Override
-	public List<Item> getLista() {
+	public List<Item> getLista() throws DAOException {
 		logger.info("Executa o metodo 'getLista'");
 		super.connection = new Conexao().getConexao();
 		List<Item> listajornais = new ArrayList<Item>();
@@ -75,17 +79,18 @@ public class JornalDAO extends ItemDAO<Jornal> {
 				listajornais.add(jornal);
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new DAOException(e.getMessage());
 		}
 
 		return listajornais;
 	}
 
 	/**
+	 * @throws DAOException 
 	 * @see edu.uepb.web.biblioteca.dao.ItemDAO#inserir(Item)
 	 */
 	@Override
-	public int inserir(Item item) {
+	public int inserir(Item item) throws DAOException {
 		logger.info("Executa o metodo 'inserir' com param objeto : " + item);
 
 		Jornal obj = (Jornal) item;
@@ -105,7 +110,7 @@ public class JornalDAO extends ItemDAO<Jornal> {
 					id = super.resultSet.getInt(1);
 				}
 			} catch (SQLException e) {
-				e.printStackTrace();
+				throw new DAOException(e.getMessage());
 			}
 		}
 
@@ -113,10 +118,11 @@ public class JornalDAO extends ItemDAO<Jornal> {
 	}
 
 	/**
+	 * @throws DAOException 
 	 * @see edu.uepb.web.biblioteca.dao.ItemDAO#remover(Item)
 	 */
 	@Override
-	public void remover(Item item) {
+	public void remover(Item item) throws DAOException {
 		logger.info("Executa o metodo 'remover' com param objeto : " + item);
 
 		Jornal obj = (Jornal) item;
@@ -131,17 +137,18 @@ public class JornalDAO extends ItemDAO<Jornal> {
 
 				super.closeConnections();
 			} catch (SQLException e) {
-				e.printStackTrace();
+				throw new DAOException(e.getMessage());
 			}
 		}
 
 	}
 
 	/**
+	 * @throws DAOException 
 	 * @see edu.uepb.web.biblioteca.dao.ItemDAO#atualizar(Item)
 	 */
 	@Override
-	public void atualizar(Item item) {
+	public void atualizar(Item item) throws DAOException {
 		logger.info("Executa o metodo 'atualizar' com param objeto : " + item);
 
 		Jornal obj = (Jornal) item;
@@ -159,17 +166,19 @@ public class JornalDAO extends ItemDAO<Jornal> {
 				super.statement.execute();
 				super.closeConnections();
 			} catch (SQLException e) {
-				e.printStackTrace();
+				throw new DAOException(e.getMessage());
 			}
 		}
 
 	}
 
 	/**
+	 * @throws ItemExistException 
+	 * @throws DAOException 
 	 * @see edu.uepb.web.biblioteca.dao.ItemDAO#isItemExiste(Item)
 	 */
 	@Override
-	public boolean isItemExiste(Item item) {
+	public boolean isItemExiste(Item item) throws ItemExistException, DAOException {
 		logger.info("Executa o metodo 'isItemExiste' com param objeto : " + item);
 
 		Jornal obj = (Jornal) item;
@@ -187,9 +196,9 @@ public class JornalDAO extends ItemDAO<Jornal> {
 					return true;
 				}
 				super.closeConnections();
-				return false;
+				throw new ItemExistException("Este item ja existe no banco de dados");
 			} catch (SQLException e) {
-				e.printStackTrace();
+				throw new DAOException(e.getMessage());
 			}
 		}
 		return false;

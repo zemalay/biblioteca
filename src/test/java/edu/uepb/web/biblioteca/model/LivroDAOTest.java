@@ -9,6 +9,9 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import edu.uepb.web.biblioteca.exception.DAOException;
+import edu.uepb.web.biblioteca.exception.ItemExistException;
+
 import edu.uepb.web.biblioteca.dao.Conexao;
 import edu.uepb.web.biblioteca.dao.LivroDAO;
 
@@ -31,7 +34,7 @@ public class LivroDAOTest {
 	}
 
 	@Test
-	public void inserir() {
+	public void inserir() throws DAOException {
 		int id = manager.inserir(livro);
 		if (id < 0) {
 			Assert.fail();
@@ -39,25 +42,25 @@ public class LivroDAOTest {
 	}
 
 	@Test
-	public void get() {
+	public void get() throws DAOException {
 		Item livro1 = manager.get(1);
 		assertEquals(livro1, livro);
 	}
 
 	@Test
-	public void getList() {
+	public void getList() throws DAOException {
 		List<Item> listaLivro = manager.getLista();
 		assertNotEquals(listaLivro.size(), 0);
 	}
 
 	@Test
-	public void remover() {
+	public void remover() throws DAOException {
 		manager.remover(manager.get(1));
 		assertEquals(manager.get(1), null);
 	}
 
 	@Test
-	public void atualizar() {
+	public void atualizar() throws DAOException {
 		Livro livro2 = manager.get(2);
 		livro2.setAutor("Shakes");
 		manager.atualizar(livro2);
@@ -65,7 +68,7 @@ public class LivroDAOTest {
 	}
 
 	@Test
-	public void isItemExiste() {
+	public void isItemExiste() throws ItemExistException, DAOException {
 		assertTrue(manager.isItemExiste(livro));
 	}
 

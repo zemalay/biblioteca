@@ -7,6 +7,8 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import edu.uepb.web.biblioteca.exception.DAOException;
+import edu.uepb.web.biblioteca.exception.ItemExistException;
 import edu.uepb.web.biblioteca.model.AnaisCongresso;
 import edu.uepb.web.biblioteca.model.Item;
 
@@ -23,10 +25,11 @@ public class AnaisCongressoDAO extends ItemDAO<Item> {
 	private static Logger logger = Logger.getLogger(AnaisCongressoDAO.class);
 
 	/**
+	 * @throws DAOException 
 	 * @see edu.uepb.web.biblioteca.dao.ItemDAO#get(int)
 	 */
 	@Override
-	public AnaisCongresso get(int id) {
+	public AnaisCongresso get(int id) throws DAOException {
 		logger.info("Executa o metodo 'get' com param id : " + id);
 
 		super.connection = new Conexao().getConexao();
@@ -57,16 +60,17 @@ public class AnaisCongressoDAO extends ItemDAO<Item> {
 
 			super.closeConnections();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new DAOException(e.getMessage());
 		}
 		return anais;
 	}
 
 	/**
+	 * @throws DAOException 
 	 * @see edu.uepb.web.biblioteca.dao.ItemDAO#getLista()
 	 */
 	@Override
-	public List<Item> getLista() {
+	public List<Item> getLista() throws DAOException {
 		logger.info("Executa o metodo 'getLista'");
 
 		super.connection = new Conexao().getConexao();
@@ -93,17 +97,18 @@ public class AnaisCongressoDAO extends ItemDAO<Item> {
 			}
 			super.closeConnections();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new DAOException(e.getMessage());
 		}
 
 		return listaAnais;
 	}
 
 	/**
+	 * @throws DAOException 
 	 * @see edu.uepb.web.biblioteca.dao.ItemDAO#inserir(Object)
 	 */
 	@Override
-	public int inserir(Item item) {
+	public int inserir(Item item) throws DAOException {
 		logger.info("Executa o metodo 'inserir' com param objeto : " + item);
 
 		AnaisCongresso obj = (AnaisCongresso) item;
@@ -125,7 +130,7 @@ public class AnaisCongressoDAO extends ItemDAO<Item> {
 				}
 				super.closeConnections();
 			} catch (SQLException e) {
-				e.printStackTrace();
+				throw new DAOException(e.getMessage());
 			}
 		}
 		return id;
@@ -157,10 +162,11 @@ public class AnaisCongressoDAO extends ItemDAO<Item> {
 	}
 
 	/**
+	 * @throws DAOException 
 	 * @see edu.uepb.web.biblioteca.dao.ItemDAO#atualizar(Object)
 	 */
 	@Override
-	public void atualizar(Item item) {
+	public void atualizar(Item item) throws DAOException {
 		logger.info("Executa o metodo 'atualizar' com param objeto : " + item);
 		AnaisCongresso obj = (AnaisCongresso) item;
 		if (obj != null) {
@@ -179,16 +185,18 @@ public class AnaisCongressoDAO extends ItemDAO<Item> {
 				super.statement.execute();
 				super.connection.close();
 			} catch (SQLException e) {
-				e.printStackTrace();
+				throw new DAOException(e.getMessage());
 			}
 		}
 	}
 
 	/**
+	 * @throws DAOException
+	 * @throws ItemExistException
 	 * @see edu.uepb.web.biblioteca.dao.ItemDAO#isItemExiste(Object)
 	 */
 	@Override
-	public boolean isItemExiste(Item item) {
+	public boolean isItemExiste(Item item) throws DAOException, ItemExistException {
 		logger.info("Executa o metodo 'isItemExiste' com param objeto : " + item);
 
 		AnaisCongresso obj = (AnaisCongresso) item;
@@ -206,9 +214,9 @@ public class AnaisCongressoDAO extends ItemDAO<Item> {
 					return true;
 				}
 				super.closeConnections();
-				return false;
+				throw new ItemExistException("Este item ja existe no banco de dados");
 			} catch (SQLException e) {
-				e.printStackTrace();
+				throw new DAOException(e.getMessage());
 			}
 		}
 		return false;

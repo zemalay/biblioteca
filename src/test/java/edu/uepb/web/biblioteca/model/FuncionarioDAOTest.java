@@ -13,6 +13,9 @@ import edu.uepb.web.biblioteca.dao.FuncionarioDAO;
 import edu.uepb.web.biblioteca.enums.TipoFuncionario;
 import edu.uepb.web.biblioteca.enums.TipoMidia;
 import edu.uepb.web.biblioteca.enums.TipoNivel;
+import edu.uepb.web.biblioteca.exception.AutenticacaoException;
+import edu.uepb.web.biblioteca.exception.DAOException;
+import edu.uepb.web.biblioteca.exception.ItemExistException;
 
 /**
  * @autor geovanniovinhas <vinhasgeovannio@gmail.com
@@ -39,7 +42,7 @@ public class FuncionarioDAOTest {
 	}
 
 	@Test
-	public void inserirFuncionario() {
+	public void inserirFuncionario() throws DAOException {
 		int id_fun = manager.inserir(funcionario);
 		if (id_fun < 0) {
 			Assert.fail();
@@ -47,7 +50,7 @@ public class FuncionarioDAOTest {
 	}
 
 	@Test
-	public void cadastrarItem() {
+	public void cadastrarItem() throws AutenticacaoException, DAOException, ItemExistException {
 		int id_midia = manager.cadastraItem(funcionario, midia);
 		int id_jornal = manager.cadastraItem(funcionario, jornal);
 
@@ -62,19 +65,19 @@ public class FuncionarioDAOTest {
 	}
 
 	@Test
-	public void atualizarItem() {
+	public void atualizarItem() throws AutenticacaoException, DAOException {
 		midia.setId(4);// midia com id = 4 ja existe no banco
 		assertEquals(manager.atualizarItem(funcionario, midia), true);
 	}
 
 	@Test
-	public void removerItem() {
+	public void removerItem() throws AutenticacaoException, DAOException {
 		midia.setId(4);
 		assertEquals(manager.removerItem(funcionario, midia), true);
 	}
 	
 	@Test
-	public void cadastraCurso() {
+	public void cadastraCurso() throws AutenticacaoException, DAOException {
 		int id_curso = manager.cadastraCurso(funcionario, curso);
 
 		if (id_curso < 0) {
@@ -83,7 +86,7 @@ public class FuncionarioDAOTest {
 	}
 
 	@Test
-	public void removerCurso() {
+	public void removerCurso() throws AutenticacaoException, DAOException {
 		curso.setId(4);
 		assertEquals(manager.removerCurso(funcionario, curso), true);
 	}

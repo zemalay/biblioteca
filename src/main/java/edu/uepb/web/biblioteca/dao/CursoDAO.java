@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import edu.uepb.web.biblioteca.exception.DAOException;
 import edu.uepb.web.biblioteca.model.Curso;
 
 /**
@@ -19,10 +20,11 @@ public class CursoDAO extends DAO<Curso> {
 	private static Logger logger = Logger.getLogger(CursoDAO.class);
 
 	/**
-	 * @see edu.uepb.web.biblioteca.dao.DAO#get(int)
+	 * @throws DAOException 
+	 * @see edu.uepb.web.biblioteca.model.DAO#get(int)
 	 */
 	@Override
-	public Curso get(int id) {
+	public Curso get(int id) throws DAOException {
 		logger.info("Executa o metodo 'get' com param id : " + id);
 
 		super.connection = new Conexao().getConexao();
@@ -45,16 +47,17 @@ public class CursoDAO extends DAO<Curso> {
 			}
 			super.closeConnections();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new DAOException(e.getMessage());
 		}
 		return curso;
 	}
 
 	/**
-	 * @see edu.uepb.web.biblioteca.dao.DAO#getLista()
+	 * @throws DAOException 
+	 * @see edu.uepb.web.biblioteca.model.DAO#getLista()
 	 */
 	@Override
-	public List<Curso> getLista() {
+	public List<Curso> getLista() throws DAOException {
 		logger.info("Executa o metodo 'getLista' ");
 		super.connection = new Conexao().getConexao();
 
@@ -76,16 +79,17 @@ public class CursoDAO extends DAO<Curso> {
 			}
 			super.closeConnections();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new DAOException(e.getMessage());
 		}
 		return listaCurso;
 	}
 
 	/**
-	 * @see edu.uepb.web.biblioteca.dao.DAO#inserir(Object)
+	 * @throws DAOException 
+	 * @see edu.uepb.web.biblioteca.model.DAO#inserir(Object)
 	 */
 	@Override
-	public int inserir(Curso obj) {
+	public int inserir(Curso obj) throws DAOException {
 		logger.info("Executa o metodo 'inserir' com param objeto : " + obj);
 		int id = -1;
 		super.connection = new Conexao().getConexao();
@@ -103,17 +107,18 @@ public class CursoDAO extends DAO<Curso> {
 				}
 				super.closeConnections();
 			} catch (SQLException e) {
-				e.printStackTrace();
+				throw new DAOException(e.getMessage());
 			}
 		}
 		return id;
 	}
 
 	/**
-	 * @see edu.uepb.web.biblioteca.dao.DAO#remover(Object)
+	 * @throws DAOException 
+	 * @see edu.uepb.web.biblioteca.model.DAO#remover(Object)
 	 */
 	@Override
-	public void remover(Curso obj) {
+	public void remover(Curso obj) throws DAOException {
 		logger.info("Executa o metodo 'remover' com param objeto : " + obj);
 
 		if (obj != null) {
@@ -127,17 +132,18 @@ public class CursoDAO extends DAO<Curso> {
 
 				super.closeConnections();
 			} catch (SQLException e) {
-				e.printStackTrace();
+				throw new DAOException(e.getMessage());
 			}
 		}
 
 	}
 
 	/**
-	 * @see edu.uepb.web.biblioteca.dao.DAO#atualizar(Object)
+	 * @throws DAOException 
+	 * @see edu.uepb.web.biblioteca.model.DAO#atualizar(Object)
 	 */
 	@Override
-	public void atualizar(Curso obj) {
+	public void atualizar(Curso obj) throws DAOException {
 		logger.info("Executa o metodo 'atualizar' com param objeto : " + obj);
 		if (obj != null) {
 			super.connection = new Conexao().getConexao();
@@ -154,7 +160,7 @@ public class CursoDAO extends DAO<Curso> {
 
 				super.closeConnections();
 			} catch (SQLException e) {
-				e.printStackTrace();
+				throw new DAOException(e.getMessage());
 			}
 		}
 	}

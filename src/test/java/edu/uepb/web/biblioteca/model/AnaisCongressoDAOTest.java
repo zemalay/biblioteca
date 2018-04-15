@@ -14,6 +14,8 @@ import org.junit.Test;
 import edu.uepb.web.biblioteca.dao.AnaisCongressoDAO;
 import edu.uepb.web.biblioteca.dao.Conexao;
 import edu.uepb.web.biblioteca.enums.TipoAnais;
+import edu.uepb.web.biblioteca.exception.DAOException;
+import edu.uepb.web.biblioteca.exception.ItemExistException;
 
 /**
  * @autor geovanniovinhas <vinhasgeovannio@gmail.com
@@ -31,7 +33,7 @@ public class AnaisCongressoDAOTest {
 	}
 
 	@Test
-	public void inserir() {
+	public void inserir() throws DAOException {
 		int id = manager.inserir(poster);
 		if(id<0) {
 			Assert.fail();
@@ -39,12 +41,12 @@ public class AnaisCongressoDAOTest {
 	}
 	
 	@Test 
-	public void get() {
+	public void get() throws DAOException {
 		assertNotEquals(poster, manager.get(1));
 	}
 	
 	@Test
-	public void remover() {
+	public void remover() throws DAOException {
 		manager.remover(manager.get(3));
 		
 		assertEquals(manager.get(3), null);
@@ -52,7 +54,7 @@ public class AnaisCongressoDAOTest {
 	}
 	
 	@Test
-	public void getLista() {
+	public void getLista() throws DAOException {
 		List<Item> listaAnais = manager.getLista();
 		
 		assertNotEquals(listaAnais.size(), 0);
@@ -63,7 +65,7 @@ public class AnaisCongressoDAOTest {
 	}
 	
 	@Test
-	public void atualizar() {
+	public void atualizar() throws DAOException {
 		AnaisCongresso anais =  manager.get(2);
 		anais.setLocal("UFRN");
 		manager.atualizar(anais);
@@ -72,7 +74,7 @@ public class AnaisCongressoDAOTest {
 	}
 	
 	@Test
-	public void isItemExiste() {
+	public void isItemExiste() throws DAOException, ItemExistException {
 		assertTrue(manager.isItemExiste(poster));
 	}
 }
