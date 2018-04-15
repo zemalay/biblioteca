@@ -7,6 +7,8 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import edu.uepb.web.biblioteca.exception.DAOException;
+
 /**
  * A classe para acessar os dados no banco associando ao {@link Autor}
  * 
@@ -17,10 +19,11 @@ public class AutorDAO extends DAO<Autor> {
 
 	/**
 	 * 
+	 * @throws DAOException 
 	 * @see edu.uepb.web.biblioteca.model.DAO#get(int)
 	 */
 	@Override
-	public Autor get(int id) {
+	public Autor get(int id) throws DAOException {
 		logger.info("Executa o metodo 'get' com param id : " + id);
 		super.connection = new Conexao().getConexao();
 		String sql = "SELECT * FROM autor WHERE autor.idautor = ?";
@@ -39,7 +42,7 @@ public class AutorDAO extends DAO<Autor> {
 			}
 			super.closeConnections();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new DAOException(e.getMessage());
 		}
 		return autor;
 	}
@@ -56,10 +59,11 @@ public class AutorDAO extends DAO<Autor> {
 	}
 
 	/**
+	 * @throws DAOException 
 	 * @see edu.uepb.web.biblioteca.model.DAO#inserir(Object)
 	 */
 	@Override
-	public int inserir(Autor obj) {
+	public int inserir(Autor obj) throws DAOException {
 		logger.info("Executa o metodo 'inserir' com param objeto : " + obj);
 		int id = -1;
 		super.connection = new Conexao().getConexao();
@@ -78,7 +82,7 @@ public class AutorDAO extends DAO<Autor> {
 				}
 				super.connection.close();
 			} catch (SQLException e) {
-				e.printStackTrace();
+				throw new DAOException(e.getMessage());
 			}
 		}
 		return id;
@@ -94,10 +98,11 @@ public class AutorDAO extends DAO<Autor> {
 	}
 
 	/**
+	 * @throws DAOException 
 	 * @see edu.uepb.web.biblioteca.model.DAO#atualizar(Object)
 	 */
 	@Override
-	public void atualizar(Autor obj) {
+	public void atualizar(Autor obj) throws DAOException {
 		logger.info("Executa o metodo 'atualizar' com param objeto : " + obj);
 		if (obj != null) {
 			super.connection = new Conexao().getConexao();
@@ -110,7 +115,7 @@ public class AutorDAO extends DAO<Autor> {
 				super.statement.execute();
 				super.connection.close();
 			} catch (SQLException e) {
-				e.printStackTrace();
+				throw new DAOException(e.getMessage());
 			}
 		}
 
@@ -122,8 +127,9 @@ public class AutorDAO extends DAO<Autor> {
 	 * @param idAnais
 	 *            id do Anais Congresso
 	 * @return List lista dos autores
+	 * @throws DAOException 
 	 */
-	public List<Autor> getLista(int idAnais) {
+	public List<Autor> getLista(int idAnais) throws DAOException {
 		logger.info("Executa o metodo 'getLista' com param id : " + idAnais);
 
 		super.connection = new Conexao().getConexao();
@@ -143,7 +149,7 @@ public class AutorDAO extends DAO<Autor> {
 			}
 			super.connection.close();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new DAOException(e.getMessage());
 		}
 		return listaAutor;
 	}
