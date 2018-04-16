@@ -37,11 +37,6 @@ public class Aluno {
 	
 	public Aluno() {}
 	
-	public String geraMatricula() {
-		
-		return null;
-	}
-
 	public int getId() {
 		return id;
 	}

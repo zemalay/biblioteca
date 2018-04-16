@@ -1,4 +1,4 @@
-package edu.uepb.web.biblioteca.model;
+package edu.uepb.web.biblioteca.dao;
 
 import static org.junit.Assert.assertEquals;
 
@@ -16,6 +16,10 @@ import edu.uepb.web.biblioteca.enums.TipoNivel;
 import edu.uepb.web.biblioteca.exception.AutenticacaoException;
 import edu.uepb.web.biblioteca.exception.DAOException;
 import edu.uepb.web.biblioteca.exception.ItemExistException;
+import edu.uepb.web.biblioteca.model.Curso;
+import edu.uepb.web.biblioteca.model.Funcionario;
+import edu.uepb.web.biblioteca.model.Jornal;
+import edu.uepb.web.biblioteca.model.Midia;
 
 /**
  * @autor geovanniovinhas <vinhasgeovannio@gmail.com

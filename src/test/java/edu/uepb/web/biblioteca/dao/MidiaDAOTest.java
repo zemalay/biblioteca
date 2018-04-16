@@ -1,4 +1,4 @@
-package edu.uepb.web.biblioteca.model;
+package edu.uepb.web.biblioteca.dao;
 
 import static org.junit.Assert.*;
 
@@ -14,6 +14,8 @@ import edu.uepb.web.biblioteca.dao.MidiaDAO;
 import edu.uepb.web.biblioteca.enums.TipoMidia;
 import edu.uepb.web.biblioteca.exception.DAOException;
 import edu.uepb.web.biblioteca.exception.ItemExistException;
+import edu.uepb.web.biblioteca.model.Item;
+import edu.uepb.web.biblioteca.model.Midia;
 
 /**
  * @autor geovanniovinhas <vinhasgeovannio@gmail.com

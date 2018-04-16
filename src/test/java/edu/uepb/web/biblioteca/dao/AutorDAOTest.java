@@ -1,4 +1,4 @@
-package edu.uepb.web.biblioteca.model;
+package edu.uepb.web.biblioteca.dao;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
@@ -15,6 +15,8 @@ import edu.uepb.web.biblioteca.dao.AutorDAO;
 import edu.uepb.web.biblioteca.dao.Conexao;
 import edu.uepb.web.biblioteca.enums.TipoAnais;
 import edu.uepb.web.biblioteca.exception.DAOException;
+import edu.uepb.web.biblioteca.model.AnaisCongresso;
+import edu.uepb.web.biblioteca.model.Autor;
 
 /**
  * A classe de teste unitario para AutorDAO, testar os metodos que foram

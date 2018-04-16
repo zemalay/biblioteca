@@ -42,6 +42,7 @@ public abstract class DAO<T> {
 	 *            O id do objeto no banco de dados
 	 * @return T O objeto
 	 * @throws DAOException 
+	 * @throws SQLException 
 	 */
 	public abstract T get(int id) throws DAOException;
 
@@ -50,6 +51,7 @@ public abstract class DAO<T> {
 	 *
 	 * @return List<T> Lista de objetos
 	 * @throws DAOException 
+	 * @throws SQLException 
 	 */
 	public abstract List<T> getLista() throws DAOException;
 
