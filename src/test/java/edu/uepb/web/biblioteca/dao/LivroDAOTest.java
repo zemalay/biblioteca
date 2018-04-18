@@ -1,4 +1,4 @@
-package edu.uepb.web.biblioteca.model;
+package edu.uepb.web.biblioteca.dao;
 
 import static org.junit.Assert.*;
 
@@ -11,6 +11,10 @@ import org.junit.Test;
 
 import edu.uepb.web.biblioteca.exception.DAOException;
 import edu.uepb.web.biblioteca.exception.ItemExistException;
+import edu.uepb.web.biblioteca.model.Item;
+import edu.uepb.web.biblioteca.model.Livro;
+import edu.uepb.web.biblioteca.dao.Conexao;
+import edu.uepb.web.biblioteca.dao.LivroDAO;
 
 /**
  * @autor geovanniovinhas <vinhasgeovannio@gmail.com

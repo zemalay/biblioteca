@@ -1,4 +1,4 @@
-package edu.uepb.web.biblioteca.model;
+package edu.uepb.web.biblioteca.dao;
 
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -8,6 +8,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import edu.uepb.web.biblioteca.exception.DAOException;
+import edu.uepb.web.biblioteca.model.Autor;
 
 /**
  * A classe para acessar os dados no banco associando ao {@link Autor}

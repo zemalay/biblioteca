@@ -1,4 +1,4 @@
-package edu.uepb.web.biblioteca.model;
+package edu.uepb.web.biblioteca.dao;
 
 import static org.junit.Assert.*;
 import java.sql.Connection;
@@ -8,9 +8,13 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import edu.uepb.web.biblioteca.dao.Conexao;
+import edu.uepb.web.biblioteca.dao.TrabalhoConclusaoDAO;
 import edu.uepb.web.biblioteca.enums.TipoTrabalhoConclusao;
 import edu.uepb.web.biblioteca.exception.DAOException;
 import edu.uepb.web.biblioteca.exception.ItemExistException;
+import edu.uepb.web.biblioteca.model.Item;
+import edu.uepb.web.biblioteca.model.TrabalhoConclusao;
 
 /**
  * A classe de teste unitario para TrabalhoConclusaoDAO, testar os metodos que

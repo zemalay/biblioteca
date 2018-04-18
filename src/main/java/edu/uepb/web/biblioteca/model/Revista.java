@@ -18,7 +18,6 @@ public class Revista implements Item {
 
 	public Revista(String tituloRevista, String editoraRevista, String dataPublicacao, String edicao,
 			int numeroPagina) {
-		super();
 		this.titulo = tituloRevista;
 		this.editora = editoraRevista;
 		this.dataPublicacao = dataPublicacao;

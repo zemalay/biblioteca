@@ -1,4 +1,4 @@
-package edu.uepb.web.biblioteca.model;
+package edu.uepb.web.biblioteca.dao;
 
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -9,6 +9,8 @@ import org.apache.log4j.Logger;
 
 import edu.uepb.web.biblioteca.exception.DAOException;
 import edu.uepb.web.biblioteca.exception.ItemExistException;
+import edu.uepb.web.biblioteca.model.Item;
+import edu.uepb.web.biblioteca.model.Livro;
 
 /**
  * A classe para acessar os dados no banco associando ao objeto {@link Livro}
@@ -21,7 +23,7 @@ public class LivroDAO extends ItemDAO<Livro> {
 
 	/**
 	 * @throws DAOException 
-	 * @see edu.uepb.web.biblioteca.model.ItemDAO#get(int)
+	 * @see edu.uepb.web.biblioteca.dao.ItemDAO#get(int)
 	 */
 	@Override
 	public Livro get(int id) throws DAOException {
@@ -63,7 +65,7 @@ public class LivroDAO extends ItemDAO<Livro> {
 
 	/**
 	 * @throws DAOException 
-	 * @see edu.uepb.web.biblioteca.model.ItemDAO#getLista()
+	 * @see edu.uepb.web.biblioteca.dao.ItemDAO#getLista()
 	 */
 	@Override
 	public List<Item> getLista() throws DAOException {
@@ -104,7 +106,7 @@ public class LivroDAO extends ItemDAO<Livro> {
 
 	/**
 	 * @throws DAOException 
-	 * @see edu.uepb.web.biblioteca.model.ItemDAO#inserir(Item)
+	 * @see edu.uepb.web.biblioteca.dao.ItemDAO#inserir(Item)
 	 */
 
 	@Override
@@ -146,7 +148,7 @@ public class LivroDAO extends ItemDAO<Livro> {
 
 	/**
 	 * @throws DAOException 
-	 * @see edu.uepb.web.biblioteca.model.ItemDAO#remover(Item)
+	 * @see edu.uepb.web.biblioteca.dao.ItemDAO#remover(Item)
 	 */
 	@Override
 	public void remover(Item item) throws DAOException {
@@ -171,7 +173,7 @@ public class LivroDAO extends ItemDAO<Livro> {
 
 	/**
 	 * @throws DAOException 
-	 * @see edu.uepb.web.biblioteca.model.ItemDAO#atualizar(Item)
+	 * @see edu.uepb.web.biblioteca.dao.ItemDAO#atualizar(Item)
 	 */
 	@Override
 	public void atualizar(Item item) throws DAOException {
@@ -209,7 +211,7 @@ public class LivroDAO extends ItemDAO<Livro> {
 	/**
 	 * @throws ItemExistException
 	 * @throws DAOException 
-	 * @see edu.uepb.web.biblioteca.model.ItemDAO#isItemExiste(Item)
+	 * @see edu.uepb.web.biblioteca.dao.ItemDAO#isItemExiste(Item)
 	 */
 	@Override
 	public boolean isItemExiste(Item item) throws ItemExistException, DAOException {
