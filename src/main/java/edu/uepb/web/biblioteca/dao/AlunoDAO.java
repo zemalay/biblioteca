@@ -200,4 +200,27 @@ public class AlunoDAO extends DAO<Aluno> {
 
 	}
 
+	public int getUltimoId() throws DAOException {
+		logger.info("Executa o metodo 'getUltimoId' para pegar o ultimo id do aluno");
+
+		super.connection = new Conexao().getConexao();
+
+		String sql = "SELECT max(aluno.idaluno) FROM aluno";
+
+		int ultimoId = AlunoDAO.ID_FAKE;
+
+		try {
+			super.statement = super.connection.prepareStatement(sql);
+			super.resultSet = super.statement.executeQuery();
+
+			if (resultSet.next()) {
+				ultimoId = resultSet.getInt(1);
+			}
+			super.closeConnections();
+		} catch (SQLException e) {
+			throw new DAOException(e.getMessage());
+		}
+		return ultimoId;
+	}
+
 }

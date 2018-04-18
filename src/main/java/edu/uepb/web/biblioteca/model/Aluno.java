@@ -20,7 +20,6 @@ public class Aluno {
 
 	public Aluno(String matricula, String rg, String cpf, String nome, String nomeMae, String naturalidade,
 			String endereco, String telefone, Curso curso, String ano, String periodoIngresso, String senha) {
-		super();
 		this.matricula = matricula;
 		this.rg = rg;
 		this.cpf = cpf;

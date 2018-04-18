@@ -1,21 +1,15 @@
 package edu.uepb.web.biblioteca.dao;
 
-import static org.junit.Assert.assertEquals;
-
 import java.sql.Connection;
 
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import edu.uepb.web.biblioteca.dao.Conexao;
-import edu.uepb.web.biblioteca.dao.FuncionarioDAO;
 import edu.uepb.web.biblioteca.enums.TipoFuncionario;
 import edu.uepb.web.biblioteca.enums.TipoMidia;
 import edu.uepb.web.biblioteca.enums.TipoNivel;
-import edu.uepb.web.biblioteca.exception.AutenticacaoException;
 import edu.uepb.web.biblioteca.exception.DAOException;
-import edu.uepb.web.biblioteca.exception.ItemExistException;
 import edu.uepb.web.biblioteca.model.Curso;
 import edu.uepb.web.biblioteca.model.Funcionario;
 import edu.uepb.web.biblioteca.model.Jornal;
@@ -53,46 +47,46 @@ public class FuncionarioDAOTest {
 		}
 	}
 
-	@Test
-	public void cadastrarItem() throws AutenticacaoException, DAOException, ItemExistException {
-		int id_midia = manager.cadastraItem(funcionario, midia);
-		int id_jornal = manager.cadastraItem(funcionario, jornal);
-
-		if (id_midia < 0) {
-			Assert.fail();
-		}
-
-		if (id_jornal < 0) {
-			Assert.fail();
-		}
-
-	}
-
-	@Test
-	public void atualizarItem() throws AutenticacaoException, DAOException {
-		midia.setId(4);// midia com id = 4 ja existe no banco
-		assertEquals(manager.atualizarItem(funcionario, midia), true);
-	}
-
-	@Test
-	public void removerItem() throws AutenticacaoException, DAOException {
-		midia.setId(4);
-		assertEquals(manager.removerItem(funcionario, midia), true);
-	}
-	
-	@Test
-	public void cadastraCurso() throws AutenticacaoException, DAOException {
-		int id_curso = manager.cadastraCurso(funcionario, curso);
-
-		if (id_curso < 0) {
-			Assert.fail();
-		}
-	}
-
-	@Test
-	public void removerCurso() throws AutenticacaoException, DAOException {
-		curso.setId(4);
-		assertEquals(manager.removerCurso(funcionario, curso), true);
-	}
+//	@Test
+//	public void cadastrarItem() throws AutenticacaoException, DAOException, ItemExistException {
+//		int id_midia = manager.cadastraItem(funcionario, midia);
+//		int id_jornal = manager.cadastraItem(funcionario, jornal);
+//
+//		if (id_midia < 0) {
+//			Assert.fail();
+//		}
+//
+//		if (id_jornal < 0) {
+//			Assert.fail();
+//		}
+//
+//	}
+//
+//	@Test
+//	public void atualizarItem() throws AutenticacaoException, DAOException {
+//		midia.setId(4);// midia com id = 4 ja existe no banco
+//		assertEquals(manager.atualizarItem(funcionario, midia), true);
+//	}
+//
+//	@Test
+//	public void removerItem() throws AutenticacaoException, DAOException {
+//		midia.setId(4);
+//		assertEquals(manager.removerItem(funcionario, midia), true);
+//	}
+//	
+//	@Test
+//	public void cadastraCurso() throws AutenticacaoException, DAOException {
+//		int id_curso = manager.cadastraCurso(funcionario, curso);
+//
+//		if (id_curso < 0) {
+//			Assert.fail();
+//		}
+//	}
+//
+//	@Test
+//	public void removerCurso() throws AutenticacaoException, DAOException {
+//		curso.setId(4);
+//		assertEquals(manager.removerCurso(funcionario, curso), true);
+//	}
 
 }

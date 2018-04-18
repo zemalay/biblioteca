@@ -29,7 +29,7 @@ public class CursoDAOTest {
 	public void setUp() throws Exception {
 		manager = new CursoDAO();
 		conn = new Conexao().getConexao();
-		curso = new Curso("Ciencia da Computacao", TipoNivel.GRADUACAO, "Saude");
+		curso = new Curso("Engenharia de Computacao", TipoNivel.GRADUACAO, "Tecnologia");
 	}
 
 	@Test
