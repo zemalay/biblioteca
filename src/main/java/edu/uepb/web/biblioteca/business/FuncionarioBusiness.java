@@ -261,8 +261,7 @@ public class FuncionarioBusiness {
 	// endregion
 
 	/**
-	 *  Gera matricula para o aluno cadastrado.
-	 *  A matricula e unico para cada aluno.
+	 * Gera matricula para o aluno cadastrado. A matricula e unico para cada aluno.
 	 * 
 	 * @param aluno
 	 * @return matricula gerado
@@ -290,10 +289,10 @@ public class FuncionarioBusiness {
 			nivelAbreviacao = "D";
 			break;
 		}
-		
+
 		/**
-		 * Criar abreviaca para nome do curso
-		 * (e.g. Odontologia -> OD Ciencia da Computacao -> CC)
+		 * Criar abreviaca para nome do curso (e.g. Odontologia -> OD Ciencia da
+		 * Computacao -> CC)
 		 */
 		int index = curso.indexOf(' ');
 		int lastIndex = curso.lastIndexOf(' ');
@@ -318,4 +317,64 @@ public class FuncionarioBusiness {
 				+ codigo;
 	}
 
+	/**
+	 * 
+	 * Cadastrar aluno. Qualquer funcionário poderá cadastrar o aluno.
+	 * 
+	 * @param funcionario
+	 * @param aluno
+	 * @return
+	 * @throws AutenticacaoException
+	 * @throws DAOException
+	 */
+	public boolean cadastrarAluno(Funcionario funcionario, Aluno aluno) throws AutenticacaoException, DAOException {
+		logger.info("Executa o metodo 'cadastrarAluno' com param Funcionario : " + funcionario + " e item: " + aluno);
+
+		alunoDAO = new AlunoDAO();
+		alunoDAO.inserir(aluno);
+
+		return true;
+	}
+	
+	/**
+	 * 
+	 * Remover aluno. Só o funcionário do tipo administrador poderá remover.
+	 * 
+	 * @param funcionario
+	 * @param aluno
+	 * @return
+	 * @throws DAOException
+	 * @throws AutenticacaoException
+	 */
+
+	public boolean removerAluno(Funcionario funcionario, Aluno aluno) throws DAOException, AutenticacaoException {
+		logger.info("Executa o metodo 'removerAluno' com param Funcionario: " + funcionario + " e item: " + aluno);
+		if (!funcionario.getTipoFunc().equals(TipoFuncionario.ADMINISTRADOR)) {
+			throw new AutenticacaoException("Este funcionario nao esta autorizado");
+		} else {
+			alunoDAO = new AlunoDAO();
+			alunoDAO.inserir(aluno);
+		}
+		return true;
+	}
+	
+	/**
+	 * 
+	 * Atualizar dados do aluno. Qualquer funcionário poderá atualizar.
+	 * 
+	 * @param funcionario
+	 * @param aluno
+	 * @return
+	 * @throws DAOException
+	 * @throws AutenticacaoException
+	 */
+
+	public boolean atualizarAluno(Funcionario funcionario, Aluno aluno) throws DAOException, AutenticacaoException {
+		logger.info("Executa o metodo 'atualizarAluno' com param Funcionario: " + funcionario + " e item: " + aluno);
+
+		alunoDAO = new AlunoDAO();
+		alunoDAO.inserir(aluno);
+		
+		return true;
+	}
 }
