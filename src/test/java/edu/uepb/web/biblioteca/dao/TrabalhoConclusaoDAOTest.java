@@ -1,4 +1,4 @@
-package edu.uepb.web.biblioteca.model;
+package edu.uepb.web.biblioteca.dao;
 
 import static org.junit.Assert.*;
 import java.sql.Connection;
@@ -8,7 +8,13 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import edu.uepb.web.biblioteca.dao.Conexao;
+import edu.uepb.web.biblioteca.dao.TrabalhoConclusaoDAO;
 import edu.uepb.web.biblioteca.enums.TipoTrabalhoConclusao;
+import edu.uepb.web.biblioteca.exception.DAOException;
+import edu.uepb.web.biblioteca.exception.ItemExistException;
+import edu.uepb.web.biblioteca.model.Item;
+import edu.uepb.web.biblioteca.model.TrabalhoConclusao;
 
 /**
  * A classe de teste unitario para TrabalhoConclusaoDAO, testar os metodos que
@@ -39,9 +45,11 @@ public class TrabalhoConclusaoDAOTest {
 
 	/**
 	 * Caso de teste para inserir dados
+	 * 
+	 * @throws DAOException
 	 */
 	@Test
-	public void inserir() {
+	public void inserir() throws DAOException {
 		int id = manager.inserir(monografia);
 
 		// O id indica o id do objeto que foi salvo no banco, se o id for zero quer
@@ -53,9 +61,11 @@ public class TrabalhoConclusaoDAOTest {
 
 	/**
 	 * Caso de teste para pegar dados
+	 * 
+	 * @throws DAOException
 	 */
 	@Test
-	public void get() {
+	public void get() throws DAOException {
 		assertNotEquals(monografia, manager.get(27));
 
 		monografia = manager.get(27);
@@ -65,9 +75,11 @@ public class TrabalhoConclusaoDAOTest {
 
 	/**
 	 * caso de teste para pegar todos os dados
+	 * 
+	 * @throws DAOException
 	 */
 	@Test
-	public void getLista() {
+	public void getLista() throws DAOException {
 		List<Item> listaTCC = manager.getLista();
 
 		assertNotEquals(listaTCC.size(), 0);
@@ -79,9 +91,11 @@ public class TrabalhoConclusaoDAOTest {
 
 	/**
 	 * caso de teste para remove dados
+	 * 
+	 * @throws DAOException
 	 */
 	@Test
-	public void remover() {
+	public void remover() throws DAOException {
 		manager.remover(manager.get(4));
 
 		assertEquals(manager.get(4), null);
@@ -90,9 +104,11 @@ public class TrabalhoConclusaoDAOTest {
 
 	/**
 	 * caso de teste para atualizar dados
+	 * 
+	 * @throws DAOException
 	 */
 	@Test
-	public void atualizar() {
+	public void atualizar() throws DAOException {
 		TrabalhoConclusao dissertacao = new TrabalhoConclusao("Saude e Tecnologia", "Marcos",
 				TipoTrabalhoConclusao.DISSERTACAO, "2001", "UFPB", "Luis");
 
@@ -108,9 +124,12 @@ public class TrabalhoConclusaoDAOTest {
 
 	/**
 	 * Caso de teste para verificar se o item ja existe no banco de dados
+	 * 
+	 * @throws DAOException
+	 * @throws ItemExistException
 	 */
 	@Test
-	public void isItemExiste() {
+	public void isItemExiste() throws ItemExistException, DAOException {
 		assertTrue(manager.isItemExiste(monografia));
 
 		TrabalhoConclusao tese = new TrabalhoConclusao("Educacional", "Marcelo", TipoTrabalhoConclusao.TESE, "2017",
