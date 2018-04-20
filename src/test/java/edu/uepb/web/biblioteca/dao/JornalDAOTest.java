@@ -1,15 +1,21 @@
-package edu.uepb.web.biblioteca.model;
+package edu.uepb.web.biblioteca.dao;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertTrue;
 
 import java.sql.Connection;
 
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import edu.uepb.web.biblioteca.exception.DAOException;
+import edu.uepb.web.biblioteca.exception.ItemExistException;
+import edu.uepb.web.biblioteca.model.Item;
+import edu.uepb.web.biblioteca.model.Jornal;
+import edu.uepb.web.biblioteca.dao.Conexao;
+import edu.uepb.web.biblioteca.dao.JornalDAO;
 
 /**
  * @autor geovanniovinhas <vinhasgeovannio@gmail.com
@@ -29,7 +35,7 @@ public class JornalDAOTest {
 	}
 
 	@Test
-	public void inserir() {
+	public void inserir() throws DAOException {
 		int id = manager.inserir(jornal);
 
 		if (id < 0) {
@@ -40,19 +46,19 @@ public class JornalDAOTest {
 	}
 
 	@Test
-	public void get() {
+	public void get() throws DAOException {
 		assertNotEquals(manager.get(1), null);
 	}
 
 	@Test
-	public void remover() {
+	public void remover() throws DAOException {
 		((Jornal) jornal).setId(3);
 		manager.remover(jornal);
 		assertEquals(manager.get(3), null);
 	}
 
 	@Test
-	public void atualizar() {
+	public void atualizar() throws DAOException {
 		Jornal jornalUpdate = manager.get(1);
 		jornalUpdate.setEdicao("2ª");
 		manager.atualizar(jornalUpdate);
@@ -60,7 +66,7 @@ public class JornalDAOTest {
 	}
 
 	@Test
-	public void isItemExiste() {
+	public void isItemExiste() throws ItemExistException, DAOException {
 		assertFalse(manager.isItemExiste(jornal));
 	}
 

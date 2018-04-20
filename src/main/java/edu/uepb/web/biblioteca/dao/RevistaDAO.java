@@ -1,4 +1,4 @@
-package edu.uepb.web.biblioteca.model;
+package edu.uepb.web.biblioteca.dao;
 
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -6,6 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+
+import edu.uepb.web.biblioteca.exception.DAOException;
+import edu.uepb.web.biblioteca.exception.ItemExistException;
+import edu.uepb.web.biblioteca.model.Item;
+import edu.uepb.web.biblioteca.model.Revista;
 
 /**
  * A classe para acessar os dados no banco associando ao objeto {@link Revista}
@@ -17,10 +22,11 @@ public class RevistaDAO extends ItemDAO<Revista> {
 	private static Logger logger = Logger.getLogger(RevistaDAO.class);
 
 	/**
-	 * @see edu.uepb.web.biblioteca.model.ItemDAO#get(int)
+	 * @throws DAOException 
+	 * @see edu.uepb.web.biblioteca.dao.ItemDAO#get(int)
 	 */
 	@Override
-	public Revista get(int id) {
+	public Revista get(int id) throws DAOException {
 		logger.info("Executa o metodo 'get' com param id : " + id);
 
 		super.connection = new Conexao().getConexao();
@@ -47,17 +53,18 @@ public class RevistaDAO extends ItemDAO<Revista> {
 			}
 			super.closeConnections();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new DAOException(e.getMessage());
 		}
 
 		return revista;
 	}
 
 	/**
-	 * @see edu.uepb.web.biblioteca.model.ItemDAO#getLista()
+	 * @throws DAOException 
+	 * @see edu.uepb.web.biblioteca.dao.ItemDAO#getLista()
 	 */
 	@Override
-	public List<Item> getLista() {
+	public List<Item> getLista() throws DAOException {
 		logger.info("Executa o metodo 'getLista' ");
 
 		super.connection = new Conexao().getConexao();
@@ -84,16 +91,17 @@ public class RevistaDAO extends ItemDAO<Revista> {
 			}
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new DAOException(e.getMessage());
 		}
 		return listaRevistas;
 	}
 
 	/**
-	 * @see edu.uepb.web.biblioteca.model.ItemDAO#inserir(Item)
+	 * @throws DAOException 
+	 * @see edu.uepb.web.biblioteca.dao.ItemDAO#inserir(Item)
 	 */
 	@Override
-	public int inserir(Item item) {
+	public int inserir(Item item) throws DAOException {
 		logger.info("Executa o metodo 'inserir' com param objeto : " + item);
 
 		Revista obj = (Revista) item;
@@ -119,7 +127,7 @@ public class RevistaDAO extends ItemDAO<Revista> {
 				}
 
 			} catch (SQLException e) {
-				e.printStackTrace();
+				throw new DAOException(e.getMessage());
 			}
 		}
 
@@ -127,10 +135,11 @@ public class RevistaDAO extends ItemDAO<Revista> {
 	}
 
 	/**
-	 * @see edu.uepb.web.biblioteca.model.ItemDAO#remover(Item)
+	 * @throws DAOException 
+	 * @see edu.uepb.web.biblioteca.dao.ItemDAO#remover(Item)
 	 */
 	@Override
-	public void remover(Item item) {
+	public void remover(Item item) throws DAOException {
 		logger.info("Executa o metodo 'remover' com param objeto : " + item);
 
 		Revista obj = (Revista) item;
@@ -145,7 +154,7 @@ public class RevistaDAO extends ItemDAO<Revista> {
 
 				super.closeConnections();
 			} catch (SQLException e) {
-				e.printStackTrace();
+				throw new DAOException(e.getMessage());
 
 			}
 
@@ -154,10 +163,11 @@ public class RevistaDAO extends ItemDAO<Revista> {
 	}
 
 	/**
-	 * @see edu.uepb.web.biblioteca.model.ItemDAO#atualizar(Item)
+	 * @throws DAOException 
+	 * @see edu.uepb.web.biblioteca.dao.ItemDAO#atualizar(Item)
 	 */
 	@Override
-	public void atualizar(Item item) {
+	public void atualizar(Item item) throws DAOException {
 		logger.info("Executa o metodo 'autalizar' com param objeto : " + item);
 
 		Revista obj = (Revista) item;
@@ -178,17 +188,19 @@ public class RevistaDAO extends ItemDAO<Revista> {
 				super.closeConnections();
 
 			} catch (SQLException e) {
-				e.printStackTrace();
+				throw new DAOException(e.getMessage());
 			}
 		}
 
 	}
 
 	/**
-	 * @see edu.uepb.web.biblioteca.model.ItemDAO#isItemExiste(Item)
+	 * @throws ItemExistException 
+	 * @throws DAOException 
+	 * @see edu.uepb.web.biblioteca.dao.ItemDAO#isItemExiste(Item)
 	 */
 	@Override
-	public boolean isItemExiste(Item item) {
+	public boolean isItemExiste(Item item) throws ItemExistException, DAOException {
 		logger.info("Executa o metodo 'isItemExiste' com param objeto : " + item);
 
 		Revista obj = (Revista) item;
@@ -206,9 +218,9 @@ public class RevistaDAO extends ItemDAO<Revista> {
 					return true;
 				}
 				super.closeConnections();
-				return false;
+				throw new ItemExistException("Este item ja existe no banco de dados");
 			} catch (SQLException e) {
-				e.printStackTrace();
+				throw new DAOException(e.getMessage());
 			}
 		}
 		return false;
