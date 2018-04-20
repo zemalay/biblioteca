@@ -1,4 +1,4 @@
-package edu.uepb.web.biblioteca.dao;
+package edu.uepb.web.biblioteca.model;
 
 import static org.junit.Assert.*;
 
@@ -8,13 +8,6 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-
-import edu.uepb.web.biblioteca.exception.DAOException;
-import edu.uepb.web.biblioteca.exception.ItemExistException;
-import edu.uepb.web.biblioteca.model.Item;
-import edu.uepb.web.biblioteca.model.Livro;
-import edu.uepb.web.biblioteca.dao.Conexao;
-import edu.uepb.web.biblioteca.dao.LivroDAO;
 
 /**
  * @autor geovanniovinhas <vinhasgeovannio@gmail.com
@@ -35,7 +28,7 @@ public class LivroDAOTest {
 	}
 
 	@Test
-	public void inserir() throws DAOException {
+	public void inserir() {
 		int id = manager.inserir(livro);
 		if (id < 0) {
 			Assert.fail();
@@ -43,25 +36,25 @@ public class LivroDAOTest {
 	}
 
 	@Test
-	public void get() throws DAOException {
+	public void get() {
 		Item livro1 = manager.get(1);
 		assertEquals(livro1, livro);
 	}
 
 	@Test
-	public void getList() throws DAOException {
+	public void getList() {
 		List<Item> listaLivro = manager.getLista();
 		assertNotEquals(listaLivro.size(), 0);
 	}
 
 	@Test
-	public void remover() throws DAOException {
+	public void remover() {
 		manager.remover(manager.get(1));
 		assertEquals(manager.get(1), null);
 	}
 
 	@Test
-	public void atualizar() throws DAOException {
+	public void atualizar() {
 		Livro livro2 = manager.get(2);
 		livro2.setAutor("Shakes");
 		manager.atualizar(livro2);
@@ -69,7 +62,7 @@ public class LivroDAOTest {
 	}
 
 	@Test
-	public void isItemExiste() throws ItemExistException, DAOException {
+	public void isItemExiste() {
 		assertTrue(manager.isItemExiste(livro));
 	}
 

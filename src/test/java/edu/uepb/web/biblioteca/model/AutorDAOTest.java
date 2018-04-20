@@ -1,22 +1,17 @@
-package edu.uepb.web.biblioteca.dao;
+package edu.uepb.web.biblioteca.model;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
 import java.sql.Connection;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import edu.uepb.web.biblioteca.dao.AnaisCongressoDAO;
-import edu.uepb.web.biblioteca.dao.AutorDAO;
-import edu.uepb.web.biblioteca.dao.Conexao;
 import edu.uepb.web.biblioteca.enums.TipoAnais;
-import edu.uepb.web.biblioteca.exception.DAOException;
-import edu.uepb.web.biblioteca.model.AnaisCongresso;
-import edu.uepb.web.biblioteca.model.Autor;
 
 /**
  * A classe de teste unitario para AutorDAO, testar os metodos que foram
@@ -43,7 +38,7 @@ public class AutorDAOTest {
 	}
 
 	@Test
-	public void inserir() throws DAOException {
+	public void inserir() {
 
 		artigo.setId(dao.inserir(artigo));
 		autor = new Autor("Lucca", artigo);
@@ -55,20 +50,20 @@ public class AutorDAOTest {
 	}
 
 	@Test
-	public void get() throws DAOException {
+	public void get() {
 		
 		assertNotEquals(manager.get(3), null);
 	}
 	
 	@Test
-	public void remover() throws DAOException {
+	public void remover() {
 		manager.remover(manager.get(1));
 		
 		assertEquals(manager.get(1), null);
 	}
 	
 	@Test
-	public void atualizar() throws DAOException {
+	public void atualizar() {
 		autor = manager.get(3);
 		
 		autor.setNome("Zeze");
@@ -77,7 +72,7 @@ public class AutorDAOTest {
 	}
 	
 	@Test
-	public void getList() throws DAOException{
+	public void getList(){
 		List<Autor> listaAutor =  manager.getLista(1);
 		
 		assertEquals(listaAutor.size(), 1);

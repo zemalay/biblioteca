@@ -16,6 +16,7 @@ public class Midia implements Item {
 	private String dataGravacao;
 
 	public Midia(String tituloMidia, TipoMidia tipoMidia, String dataGravacao) {
+		super();
 		this.titulo = tituloMidia;
 		this.tipo = tipoMidia;
 		this.dataGravacao = dataGravacao;

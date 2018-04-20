@@ -1,12 +1,10 @@
-package edu.uepb.web.biblioteca.dao;
+package edu.uepb.web.biblioteca.model;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 
 import org.junit.Assert;
 import org.junit.Test;
-
-import edu.uepb.web.biblioteca.dao.Conexao;
 
 
 /**

@@ -1,4 +1,4 @@
-package edu.uepb.web.biblioteca.dao;
+package edu.uepb.web.biblioteca.model;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

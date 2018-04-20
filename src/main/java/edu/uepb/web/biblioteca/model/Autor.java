@@ -12,6 +12,7 @@ public class Autor {
 	private AnaisCongresso anaisCongresso;
 
 	public Autor(String nome, AnaisCongresso anaisCongresso) {
+		super();
 		this.nome = nome;
 		this.anaisCongresso = anaisCongresso;
 	}
