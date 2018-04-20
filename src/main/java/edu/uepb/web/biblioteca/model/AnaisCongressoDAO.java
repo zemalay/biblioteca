@@ -1,4 +1,4 @@
-package edu.uepb.web.biblioteca.dao;
+package edu.uepb.web.biblioteca.model;
 
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -7,17 +7,12 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import edu.uepb.web.biblioteca.exception.DAOException;
-import edu.uepb.web.biblioteca.exception.ItemExistException;
-import edu.uepb.web.biblioteca.model.AnaisCongresso;
-import edu.uepb.web.biblioteca.model.Item;
-
 /**
  * A classe para acessar os dados no banco associando ao objeto
  * {@link AnaisCongresso}
  * 
  * @autor geovanniovinhas <vinhasgeovannio@gmail.com
- * 
+ *
  */
 public class AnaisCongressoDAO extends ItemDAO<Item> {
 
@@ -25,11 +20,10 @@ public class AnaisCongressoDAO extends ItemDAO<Item> {
 	private static Logger logger = Logger.getLogger(AnaisCongressoDAO.class);
 
 	/**
-	 * @throws DAOException
 	 * @see edu.uepb.web.biblioteca.model.ItemDAO#get(int)
 	 */
 	@Override
-	public AnaisCongresso get(int id) throws DAOException {
+	public AnaisCongresso get(int id) {
 		logger.info("Executa o metodo 'get' com param id : " + id);
 
 		super.connection = new Conexao().getConexao();
@@ -60,17 +54,16 @@ public class AnaisCongressoDAO extends ItemDAO<Item> {
 
 			super.closeConnections();
 		} catch (SQLException e) {
-			throw new DAOException(e.getMessage());
+			e.printStackTrace();
 		}
 		return anais;
 	}
 
 	/**
-	 * @throws DAOException
 	 * @see edu.uepb.web.biblioteca.model.ItemDAO#getLista()
 	 */
 	@Override
-	public List<Item> getLista() throws DAOException {
+	public List<Item> getLista() {
 		logger.info("Executa o metodo 'getLista'");
 
 		super.connection = new Conexao().getConexao();
@@ -97,18 +90,17 @@ public class AnaisCongressoDAO extends ItemDAO<Item> {
 			}
 			super.closeConnections();
 		} catch (SQLException e) {
-			throw new DAOException(e.getMessage());
+			e.printStackTrace();
 		}
 
 		return listaAnais;
 	}
 
 	/**
-	 * @throws DAOException
 	 * @see edu.uepb.web.biblioteca.model.ItemDAO#inserir(Object)
 	 */
 	@Override
-	public int inserir(Item item) throws DAOException {
+	public int inserir(Item item) {
 		logger.info("Executa o metodo 'inserir' com param objeto : " + item);
 
 		AnaisCongresso obj = (AnaisCongresso) item;
@@ -130,7 +122,7 @@ public class AnaisCongressoDAO extends ItemDAO<Item> {
 				}
 				super.closeConnections();
 			} catch (SQLException e) {
-				throw new DAOException(e.getMessage());
+				e.printStackTrace();
 			}
 		}
 		return id;
@@ -162,11 +154,10 @@ public class AnaisCongressoDAO extends ItemDAO<Item> {
 	}
 
 	/**
-	 * @throws DAOException
 	 * @see edu.uepb.web.biblioteca.model.ItemDAO#atualizar(Object)
 	 */
 	@Override
-	public void atualizar(Item item) throws DAOException {
+	public void atualizar(Item item) {
 		logger.info("Executa o metodo 'atualizar' com param objeto : " + item);
 		AnaisCongresso obj = (AnaisCongresso) item;
 		if (obj != null) {
@@ -185,18 +176,16 @@ public class AnaisCongressoDAO extends ItemDAO<Item> {
 				super.statement.execute();
 				super.connection.close();
 			} catch (SQLException e) {
-				throw new DAOException(e.getMessage());
+				e.printStackTrace();
 			}
 		}
 	}
 
 	/**
-	 * @throws DAOException
-	 * @throws ItemExistException
 	 * @see edu.uepb.web.biblioteca.model.ItemDAO#isItemExiste(Object)
 	 */
 	@Override
-	public boolean isItemExiste(Item item) throws DAOException, ItemExistException {
+	public boolean isItemExiste(Item item) {
 		logger.info("Executa o metodo 'isItemExiste' com param objeto : " + item);
 
 		AnaisCongresso obj = (AnaisCongresso) item;
@@ -214,9 +203,9 @@ public class AnaisCongressoDAO extends ItemDAO<Item> {
 					return true;
 				}
 				super.closeConnections();
-				throw new ItemExistException("Este item ja existe no banco de dados");
+				return false;
 			} catch (SQLException e) {
-				throw new DAOException(e.getMessage());
+				e.printStackTrace();
 			}
 		}
 		return false;

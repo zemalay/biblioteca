@@ -6,5 +6,5 @@ package edu.uepb.web.biblioteca.enums;
  *        Enums para os tipos do nivel da academica
  */
 public enum TipoNivel {
-	GRADUACAO, ESPECIALIZACAO, MESTRADO, DOUTORADO;
+	GRADUACAO, POSGRADUACAO;
 }

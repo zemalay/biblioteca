@@ -1,4 +1,4 @@
-package edu.uepb.web.biblioteca.dao;
+package edu.uepb.web.biblioteca.model;
 
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -6,11 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-
-import edu.uepb.web.biblioteca.exception.DAOException;
-import edu.uepb.web.biblioteca.exception.ItemExistException;
-import edu.uepb.web.biblioteca.model.Item;
-import edu.uepb.web.biblioteca.model.Midia;
 
 /**
  * A classe para acessar os dados no banco associando ao objeto {@link Midia}
@@ -22,11 +17,10 @@ public class MidiaDAO extends ItemDAO<Midia> {
 	private static Logger logger = Logger.getLogger(MidiaDAO.class);
 
 	/**
-	 * @throws DAOException 
-	 * @see edu.uepb.web.biblioteca.dao.ItemDAO#get(int)
+	 * @see edu.uepb.web.biblioteca.model.ItemDAO#get(int)
 	 */
 	@Override
-	public Midia get(int id) throws DAOException {
+	public Midia get(int id) {
 		logger.info("Executa o metodo 'get' com param id : " + id);
 
 		super.connection = new Conexao().getConexao();
@@ -49,18 +43,17 @@ public class MidiaDAO extends ItemDAO<Midia> {
 			}
 			super.closeConnections();
 		} catch (SQLException e) {
-			throw new DAOException(e.getMessage());
+			e.printStackTrace();
 		}
 
 		return midia;
 	}
 
 	/**
-	 * @throws DAOException 
-	 * @see edu.uepb.web.biblioteca.dao.ItemDAO#getLista()
+	 * @see edu.uepb.web.biblioteca.model.ItemDAO#getLista()
 	 */
 	@Override
-	public List<Item> getLista() throws DAOException {
+	public List<Item> getLista() {
 		logger.info("Executa o metodo 'getLista'");
 
 		super.connection = new Conexao().getConexao();
@@ -83,7 +76,7 @@ public class MidiaDAO extends ItemDAO<Midia> {
 			}
 
 		} catch (SQLException e) {
-			throw new DAOException(e.getMessage());
+			e.printStackTrace();
 		}
 
 		return listaMidias;
@@ -91,11 +84,10 @@ public class MidiaDAO extends ItemDAO<Midia> {
 	}
 
 	/**
-	 * @throws DAOException 
-	 * @see edu.uepb.web.biblioteca.dao.ItemDAO#inserir(Item)
+	 * @see edu.uepb.web.biblioteca.model.ItemDAO#inserir(Item)
 	 */
 	@Override
-	public int inserir(Item item) throws DAOException {
+	public int inserir(Item item) {
 		logger.info("Executa o metodo 'inserir' com param objeto : " + item);
 
 		Midia obj = (Midia) item;
@@ -117,18 +109,17 @@ public class MidiaDAO extends ItemDAO<Midia> {
 					id = super.resultSet.getInt(1);
 				}
 			} catch (SQLException e) {
-				throw new DAOException(e.getMessage());
+				e.printStackTrace();
 			}
 		}
 		return id;
 	}
 
 	/**
-	 * @throws DAOException 
-	 * @see edu.uepb.web.biblioteca.dao.ItemDAO#remover(Item)
+	 * @see edu.uepb.web.biblioteca.model.ItemDAO#remover(Item)
 	 */
 	@Override
-	public void remover(Item item) throws DAOException {
+	public void remover(Item item) {
 		logger.info("Executa o metodo 'remover' com param objeto : " + item);
 
 		Midia obj = (Midia) item;
@@ -143,17 +134,16 @@ public class MidiaDAO extends ItemDAO<Midia> {
 
 				super.closeConnections();
 			} catch (SQLException e) {
-				throw new DAOException(e.getMessage());
+				e.printStackTrace();
 			}
 		}
 	}
 
 	/**
-	 * @throws DAOException 
-	 * @see edu.uepb.web.biblioteca.dao.ItemDAO#atualizar(Item)
+	 * @see edu.uepb.web.biblioteca.model.ItemDAO#atualizar(Item)
 	 */
 	@Override
-	public void atualizar(Item item) throws DAOException {
+	public void atualizar(Item item) {
 		logger.info("Executa o metodo 'autalizar' com param objeto : " + item);
 
 		Midia obj = (Midia) item;
@@ -171,19 +161,17 @@ public class MidiaDAO extends ItemDAO<Midia> {
 				super.statement.execute();
 				super.closeConnections();
 			} catch (SQLException e) {
-				throw new DAOException(e.getMessage());
+				e.printStackTrace();
 			}
 		}
 
 	}
 
 	/**
-	 * @throws ItemExistException 
-	 * @throws DAOException 
-	 * @see edu.uepb.web.biblioteca.dao.ItemDAO#isItemExiste(Item)
+	 * @see edu.uepb.web.biblioteca.model.ItemDAO#isItemExiste(Item)
 	 */
 	@Override
-	public boolean isItemExiste(Item item) throws ItemExistException, DAOException {
+	public boolean isItemExiste(Item item) {
 		logger.info("Executa o metodo 'isItemExiste' com param objeto : " + item);
 
 		Midia obj = (Midia) item;
@@ -199,9 +187,9 @@ public class MidiaDAO extends ItemDAO<Midia> {
 					return true;
 				}
 				super.closeConnections();
-				throw new ItemExistException("Este item ja existe no banco de dados");
+				return false;
 			} catch (SQLException e) {
-				throw new DAOException(e.getMessage());
+				e.printStackTrace();
 			}
 
 		}

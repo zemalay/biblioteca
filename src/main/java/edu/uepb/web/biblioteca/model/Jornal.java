@@ -14,6 +14,7 @@ public class Jornal implements Item {
 	private String edicao;
 
 	public Jornal(String tituloJornal, String dataJornal, String edicaoJornal) {
+		super();
 		this.titulo = tituloJornal;
 		this.data = dataJornal;
 		this.edicao = edicaoJornal;
