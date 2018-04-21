@@ -6,5 +6,5 @@ package edu.uepb.web.biblioteca.enums;
  *        Enums para os tipos de trabalho de conclusao do curso
  */
 public enum TipoTrabalhoConclusao {
-	MONOGRAFIA, DISSERTACAO, TESE;
+	MONOGRAFIA, DISSERTACAO, TESE, NONE;
 }

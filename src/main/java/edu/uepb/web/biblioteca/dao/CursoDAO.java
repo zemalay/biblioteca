@@ -1,5 +1,8 @@
 package edu.uepb.web.biblioteca.dao;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -16,27 +19,30 @@ import edu.uepb.web.biblioteca.model.Curso;
  * @autor geovanniovinhas <vinhasgeovannio@gmail.com
  *
  */
-public class CursoDAO extends DAO<Curso> {
+public class CursoDAO implements DAO<Curso> {
+	private Connection connection;
+	private PreparedStatement statement;
+	private ResultSet resultSet;
 	private static Logger logger = Logger.getLogger(CursoDAO.class);
 
 	/**
-	 * @throws DAOException 
+	 * @throws DAOException
 	 * @see edu.uepb.web.biblioteca.model.DAO#get(int)
 	 */
 	@Override
 	public Curso get(int id) throws DAOException {
 		logger.info("Executa o metodo 'get' com param id : " + id);
 
-		super.connection = new Conexao().getConexao();
+		connection = new Conexao().getConexao();
 
 		String sql = "SELECT * FROM curso WHERE curso.idcurso = ?";
 
 		Curso curso = null;
 
 		try {
-			super.statement = super.connection.prepareStatement(sql);
-			super.statement.setInt(1, id);
-			super.resultSet = super.statement.executeQuery();
+			statement = connection.prepareStatement(sql);
+			statement.setInt(1, id);
+			resultSet = statement.executeQuery();
 
 			if (resultSet.next()) {
 				curso = new Curso();
@@ -45,7 +51,7 @@ public class CursoDAO extends DAO<Curso> {
 				curso.setNivel(resultSet.getString(3));
 				curso.setArea(resultSet.getString(4));
 			}
-			super.closeConnections();
+			statement.close();
 		} catch (SQLException e) {
 			throw new DAOException(e.getMessage());
 		}
@@ -53,20 +59,20 @@ public class CursoDAO extends DAO<Curso> {
 	}
 
 	/**
-	 * @throws DAOException 
+	 * @throws DAOException
 	 * @see edu.uepb.web.biblioteca.model.DAO#getLista()
 	 */
 	@Override
 	public List<Curso> getLista() throws DAOException {
 		logger.info("Executa o metodo 'getLista' ");
-		super.connection = new Conexao().getConexao();
+		connection = new Conexao().getConexao();
 
 		String sql = "SELECT * FROM curso";
 		List<Curso> listaCurso = new ArrayList<Curso>();
 
 		try {
-			super.statement = super.connection.prepareStatement(sql);
-			super.resultSet = super.statement.executeQuery();
+			statement = connection.prepareStatement(sql);
+			resultSet = statement.executeQuery();
 
 			while (resultSet.next()) {
 				Curso curso = new Curso();
@@ -77,7 +83,7 @@ public class CursoDAO extends DAO<Curso> {
 
 				listaCurso.add(curso);
 			}
-			super.closeConnections();
+			statement.close();
 		} catch (SQLException e) {
 			throw new DAOException(e.getMessage());
 		}
@@ -85,27 +91,27 @@ public class CursoDAO extends DAO<Curso> {
 	}
 
 	/**
-	 * @throws DAOException 
+	 * @throws DAOException
 	 * @see edu.uepb.web.biblioteca.model.DAO#inserir(Object)
 	 */
 	@Override
 	public int inserir(Curso obj) throws DAOException {
 		logger.info("Executa o metodo 'inserir' com param objeto : " + obj);
 		int id = -1;
-		super.connection = new Conexao().getConexao();
+		connection = new Conexao().getConexao();
 		String sql = "INSERT INTO curso (nome, tipoNivel, area) VALUES (?,?,?)";
 		if (obj != null) {
 			try {
-				super.statement = super.connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-				super.statement.setString(1, obj.getNome());
-				super.statement.setString(2, obj.getNivel().name());
-				super.statement.setString(3, obj.getArea());
-				super.statement.execute();
-				super.resultSet = super.statement.getGeneratedKeys();
+				statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+				statement.setString(1, obj.getNome());
+				statement.setString(2, obj.getNivel().name());
+				statement.setString(3, obj.getArea());
+				statement.execute();
+				resultSet = statement.getGeneratedKeys();
 				if (resultSet.next()) {
-					id = super.resultSet.getInt(1);
+					id = resultSet.getInt(1);
 				}
-				super.closeConnections();
+				statement.close();
 			} catch (SQLException e) {
 				throw new DAOException(e.getMessage());
 			}
@@ -114,7 +120,7 @@ public class CursoDAO extends DAO<Curso> {
 	}
 
 	/**
-	 * @throws DAOException 
+	 * @throws DAOException
 	 * @see edu.uepb.web.biblioteca.model.DAO#remover(Object)
 	 */
 	@Override
@@ -122,15 +128,15 @@ public class CursoDAO extends DAO<Curso> {
 		logger.info("Executa o metodo 'remover' com param objeto : " + obj);
 
 		if (obj != null) {
-			super.connection = new Conexao().getConexao();
+			connection = new Conexao().getConexao();
 			String sql = "DELETE FROM curso WHERE idcurso = ?";
 
 			try {
-				super.statement = super.connection.prepareStatement(sql);
-				super.statement.setInt(1, obj.getId());
-				super.statement.execute();
+				statement = connection.prepareStatement(sql);
+				statement.setInt(1, obj.getId());
+				statement.execute();
 
-				super.closeConnections();
+				statement.close();
 			} catch (SQLException e) {
 				throw new DAOException(e.getMessage());
 			}
@@ -139,30 +145,54 @@ public class CursoDAO extends DAO<Curso> {
 	}
 
 	/**
-	 * @throws DAOException 
+	 * @throws DAOException
 	 * @see edu.uepb.web.biblioteca.model.DAO#atualizar(Object)
 	 */
 	@Override
 	public void atualizar(Curso obj) throws DAOException {
 		logger.info("Executa o metodo 'atualizar' com param objeto : " + obj);
 		if (obj != null) {
-			super.connection = new Conexao().getConexao();
+			connection = new Conexao().getConexao();
 			String sql = "UPDATE curso SET nome = ?, tipoNivel = ? , area = ? WHERE curso.idcurso = ?";
 
 			try {
-				super.statement = super.connection.prepareStatement(sql);
-				super.statement.setString(1, obj.getNome());
-				super.statement.setString(2, obj.getNivel().name());
-				super.statement.setString(3, obj.getArea());
-				super.statement.setInt(4, obj.getId());
+				statement = connection.prepareStatement(sql);
+				statement.setString(1, obj.getNome());
+				statement.setString(2, obj.getNivel().name());
+				statement.setString(3, obj.getArea());
+				statement.setInt(4, obj.getId());
 
-				super.statement.execute();
+				statement.execute();
 
-				super.closeConnections();
+				statement.close();
 			} catch (SQLException e) {
 				throw new DAOException(e.getMessage());
 			}
 		}
+	}
+
+	@Override
+	public boolean isExiste(Curso obj) throws DAOException {
+		if (obj != null) {
+			connection = new Conexao().getConexao();
+			String sql = "SELECT * FROM curso WHERE nome = ?";
+
+			try {
+				statement = (PreparedStatement) connection.prepareStatement(sql);
+				statement.setString(1, obj.getNome());
+				resultSet = statement.executeQuery();
+
+				if (resultSet.next()) {
+					statement.close();
+					return true;
+				}
+				statement.close();
+				return false;
+			} catch (SQLException e) {
+				throw new DAOException(e.getMessage());
+			}
+		}
+		return false;
 	}
 
 }

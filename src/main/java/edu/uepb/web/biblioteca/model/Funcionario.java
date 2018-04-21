@@ -18,14 +18,12 @@ public class Funcionario {
 	private String endereco;
 	private String telefone;
 	private String email;
-	private String suario;
+	private String usuario;
 	private String senha;
 
-	
-
 	public Funcionario(String nome, TipoFuncionario tipoFunc, String cpf, String rg, String naturalidade,
-			String endereco, String telefone, String email, String suario, String senha) {
-		
+			String endereco, String telefone, String email, String usuario, String senha) {
+
 		this.nome = nome;
 		this.tipoFunc = tipoFunc;
 		this.cpf = cpf;
@@ -34,7 +32,7 @@ public class Funcionario {
 		this.endereco = endereco;
 		this.telefone = telefone;
 		this.email = email;
-		this.suario = suario;
+		this.usuario = usuario;
 		this.senha = senha;
 	}
 
@@ -90,12 +88,12 @@ public class Funcionario {
 		this.email = email;
 	}
 
-	public String getSuario() {
-		return suario;
+	public String getUsuario() {
+		return usuario;
 	}
 
-	public void setSuario(String suario) {
-		this.suario = suario;
+	public void setUsuario(String suario) {
+		this.usuario = suario;
 	}
 
 	public String getSenha() {
@@ -130,6 +128,10 @@ public class Funcionario {
 		this.tipoFunc = TipoFuncionario.valueOf(tipoFunc);
 	}
 
+	public void setTipoFunc(TipoFuncionario tipoFunc) {
+		this.tipoFunc = tipoFunc;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -156,9 +158,7 @@ public class Funcionario {
 	public String toString() {
 		return "Funcionario [id=" + id + ", nome=" + nome + ", tipoFunc=" + tipoFunc + ", cpf=" + cpf + ", rg=" + rg
 				+ ", naturalidade=" + naturalidade + ", endereco=" + endereco + ", telefone=" + telefone + ", email="
-				+ email + ", suario=" + suario + ", senha=" + senha + "]";
+				+ email + ", suario=" + usuario + ", senha=" + senha + "]";
 	}
-
-
 
 }

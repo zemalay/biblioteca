@@ -6,5 +6,5 @@ package edu.uepb.web.biblioteca.enums;
  *        Enums para os tipos de anais do congresso
  */
 public enum TipoAnais {
-	ARTIGO, POSTER, RESUMO;
+	ARTIGO, POSTER, RESUMO, NONE;
 }

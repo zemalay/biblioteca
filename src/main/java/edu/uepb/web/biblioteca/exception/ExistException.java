@@ -6,11 +6,11 @@ package edu.uepb.web.biblioteca.exception;
  *
  *
  */
-public class ItemExistException extends BibliotecaException{
+public class ExistException extends BibliotecaException{
 
 	private static final long serialVersionUID = 1148604737280668195L;
 
-	public ItemExistException(String message) {
+	public ExistException(String message) {
 		super(message);
 	}
 

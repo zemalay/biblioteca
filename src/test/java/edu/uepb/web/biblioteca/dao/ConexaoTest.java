@@ -21,10 +21,9 @@ public class ConexaoTest {
 	public void getConexao() {
 		try {
 			conn = new Conexao().getConexao();
-			Assert.assertFalse(conn.isValid(10));
+			Assert.assertTrue(conn.isValid(10));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
-
 }
