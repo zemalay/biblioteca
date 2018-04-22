@@ -23,6 +23,10 @@ public class ItemDAOImpl implements DAO<Item> {
 	private PreparedStatement statement;
 	private ResultSet resultSet;
 
+	/**
+	 * @throws DAOException
+	 * @see {@link DAO#get(int)}
+	 */
 	@Override
 	public Item get(int id) throws DAOException {
 		connection = new Conexao().getConexao();
@@ -63,6 +67,10 @@ public class ItemDAOImpl implements DAO<Item> {
 		return acervo;
 	}
 
+	/**
+	 * @throws DAOException
+	 * @see {@link DAO#getLista()}
+	 */
 	@Override
 	public List<Item> getLista() throws DAOException {
 		connection = new Conexao().getConexao();
@@ -102,6 +110,10 @@ public class ItemDAOImpl implements DAO<Item> {
 		return listaAcervo;
 	}
 
+	/**
+	 * @throws DAOException
+	 * @see {@link DAO#inserir(Object)}
+	 */
 	@Override
 	public int inserir(Item obj) throws DAOException {
 		int id = ItemDAOImpl.FAKE_ID;
@@ -147,6 +159,10 @@ public class ItemDAOImpl implements DAO<Item> {
 		return id;
 	}
 
+	/**
+	 * @throws DAOException
+	 * @see {@link DAO#remover(Object)}
+	 */
 	@Override
 	public void remover(Item obj) throws DAOException {
 		if (obj != null) {
@@ -167,7 +183,7 @@ public class ItemDAOImpl implements DAO<Item> {
 
 	/**
 	 * @throws DAOException
-	 * 
+	 * @see {@link DAO#atualizar(Object)}
 	 */
 	@Override
 	public void atualizar(Item obj) throws DAOException {
@@ -212,6 +228,7 @@ public class ItemDAOImpl implements DAO<Item> {
 
 	/**
 	 * @throws DAOException
+	 * @see {@link DAO#isExiste(Object)}
 	 */
 	@Override
 	public boolean isExiste(Item obj) throws DAOException {

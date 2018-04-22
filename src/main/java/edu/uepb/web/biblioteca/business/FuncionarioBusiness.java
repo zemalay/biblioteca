@@ -2,8 +2,8 @@ package edu.uepb.web.biblioteca.business;
 
 import org.apache.log4j.Logger;
 
-import edu.uepb.web.biblioteca.dao.AlunoDAO;
-import edu.uepb.web.biblioteca.dao.CursoDAO;
+import edu.uepb.web.biblioteca.dao.AlunoDAOImpl;
+import edu.uepb.web.biblioteca.dao.CursoDAOImpl;
 import edu.uepb.web.biblioteca.dao.ItemDAOImpl;
 import edu.uepb.web.biblioteca.enums.TipoFuncionario;
 import edu.uepb.web.biblioteca.exception.AutenticacaoException;
@@ -22,8 +22,8 @@ import edu.uepb.web.biblioteca.model.Item;
 public class FuncionarioBusiness {
 	private static Logger logger = Logger.getLogger(FuncionarioBusiness.class);
 	private ItemDAOImpl itemDAO;
-	private AlunoDAO alunoDAO;
-	private CursoDAO cursoDAO;
+	private AlunoDAOImpl alunoDAO;
+	private CursoDAOImpl cursoDAO;
 
 	/**
 	 * Cadastra os itens de acordo com os seus tipos. So o admin que pode realizar
@@ -47,6 +47,7 @@ public class FuncionarioBusiness {
 			if (itemDAO.isExiste(item)) {
 				throw new ExistException("Item ja existe");
 			} else {
+				logger.info("O item salvo com sucesso: " + item);
 				return itemDAO.inserir(item);
 			}
 		}
@@ -71,6 +72,7 @@ public class FuncionarioBusiness {
 		} else {
 			itemDAO = new ItemDAOImpl();
 			itemDAO.atualizar(item);
+			logger.info("O item atualizado com sucesso: " + item);
 			return true;
 		}
 	}
@@ -92,6 +94,7 @@ public class FuncionarioBusiness {
 		} else {
 			itemDAO = new ItemDAOImpl();
 			itemDAO.remover(item);
+			logger.info("O item removido com sucesso: " + item);
 			return true;
 		}
 	}
@@ -112,10 +115,11 @@ public class FuncionarioBusiness {
 	public int cadastraCurso(Funcionario funcionario, Curso curso)
 			throws AutenticacaoException, DAOException, ExistException {
 		logger.info("Executa o metodo 'cadastraCurso' com param fucionario : " + funcionario + " e curso : " + curso);
-		cursoDAO = new CursoDAO();
+		cursoDAO = new CursoDAOImpl();
 		if (cursoDAO.isExiste(curso)) {
 			throw new ExistException("O Curso ja existe");
 		}
+		logger.info("O curso salvo com sucesso: " + curso);
 		return cursoDAO.inserir(curso);
 	}
 
@@ -134,8 +138,9 @@ public class FuncionarioBusiness {
 		if (!funcionario.getTipoFunc().equals(TipoFuncionario.ADMINISTRADOR)) {
 			throw new AutenticacaoException("Este funcionario nao esta autorizado");
 		} else {
-			cursoDAO = new CursoDAO();
+			cursoDAO = new CursoDAOImpl();
 			cursoDAO.remover(curso);
+			logger.info("O curso removido com sucesso: " + curso);
 			return true;
 		}
 	}
@@ -148,6 +153,7 @@ public class FuncionarioBusiness {
 	 * @throws DAOException
 	 */
 	public String gerarMatricula(Aluno aluno) throws DAOException {
+		logger.info("Execucao metodo  'gerarMatricula'");
 		String nivelAbreviacao = "", cursoAbreviacao, anoAbreviacao, firstAbreviacao, secondAbreviacao, curso, ano,
 				codigo;
 
@@ -190,9 +196,8 @@ public class FuncionarioBusiness {
 		anoAbreviacao = ano.substring(2, ano.length());
 
 		// Criar codigo (e.g. 1 -> 001)
-		alunoDAO = new AlunoDAO();
+		alunoDAO = new AlunoDAOImpl();
 		codigo = String.format("%03d", alunoDAO.getUltimoId() + 1);
-
 		return nivelAbreviacao + cursoAbreviacao.toUpperCase() + "-" + anoAbreviacao + aluno.getPeriodoIngresso()
 				+ codigo;
 	}
@@ -212,10 +217,12 @@ public class FuncionarioBusiness {
 			throws AutenticacaoException, DAOException, ExistException {
 		logger.info("Executa o metodo 'cadastrarAluno' com param Funcionario : " + funcionario + " e item: " + aluno);
 
-		alunoDAO = new AlunoDAO();
+		alunoDAO = new AlunoDAOImpl();
+		aluno.setMatricula(this.gerarMatricula(aluno));
 		if (alunoDAO.isExiste(aluno)) {
 			throw new ExistException("O aluno ja cadastrado no sistema");
 		}
+		logger.info("O Aluno cadastrado com sucesso: " + aluno);
 		return alunoDAO.inserir(aluno);
 	}
 
@@ -229,14 +236,14 @@ public class FuncionarioBusiness {
 	 * @throws DAOException
 	 * @throws AutenticacaoException
 	 */
-
 	public boolean removerAluno(Funcionario funcionario, Aluno aluno) throws DAOException, AutenticacaoException {
 		logger.info("Executa o metodo 'removerAluno' com param Funcionario: " + funcionario + " e item: " + aluno);
 		if (!funcionario.getTipoFunc().equals(TipoFuncionario.ADMINISTRADOR)) {
 			throw new AutenticacaoException("Este funcionario nao esta autorizado");
 		} else {
-			alunoDAO = new AlunoDAO();
+			alunoDAO = new AlunoDAOImpl();
 			alunoDAO.remover(aluno);
+			logger.info("O Aluno removido com sucesso: " + aluno);
 			return true;
 		}
 	}
@@ -251,13 +258,12 @@ public class FuncionarioBusiness {
 	 * @throws DAOException
 	 * @throws AutenticacaoException
 	 */
-
 	public boolean atualizarAluno(Funcionario funcionario, Aluno aluno) throws DAOException, AutenticacaoException {
 		logger.info("Executa o metodo 'atualizarAluno' com param Funcionario: " + funcionario + " e item: " + aluno);
 
-		alunoDAO = new AlunoDAO();
+		alunoDAO = new AlunoDAOImpl();
 		alunoDAO.atualizar(aluno);
-
+		logger.info("O Aluno atualizado com sucesso: " + aluno);
 		return true;
 	}
 

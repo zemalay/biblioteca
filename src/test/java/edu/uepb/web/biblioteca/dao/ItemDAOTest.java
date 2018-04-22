@@ -80,7 +80,7 @@ public class ItemDAOTest {
 
 	@Test
 	public void inserir() throws DAOException {
-		assertNotEquals("", manager.inserir(midia), -1);
+		assertNotEquals(manager.inserir(midia), -1);
 	}
 
 	@Test
@@ -123,9 +123,12 @@ public class ItemDAOTest {
 	
 	@Test
 	public void isExiste() throws DAOException, ExistException {
-		boolean existe = manager.isExiste(jornal);
+		Item item = new Item();
+		item.setTipoItem(TipoItem.JORNAL);
+		item.setTitulo("Titulo Item");
+		item.setData("29/02/2020");
 		
-		assertEquals(true, existe);
+		assertEquals(false, manager.isExiste(item));
 	}
 
 }

@@ -33,8 +33,8 @@ public class AlunoDAOTest {
 	Curso matematica;
 	Curso relacoes;
 
-	CursoDAO cursoDAO;
-	AlunoDAO manager;
+	CursoDAOImpl cursoDAO;
+	AlunoDAOImpl manager;
 	FuncionarioBusiness funService;
 	Connection conn;
 
@@ -42,8 +42,8 @@ public class AlunoDAOTest {
 	public void setUp() throws Exception {
 		conn = new Conexao().getConexao();
 		funService = new FuncionarioBusiness();
-		manager = new AlunoDAO();
-		cursoDAO = new CursoDAO();
+		manager = new AlunoDAOImpl();
+		cursoDAO = new CursoDAOImpl();
 
 		quimica = new Curso("Quimica", TipoNivel.GRADUACAO, "Exata");
 		psicologia = new Curso("Psicologia", TipoNivel.GRADUACAO, "Humanas");
@@ -125,9 +125,6 @@ public class AlunoDAOTest {
 	
 	@Test
 	public void isExiste() throws DAOException {
-		assertEquals(true, manager.isExiste(aluno1));
-		
-		
 		
 		Aluno aluno5 = new Aluno();
 		

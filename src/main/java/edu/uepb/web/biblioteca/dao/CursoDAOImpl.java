@@ -19,15 +19,15 @@ import edu.uepb.web.biblioteca.model.Curso;
  * @autor geovanniovinhas <vinhasgeovannio@gmail.com
  *
  */
-public class CursoDAO implements DAO<Curso> {
+public class CursoDAOImpl implements DAO<Curso> {
 	private Connection connection;
 	private PreparedStatement statement;
 	private ResultSet resultSet;
-	private static Logger logger = Logger.getLogger(CursoDAO.class);
+	private static Logger logger = Logger.getLogger(CursoDAOImpl.class);
 
 	/**
 	 * @throws DAOException
-	 * @see edu.uepb.web.biblioteca.model.DAO#get(int)
+	 * @see {@link DAO#get(int)}
 	 */
 	@Override
 	public Curso get(int id) throws DAOException {
@@ -53,6 +53,7 @@ public class CursoDAO implements DAO<Curso> {
 			}
 			statement.close();
 		} catch (SQLException e) {
+			logger.error("Erro selecao o dado no base de dados", e);
 			throw new DAOException(e.getMessage());
 		}
 		return curso;
@@ -60,7 +61,7 @@ public class CursoDAO implements DAO<Curso> {
 
 	/**
 	 * @throws DAOException
-	 * @see edu.uepb.web.biblioteca.model.DAO#getLista()
+	 * @see {@link DAO#getLista()}
 	 */
 	@Override
 	public List<Curso> getLista() throws DAOException {
@@ -85,6 +86,7 @@ public class CursoDAO implements DAO<Curso> {
 			}
 			statement.close();
 		} catch (SQLException e) {
+			logger.error("Erro selecao o dado no base de dados", e);
 			throw new DAOException(e.getMessage());
 		}
 		return listaCurso;
@@ -92,7 +94,7 @@ public class CursoDAO implements DAO<Curso> {
 
 	/**
 	 * @throws DAOException
-	 * @see edu.uepb.web.biblioteca.model.DAO#inserir(Object)
+	 * @see {@link DAO#inserir(Object)}
 	 */
 	@Override
 	public int inserir(Curso obj) throws DAOException {
@@ -113,6 +115,7 @@ public class CursoDAO implements DAO<Curso> {
 				}
 				statement.close();
 			} catch (SQLException e) {
+				logger.error("Erro insercao o dado no base de dados", e);
 				throw new DAOException(e.getMessage());
 			}
 		}
@@ -121,7 +124,7 @@ public class CursoDAO implements DAO<Curso> {
 
 	/**
 	 * @throws DAOException
-	 * @see edu.uepb.web.biblioteca.model.DAO#remover(Object)
+	 * @see {@link DAO#remover(Object)}
 	 */
 	@Override
 	public void remover(Curso obj) throws DAOException {
@@ -138,6 +141,7 @@ public class CursoDAO implements DAO<Curso> {
 
 				statement.close();
 			} catch (SQLException e) {
+				logger.error("Erro remocao o dado no base de dados", e);
 				throw new DAOException(e.getMessage());
 			}
 		}
@@ -146,7 +150,7 @@ public class CursoDAO implements DAO<Curso> {
 
 	/**
 	 * @throws DAOException
-	 * @see edu.uepb.web.biblioteca.model.DAO#atualizar(Object)
+	 * @see {@link DAO#atualizar(Object)}
 	 */
 	@Override
 	public void atualizar(Curso obj) throws DAOException {
@@ -166,11 +170,16 @@ public class CursoDAO implements DAO<Curso> {
 
 				statement.close();
 			} catch (SQLException e) {
+				logger.error("Erro atualizacao o dado no base de dados", e);
 				throw new DAOException(e.getMessage());
 			}
 		}
 	}
 
+	/**
+	 * @throws DAOException
+	 * @see {@link DAO#isExiste(Object)}
+	 */
 	@Override
 	public boolean isExiste(Curso obj) throws DAOException {
 		if (obj != null) {
@@ -189,6 +198,7 @@ public class CursoDAO implements DAO<Curso> {
 				statement.close();
 				return false;
 			} catch (SQLException e) {
+				logger.error("Erro selecao o dado no base de dados", e);
 				throw new DAOException(e.getMessage());
 			}
 		}

@@ -28,7 +28,7 @@ public class FuncionarioDAOImpl implements DAO<Funcionario> {
 
 	/**
 	 * @throws DAOException
-	 * @see edu.uepb.web.biblioteca.model.DAO#get(int)
+	 * @see {@link DAO#get(int)}
 	 */
 	@Override
 	public Funcionario get(int id) throws DAOException {
@@ -68,7 +68,7 @@ public class FuncionarioDAOImpl implements DAO<Funcionario> {
 
 	/**
 	 * @throws DAOException
-	 * @see edu.uepb.web.biblioteca.model.DAO#getLista()
+	 * @see {@link DAO#getLista()}
 	 */
 	@Override
 	public List<Funcionario> getLista() throws DAOException {
@@ -107,7 +107,7 @@ public class FuncionarioDAOImpl implements DAO<Funcionario> {
 
 	/**
 	 * @throws DAOException
-	 * @see edu.uepb.web.biblioteca.model.DAO#inserir(Object)
+	 * @see {@link DAO#inserir(Object)}
 	 */
 	@Override
 	public int inserir(Funcionario obj) throws DAOException {
@@ -145,7 +145,7 @@ public class FuncionarioDAOImpl implements DAO<Funcionario> {
 
 	/**
 	 * @throws DAOException
-	 * @see edu.uepb.web.biblioteca.model.DAO#remover(Object)
+	 * @see {@link DAO#remover(Object)}
 	 */
 	@Override
 	public void remover(Funcionario obj) throws DAOException {
@@ -168,7 +168,7 @@ public class FuncionarioDAOImpl implements DAO<Funcionario> {
 
 	/**
 	 * @throws DAOException
-	 * @see edu.uepb.web.biblioteca.model.DAO#atualizar(Object)
+	 * @see {@link DAO#atualizar(Object)}
 	 */
 	@Override
 	public void atualizar(Funcionario obj) throws DAOException {
@@ -201,6 +201,10 @@ public class FuncionarioDAOImpl implements DAO<Funcionario> {
 		}
 	}
 
+	/**
+	 * @throws DAOException
+	 * @see {@link DAO#isExiste(Object)}
+	 */
 	@Override
 	public boolean isExiste(Funcionario obj) throws DAOException {
 		if (obj != null) {

@@ -11,7 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import edu.uepb.web.biblioteca.dao.Conexao;
-import edu.uepb.web.biblioteca.dao.CursoDAO;
+import edu.uepb.web.biblioteca.dao.CursoDAOImpl;
 import edu.uepb.web.biblioteca.enums.TipoNivel;
 import edu.uepb.web.biblioteca.exception.DAOException;
 import edu.uepb.web.biblioteca.model.Curso;
@@ -26,13 +26,13 @@ public class CursoDAOTest {
 	Curso administracao;
 	Curso letras;
 	Curso direito;
-	CursoDAO manager;
+	CursoDAOImpl manager;
 	List<Curso> listaCurso;
 	Connection conn;
 
 	@Before
 	public void setUp() throws Exception {
-		manager = new CursoDAO();
+		manager = new CursoDAOImpl();
 		conn = new Conexao().getConexao();
 		energia = new Curso("Engenharia de Energia", TipoNivel.GRADUACAO, "Tecnologia");
 		administracao = new Curso("administracao", TipoNivel.GRADUACAO, "Humanas");
@@ -84,7 +84,6 @@ public class CursoDAOTest {
 
 	@Test
 	public void isExiste() throws DAOException {
-		assertEquals(true, manager.isExiste(energia));
 
 		Curso fisica = new Curso();
 		fisica.setNome("Fisica");

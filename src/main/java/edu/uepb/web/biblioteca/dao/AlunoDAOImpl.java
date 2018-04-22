@@ -16,17 +16,17 @@ import edu.uepb.web.biblioteca.model.Aluno;
 /**
  * @autor geovanniovinhas <vinhasgeovannio@gmail.com
  */
-public class AlunoDAO implements DAO<Aluno> {
+public class AlunoDAOImpl implements DAO<Aluno> {
 	private Connection connection;
 	private PreparedStatement statement;
 	private ResultSet resultSet;
 	private static final int ID_FAKE = -1;
-	private CursoDAO cursoDAO;
-	private static Logger logger = Logger.getLogger(AlunoDAO.class);
+	private CursoDAOImpl cursoDAO;
+	private static Logger logger = Logger.getLogger(AlunoDAOImpl.class);
 
 	/**
 	 * @throws DAOException
-	 * @see edu.uepb.web.biblioteca.dao.DAO#get(int)
+	 * @see {@link DAO#get(int)}
 	 */
 	@Override
 	public Aluno get(int id) throws DAOException {
@@ -40,10 +40,10 @@ public class AlunoDAO implements DAO<Aluno> {
 			statement = connection.prepareStatement(sql);
 			statement.setInt(1, id);
 			resultSet = statement.executeQuery();
-			
+
 			if (resultSet.next()) {
 				aluno = new Aluno();
-				cursoDAO = new CursoDAO();
+				cursoDAO = new CursoDAOImpl();
 				aluno.setMatricula(resultSet.getString(3));
 				aluno.setCurso(cursoDAO.get(resultSet.getInt(2)));
 				aluno.setRg(resultSet.getString(4));
@@ -60,6 +60,7 @@ public class AlunoDAO implements DAO<Aluno> {
 				statement.close();
 			}
 		} catch (SQLException e) {
+			logger.error("Erro selecao o dado no base de dados", e);
 			throw new DAOException(e.getMessage());
 		}
 		return aluno;
@@ -67,7 +68,7 @@ public class AlunoDAO implements DAO<Aluno> {
 
 	/**
 	 * @throws DAOException
-	 * @see edu.uepb.web.biblioteca.dao.DAO#getLista()
+	 * @see {@link DAO#getLista()}
 	 */
 	@Override
 	public List<Aluno> getLista() throws DAOException {
@@ -83,7 +84,7 @@ public class AlunoDAO implements DAO<Aluno> {
 
 			while (resultSet.next()) {
 				aluno = new Aluno();
-				cursoDAO = new CursoDAO();
+				cursoDAO = new CursoDAOImpl();
 				aluno.setMatricula(resultSet.getString(3));
 				aluno.setCurso(cursoDAO.get(resultSet.getInt(2)));
 				aluno.setRg(resultSet.getString(4));
@@ -101,6 +102,7 @@ public class AlunoDAO implements DAO<Aluno> {
 			}
 			statement.close();
 		} catch (SQLException e) {
+			logger.error("Erro selecao o dado no base de dados", e);
 			throw new DAOException(e.getMessage());
 		}
 
@@ -109,12 +111,12 @@ public class AlunoDAO implements DAO<Aluno> {
 
 	/**
 	 * @throws DAOException
-	 * @see edu.uepb.web.biblioteca.dao.DAO#inserir(Object)
+	 * @see {@link DAO#inserir(Object)}
 	 */
 	@Override
 	public int inserir(Aluno obj) throws DAOException {
 		logger.info("Executa o metodo 'inserir' com param objeto : " + obj);
-		int id = AlunoDAO.ID_FAKE;
+		int id = AlunoDAOImpl.ID_FAKE;
 
 		if (obj != null) {
 			connection = new Conexao().getConexao();
@@ -142,7 +144,7 @@ public class AlunoDAO implements DAO<Aluno> {
 				}
 				statement.close();
 			} catch (SQLException e) {
-				logger.error("Erro de inserir: " + e.getMessage());
+				logger.error("Erro insercao o dado no base de dados", e);
 				throw new DAOException(e.getMessage());
 			}
 		}
@@ -151,7 +153,7 @@ public class AlunoDAO implements DAO<Aluno> {
 
 	/**
 	 * @throws DAOException
-	 * @see edu.uepb.web.biblioteca.dao.DAO#remover(Object)
+	 * @see {@link DAO#remover(Object)}
 	 */
 	@Override
 	public void remover(Aluno obj) throws DAOException {
@@ -167,6 +169,7 @@ public class AlunoDAO implements DAO<Aluno> {
 
 				statement.close();
 			} catch (SQLException e) {
+				logger.error("Erro remocao o dado no base de dados", e);
 				throw new DAOException(e.getMessage());
 			}
 		}
@@ -175,7 +178,7 @@ public class AlunoDAO implements DAO<Aluno> {
 
 	/**
 	 * @throws DAOException
-	 * @see edu.uepb.web.biblioteca.dao.DAO#atualizar(Object)
+	 * @see {@link DAO#atualizar(Object)}
 	 */
 	@Override
 	public void atualizar(Aluno obj) throws DAOException {
@@ -200,17 +203,24 @@ public class AlunoDAO implements DAO<Aluno> {
 				statement.setString(10, obj.getAno());
 				statement.setString(11, obj.getPeriodoIngresso());
 				statement.setString(12, obj.getSenha());
-				
+
 				statement.execute();
 
 				statement.close();
 			} catch (SQLException e) {
+				logger.error("Erro atualizacao o dado no base de dados", e);
 				throw new DAOException(e.getMessage());
 			}
 		}
 
 	}
 
+	/**
+	 * Pegar o ultimo id do aluno cadastrado no base de dados
+	 * 
+	 * @return int ultimo id cadastrado
+	 * @throws DAOException
+	 */
 	public int getUltimoId() throws DAOException {
 		logger.info("Executa o metodo 'getUltimoId' para pegar o ultimo id do aluno");
 
@@ -218,7 +228,7 @@ public class AlunoDAO implements DAO<Aluno> {
 
 		String sql = "SELECT max(aluno.idaluno) FROM aluno";
 
-		int ultimoId = AlunoDAO.ID_FAKE;
+		int ultimoId = AlunoDAOImpl.ID_FAKE;
 
 		try {
 			statement = connection.prepareStatement(sql);
@@ -229,11 +239,16 @@ public class AlunoDAO implements DAO<Aluno> {
 			}
 			statement.close();
 		} catch (SQLException e) {
+			logger.error("Erro selecao o dado no base de dados", e);
 			throw new DAOException(e.getMessage());
 		}
 		return ultimoId;
 	}
 
+	/**
+	 * @throws DAOException
+	 * @see {@link DAO#isExiste(Object)}
+	 */
 	@Override
 	public boolean isExiste(Aluno obj) throws DAOException {
 		if (obj != null) {
@@ -252,6 +267,7 @@ public class AlunoDAO implements DAO<Aluno> {
 				statement.close();
 				return false;
 			} catch (SQLException e) {
+				logger.error("Erro selecao o dado no base de dados", e);
 				throw new DAOException(e.getMessage());
 			}
 		}
