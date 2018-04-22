@@ -1,25 +1,18 @@
 package edu.uepb.web.biblioteca.business;
 
-import java.util.List;
-
 import org.apache.log4j.Logger;
 
-import edu.uepb.web.biblioteca.dao.*;
+import edu.uepb.web.biblioteca.dao.AlunoDAOImpl;
+import edu.uepb.web.biblioteca.dao.CursoDAOImpl;
+import edu.uepb.web.biblioteca.dao.ItemDAOImpl;
 import edu.uepb.web.biblioteca.enums.TipoFuncionario;
 import edu.uepb.web.biblioteca.exception.AutenticacaoException;
 import edu.uepb.web.biblioteca.exception.DAOException;
-import edu.uepb.web.biblioteca.exception.ItemExistException;
+import edu.uepb.web.biblioteca.exception.ExistException;
 import edu.uepb.web.biblioteca.model.Aluno;
-import edu.uepb.web.biblioteca.model.AnaisCongresso;
-import edu.uepb.web.biblioteca.model.Autor;
 import edu.uepb.web.biblioteca.model.Curso;
 import edu.uepb.web.biblioteca.model.Funcionario;
 import edu.uepb.web.biblioteca.model.Item;
-import edu.uepb.web.biblioteca.model.Jornal;
-import edu.uepb.web.biblioteca.model.Livro;
-import edu.uepb.web.biblioteca.model.Midia;
-import edu.uepb.web.biblioteca.model.Revista;
-import edu.uepb.web.biblioteca.model.TrabalhoConclusao;
 
 /**
  * @autor geovanniovinhas <vinhasgeovannio@gmail.com
@@ -28,16 +21,9 @@ import edu.uepb.web.biblioteca.model.TrabalhoConclusao;
  */
 public class FuncionarioBusiness {
 	private static Logger logger = Logger.getLogger(FuncionarioBusiness.class);
-	private static final int ID_FAKE = -1;
-	private AlunoDAO alunoDAO;
-	private AnaisCongressoDAO anaisDAO;
-	private AutorDAO autorDAO;
-	private CursoDAO cursoDAO;
-	private JornalDAO jornalDAO;
-	private LivroDAO livroDAO;
-	private MidiaDAO midiaDAO;
-	private RevistaDAO revistaDAO;
-	private TrabalhoConclusaoDAO trabalhoDAO;
+	private ItemDAOImpl itemDAO;
+	private AlunoDAOImpl alunoDAO;
+	private CursoDAOImpl cursoDAO;
 
 	/**
 	 * Cadastra os itens de acordo com os seus tipos. So o admin que pode realizar
@@ -49,70 +35,21 @@ public class FuncionarioBusiness {
 	 * @return int
 	 * @throws AutenticacaoException
 	 * @throws DAOException
-	 * @throws ItemExistException
+	 * @throws ExistException
 	 */
 	public int cadastraItem(Funcionario funcionario, Item item)
-			throws AutenticacaoException, DAOException, ItemExistException {
+			throws AutenticacaoException, DAOException, ExistException {
 		logger.info("Executa o metodo 'cadastraItem' com param fucionario : " + funcionario + " e item : " + item);
 		if (!funcionario.getTipoFunc().equals(TipoFuncionario.ADMINISTRADOR)) {
 			throw new AutenticacaoException("Este funcionario nao esta autorizado");
 		} else {
-
-			// Cadastra Item de tipo Anais Congresso
-			if (item instanceof AnaisCongresso) {
-				anaisDAO = new AnaisCongressoDAO();
-				if (!anaisDAO.isItemExiste(item)) {
-					autorDAO = new AutorDAO();
-					int id = anaisDAO.inserir(item);
-					List<Autor> listaAutor = ((AnaisCongresso) item).getListaAutores();
-					for (Autor autor : listaAutor) {
-						autor.getAnaisCongresso().setId(id);
-						autorDAO.inserir(autor);
-					}
-					return id;
-				}
-				return FuncionarioBusiness.ID_FAKE;
-
-				// Cadastra Item de tipo Jornal
-			} else if (item instanceof Jornal) {
-				jornalDAO = new JornalDAO();
-				if (!jornalDAO.isItemExiste(item)) {
-					return jornalDAO.inserir(item);
-				}
-				return FuncionarioBusiness.ID_FAKE;
-
-				// Cadastra Item de tipo Livro
-			} else if (item instanceof Livro) {
-				livroDAO = new LivroDAO();
-				if (!livroDAO.isItemExiste(item)) {
-					return livroDAO.inserir(item);
-				}
-				return FuncionarioBusiness.ID_FAKE;
-
-				// Cadastra Item de tipo Midia
-			} else if (item instanceof Midia) {
-				midiaDAO = new MidiaDAO();
-				if (!midiaDAO.isItemExiste(item)) {
-					return midiaDAO.inserir(item);
-				}
-				return FuncionarioBusiness.ID_FAKE;
-
-				// Cadastra Item de tipo Revista
-			} else if (item instanceof Revista) {
-				revistaDAO = new RevistaDAO();
-				if (!revistaDAO.isItemExiste(item)) {
-					return revistaDAO.inserir(item);
-				}
-				return FuncionarioBusiness.ID_FAKE;
-
-				// Cadastra Item de tipo Trabalho Conclusao
-			} else if (item instanceof TrabalhoConclusao) {
-				if (!trabalhoDAO.isItemExiste(item)) {
-					return trabalhoDAO.inserir(item);
-				}
-				return FuncionarioBusiness.ID_FAKE;
+			itemDAO = new ItemDAOImpl();
+			if (itemDAO.isExiste(item)) {
+				throw new ExistException("Item ja existe");
+			} else {
+				logger.info("O item salvo com sucesso: " + item);
+				return itemDAO.inserir(item);
 			}
-			return FuncionarioBusiness.ID_FAKE;
 		}
 	}
 
@@ -125,44 +62,19 @@ public class FuncionarioBusiness {
 	 * @return boolean
 	 * @throws AutenticacaoException
 	 * @throws DAOException
+	 * @throws ExistException
 	 */
-	public boolean atualizarItem(Funcionario funcionario, Item item) throws AutenticacaoException, DAOException {
+	public boolean atualizarItem(Funcionario funcionario, Item item)
+			throws AutenticacaoException, DAOException, ExistException {
 		logger.info("Executa o metodo 'atualizarItem' com param fucionario : " + funcionario + " e item : " + item);
 		if (!funcionario.getTipoFunc().equals(TipoFuncionario.ADMINISTRADOR)) {
 			throw new AutenticacaoException("Este funcionario nao esta autorizado");
 		} else {
-			if (item instanceof AnaisCongresso) {
-				anaisDAO = new AnaisCongressoDAO();
-				autorDAO = new AutorDAO();
-				List<Autor> listaAutor = ((AnaisCongresso) item).getListaAutores();
-				for (Autor autor : listaAutor) {
-					autorDAO.atualizar(autor);
-				}
-				anaisDAO.atualizar(item);
-				return true;
-			} else if (item instanceof Jornal) {
-				jornalDAO = new JornalDAO();
-				jornalDAO.atualizar(item);
-				return true;
-			} else if (item instanceof Livro) {
-				livroDAO = new LivroDAO();
-				livroDAO.atualizar(item);
-				return true;
-			} else if (item instanceof Midia) {
-				midiaDAO = new MidiaDAO();
-				midiaDAO.atualizar(item);
-				return true;
-			} else if (item instanceof Revista) {
-				revistaDAO = new RevistaDAO();
-				revistaDAO.atualizar(item);
-				return true;
-			} else if (item instanceof TrabalhoConclusao) {
-				trabalhoDAO = new TrabalhoConclusaoDAO();
-				trabalhoDAO.atualizar(item);
-				return true;
-			}
+			itemDAO = new ItemDAOImpl();
+			itemDAO.atualizar(item);
+			logger.info("O item atualizado com sucesso: " + item);
+			return true;
 		}
-		return false;
 	}
 
 	/**
@@ -180,40 +92,12 @@ public class FuncionarioBusiness {
 		if (!funcionario.getTipoFunc().equals(TipoFuncionario.ADMINISTRADOR)) {
 			throw new AutenticacaoException("Este funcionario nao esta autorizado");
 		} else {
-			if (item instanceof AnaisCongresso) {
-				anaisDAO = new AnaisCongressoDAO();
-				anaisDAO.remover(item);
-				return true;
-
-			} else if (item instanceof Jornal) {
-				jornalDAO = new JornalDAO();
-				jornalDAO.remover(item);
-				return true;
-
-			} else if (item instanceof Livro) {
-				livroDAO = new LivroDAO();
-				livroDAO.remover(item);
-				return true;
-
-			} else if (item instanceof Midia) {
-				midiaDAO = new MidiaDAO();
-				midiaDAO.remover(item);
-				return true;
-
-			} else if (item instanceof Revista) {
-				revistaDAO = new RevistaDAO();
-				revistaDAO.remover(item);
-				return true;
-
-			} else if (item instanceof TrabalhoConclusao) {
-				trabalhoDAO = new TrabalhoConclusaoDAO();
-				trabalhoDAO.remover(item);
-				return true;
-			}
+			itemDAO = new ItemDAOImpl();
+			itemDAO.remover(item);
+			logger.info("O item removido com sucesso: " + item);
+			return true;
 		}
-		return false;
 	}
-	// endregion
 
 	// region curso
 
@@ -226,15 +110,17 @@ public class FuncionarioBusiness {
 	 * @return
 	 * @throws AutenticacaoException
 	 * @throws DAOException
+	 * @throws ExistException
 	 */
-	public int cadastraCurso(Funcionario funcionario, Curso curso) throws AutenticacaoException, DAOException {
+	public int cadastraCurso(Funcionario funcionario, Curso curso)
+			throws AutenticacaoException, DAOException, ExistException {
 		logger.info("Executa o metodo 'cadastraCurso' com param fucionario : " + funcionario + " e curso : " + curso);
-		if (!funcionario.getTipoFunc().equals(TipoFuncionario.ADMINISTRADOR)) {
-			throw new AutenticacaoException("Este funcionario nao esta autorizado");
-		} else {
-			cursoDAO = new CursoDAO();
-			return cursoDAO.inserir(curso);
+		cursoDAO = new CursoDAOImpl();
+		if (cursoDAO.isExiste(curso)) {
+			throw new ExistException("O Curso ja existe");
 		}
+		logger.info("O curso salvo com sucesso: " + curso);
+		return cursoDAO.inserir(curso);
 	}
 
 	/**
@@ -252,13 +138,12 @@ public class FuncionarioBusiness {
 		if (!funcionario.getTipoFunc().equals(TipoFuncionario.ADMINISTRADOR)) {
 			throw new AutenticacaoException("Este funcionario nao esta autorizado");
 		} else {
-			cursoDAO = new CursoDAO();
+			cursoDAO = new CursoDAOImpl();
 			cursoDAO.remover(curso);
+			logger.info("O curso removido com sucesso: " + curso);
 			return true;
 		}
 	}
-
-	// endregion
 
 	/**
 	 * Gera matricula para o aluno cadastrado. A matricula e unico para cada aluno.
@@ -268,6 +153,7 @@ public class FuncionarioBusiness {
 	 * @throws DAOException
 	 */
 	public String gerarMatricula(Aluno aluno) throws DAOException {
+		logger.info("Execucao metodo  'gerarMatricula'");
 		String nivelAbreviacao = "", cursoAbreviacao, anoAbreviacao, firstAbreviacao, secondAbreviacao, curso, ano,
 				codigo;
 
@@ -310,71 +196,75 @@ public class FuncionarioBusiness {
 		anoAbreviacao = ano.substring(2, ano.length());
 
 		// Criar codigo (e.g. 1 -> 001)
-		alunoDAO = new AlunoDAO();
+		alunoDAO = new AlunoDAOImpl();
 		codigo = String.format("%03d", alunoDAO.getUltimoId() + 1);
-
 		return nivelAbreviacao + cursoAbreviacao.toUpperCase() + "-" + anoAbreviacao + aluno.getPeriodoIngresso()
 				+ codigo;
 	}
 
 	/**
 	 * 
-	 * Cadastrar aluno. Qualquer funcionário poderá cadastrar o aluno.
+	 * Cadastrar aluno. Qualquer funcionï¿½rio poderï¿½ cadastrar o aluno.
 	 * 
 	 * @param funcionario
 	 * @param aluno
-	 * @return
+	 * @return id do aluno cadastrado
 	 * @throws AutenticacaoException
 	 * @throws DAOException
+	 * @throws ExistException
 	 */
-	public boolean cadastrarAluno(Funcionario funcionario, Aluno aluno) throws AutenticacaoException, DAOException {
+	public int cadastrarAluno(Funcionario funcionario, Aluno aluno)
+			throws AutenticacaoException, DAOException, ExistException {
 		logger.info("Executa o metodo 'cadastrarAluno' com param Funcionario : " + funcionario + " e item: " + aluno);
 
-		alunoDAO = new AlunoDAO();
-		alunoDAO.inserir(aluno);
-
-		return true;
+		alunoDAO = new AlunoDAOImpl();
+		aluno.setMatricula(this.gerarMatricula(aluno));
+		if (alunoDAO.isExiste(aluno)) {
+			throw new ExistException("O aluno ja cadastrado no sistema");
+		}
+		logger.info("O Aluno cadastrado com sucesso: " + aluno);
+		return alunoDAO.inserir(aluno);
 	}
-	
+
 	/**
 	 * 
-	 * Remover aluno. Só o funcionário do tipo administrador poderá remover.
+	 * Remover aluno. Sï¿½ o funcionï¿½rio do tipo administrador poderï¿½ remover.
 	 * 
 	 * @param funcionario
 	 * @param aluno
-	 * @return
+	 * @return true se foi removido
 	 * @throws DAOException
 	 * @throws AutenticacaoException
 	 */
-
 	public boolean removerAluno(Funcionario funcionario, Aluno aluno) throws DAOException, AutenticacaoException {
 		logger.info("Executa o metodo 'removerAluno' com param Funcionario: " + funcionario + " e item: " + aluno);
 		if (!funcionario.getTipoFunc().equals(TipoFuncionario.ADMINISTRADOR)) {
 			throw new AutenticacaoException("Este funcionario nao esta autorizado");
 		} else {
-			alunoDAO = new AlunoDAO();
-			alunoDAO.inserir(aluno);
+			alunoDAO = new AlunoDAOImpl();
+			alunoDAO.remover(aluno);
+			logger.info("O Aluno removido com sucesso: " + aluno);
+			return true;
 		}
-		return true;
 	}
-	
+
 	/**
 	 * 
-	 * Atualizar dados do aluno. Qualquer funcionário poderá atualizar.
+	 * Atualizar dados do aluno. Qualquer funcionï¿½rio poderï¿½ atualizar.
 	 * 
 	 * @param funcionario
 	 * @param aluno
-	 * @return
+	 * @return boolean
 	 * @throws DAOException
 	 * @throws AutenticacaoException
 	 */
-
 	public boolean atualizarAluno(Funcionario funcionario, Aluno aluno) throws DAOException, AutenticacaoException {
 		logger.info("Executa o metodo 'atualizarAluno' com param Funcionario: " + funcionario + " e item: " + aluno);
 
-		alunoDAO = new AlunoDAO();
-		alunoDAO.inserir(aluno);
-		
+		alunoDAO = new AlunoDAOImpl();
+		alunoDAO.atualizar(aluno);
+		logger.info("O Aluno atualizado com sucesso: " + aluno);
 		return true;
 	}
+
 }

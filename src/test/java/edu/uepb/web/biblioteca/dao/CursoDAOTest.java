@@ -11,7 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import edu.uepb.web.biblioteca.dao.Conexao;
-import edu.uepb.web.biblioteca.dao.CursoDAO;
+import edu.uepb.web.biblioteca.dao.CursoDAOImpl;
 import edu.uepb.web.biblioteca.enums.TipoNivel;
 import edu.uepb.web.biblioteca.exception.DAOException;
 import edu.uepb.web.biblioteca.model.Curso;
@@ -22,55 +22,75 @@ import edu.uepb.web.biblioteca.model.Curso;
  *
  */
 public class CursoDAOTest {
-	Curso curso;
-	CursoDAO manager;
+	Curso energia;
+	Curso administracao;
+	Curso letras;
+	Curso direito;
+	CursoDAOImpl manager;
+	List<Curso> listaCurso;
 	Connection conn;
+
 	@Before
 	public void setUp() throws Exception {
-		manager = new CursoDAO();
+		manager = new CursoDAOImpl();
 		conn = new Conexao().getConexao();
-		curso = new Curso("Engenharia de Computacao", TipoNivel.GRADUACAO, "Tecnologia");
+		energia = new Curso("Engenharia de Energia", TipoNivel.GRADUACAO, "Tecnologia");
+		administracao = new Curso("administracao", TipoNivel.GRADUACAO, "Humanas");
+		letras = new Curso("Letras", TipoNivel.GRADUACAO, "Linguistica");
+		direito = new Curso("Direito", TipoNivel.GRADUACAO, "Juridica");
 	}
 
 	@Test
 	public void inserir() throws DAOException {
-		int id = manager.inserir(curso);
-		if(id<0) {
+		int id = manager.inserir(energia);
+		if (id < 0) {
 			Assert.fail();
 		}
 	}
-//	
-//	@Test
-//	public void get() throws DAOException {
-//		assertEquals(manager.get(1).getNome(), curso.getNome());
-//	}
-//	
-//	@Test
-//	public void getLista() throws DAOException {
-//		List<Curso> listaCurso = manager.getLista();
-//		
-//		assertNotEquals(listaCurso.size(), 0);
-//		
-//		for (Curso curso : listaCurso) {
-//			System.out.println(curso.toString());
-//		}
-//	}
-//	
-//	@Test
-//	public void remover() throws DAOException {
-//		manager.remover(manager.get(1));
-//		
-//		assertEquals(manager.get(1), null);
-//	}
-//	
-//	@Test
-//	public void atualizar() throws DAOException {
-//		Curso curso1 = manager.get(3);
-//		curso1.setNome("Direito");
-//		manager.atualizar(curso1);
-//		System.out.println(manager.get(3));
-//		assertNotEquals(curso1.getNome(), manager.get(3));
-//	}
+
+	@Test
+	public void get() throws DAOException {
+		int id = manager.inserir(administracao);
+		assertNotEquals(null, manager.get(id));
+	}
+
+	@Test
+	public void getLista() throws DAOException {
+		listaCurso = manager.getLista();
+
+		if (listaCurso.size() < 0) {
+			Assert.fail();
+		}
+
+	}
+
+	@Test
+	public void remover() throws DAOException {
+		letras.setId(manager.inserir(letras));
+		manager.remover(letras);
+
+		assertEquals(null, manager.get(letras.getId()));
+	}
+
+	@Test
+	public void atualizar() throws DAOException {
+		int id = manager.inserir(direito);
+		direito.setId(id);
+		direito.setNivel(TipoNivel.ESPECIALIZACAO);
+		manager.atualizar(direito);
+
+		assertEquals(TipoNivel.ESPECIALIZACAO, manager.get(id).getNivel());
+	}
+
+	@Test
+	public void isExiste() throws DAOException {
+
+		Curso fisica = new Curso();
+		fisica.setNome("Fisica");
+		fisica.setNivel(TipoNivel.GRADUACAO);
+		fisica.setArea("Exata");
+
+		assertEquals(false, manager.isExiste(fisica));
+	}
 
 }
-
