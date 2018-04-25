@@ -30,6 +30,7 @@ public class Item {
 	private String dataGravacao;
 	private String orientador;
 	private String data;
+	private boolean disponivel;
 
 	public Item() {
 		this.tipoAnais = TipoAnais.NONE;
@@ -160,7 +161,7 @@ public class Item {
 	public int getNumeroPagina() {
 		return numeroPagina;
 	}
-	
+
 	public void setNumeroPagina(int numeroPagina) {
 		this.numeroPagina = numeroPagina;
 	}
@@ -205,6 +206,14 @@ public class Item {
 		this.data = data;
 	}
 
+	public boolean isDisponivel() {
+		return disponivel;
+	}
+
+	public void setDisponivel(boolean disponivel) {
+		this.disponivel = disponivel;
+	}
+
 	@Override
 	public String toString() {
 		return "Acervo [id=" + id + ", tipoItem=" + tipoItem + ", isbn=" + isbn + ", titulo=" + titulo + ", tipoAnais="
@@ -213,6 +222,5 @@ public class Item {
 				+ editora + ", edicao=" + edicao + ", numeroPagina=" + numeroPagina + ", area=" + area + ", tema="
 				+ tema + ", dataGravacao=" + dataGravacao + ", orientador=" + orientador + "]";
 	}
-
 
 }

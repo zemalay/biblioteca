@@ -5,8 +5,8 @@ import java.util.List;
 import edu.uepb.web.biblioteca.exception.DAOException;
 
 /**
- * Interface DAO especifico para os itens. Alem dos metodos (CRUD) adicionamos
- * tambem metodo para verificar se o item ja existe
+ * Interface DAO . Alem dos metodos (CRUD) adicionamos
+ * tambem metodo para verificar se a entidade ja existe
  * 
  * @autor geovanniovinhas <vinhasgeovannio@gmail.com
  * 

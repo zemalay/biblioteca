@@ -215,7 +215,7 @@ public class FuncionarioBusiness {
 	 */
 	public int cadastrarAluno(Funcionario funcionario, Aluno aluno)
 			throws AutenticacaoException, DAOException, ExistException {
-		logger.info("Executa o metodo 'cadastrarAluno' com param Funcionario : " + funcionario + " e item: " + aluno);
+		logger.info("Executa o metodo 'cadastrarAluno' com param Funcionario : " + funcionario + " e aluno: " + aluno);
 
 		alunoDAO = new AlunoDAOImpl();
 		aluno.setMatricula(this.gerarMatricula(aluno));
@@ -237,7 +237,7 @@ public class FuncionarioBusiness {
 	 * @throws AutenticacaoException
 	 */
 	public boolean removerAluno(Funcionario funcionario, Aluno aluno) throws DAOException, AutenticacaoException {
-		logger.info("Executa o metodo 'removerAluno' com param Funcionario: " + funcionario + " e item: " + aluno);
+		logger.info("Executa o metodo 'removerAluno' com param Funcionario: " + funcionario + " e aluno: " + aluno);
 		if (!funcionario.getTipoFunc().equals(TipoFuncionario.ADMINISTRADOR)) {
 			throw new AutenticacaoException("Este funcionario nao esta autorizado");
 		} else {
@@ -259,7 +259,7 @@ public class FuncionarioBusiness {
 	 * @throws AutenticacaoException
 	 */
 	public boolean atualizarAluno(Funcionario funcionario, Aluno aluno) throws DAOException, AutenticacaoException {
-		logger.info("Executa o metodo 'atualizarAluno' com param Funcionario: " + funcionario + " e item: " + aluno);
+		logger.info("Executa o metodo 'atualizarAluno' com param Funcionario: " + funcionario + " e aluno: " + aluno);
 
 		alunoDAO = new AlunoDAOImpl();
 		alunoDAO.atualizar(aluno);

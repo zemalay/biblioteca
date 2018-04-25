@@ -30,11 +30,11 @@ public class AlunoDAOImpl implements DAO<Aluno> {
 	 */
 	@Override
 	public Aluno get(int id) throws DAOException {
-		logger.info("Executa o metodo 'get' com param id : " + id);
+		logger.info("Executa o metodo 'get' do aluno: " + id);
 
 		connection = new Conexao().getConexao();
 
-		String sql = "SELECT * FROM aluno WHERE aluno.idaluno = ?";
+		String sql = "SELECT * FROM aluno WHERE aluno.id = ?";
 		Aluno aluno = null;
 		try {
 			statement = connection.prepareStatement(sql);
@@ -44,6 +44,7 @@ public class AlunoDAOImpl implements DAO<Aluno> {
 			if (resultSet.next()) {
 				aluno = new Aluno();
 				cursoDAO = new CursoDAOImpl();
+				aluno.setId(resultSet.getInt(1));
 				aluno.setMatricula(resultSet.getString(3));
 				aluno.setCurso(cursoDAO.get(resultSet.getInt(2)));
 				aluno.setRg(resultSet.getString(4));
@@ -63,6 +64,7 @@ public class AlunoDAOImpl implements DAO<Aluno> {
 			logger.error("Erro selecao o dado no base de dados", e);
 			throw new DAOException(e.getMessage());
 		}
+		logger.info("O aluno foi selecionado: " + aluno);
 		return aluno;
 	}
 
@@ -72,7 +74,7 @@ public class AlunoDAOImpl implements DAO<Aluno> {
 	 */
 	@Override
 	public List<Aluno> getLista() throws DAOException {
-		logger.info("Executa o metodo 'getLista'");
+		logger.info("Executa o metodo 'getLista' do aluno");
 		connection = new Conexao().getConexao();
 		List<Aluno> listaAluno = new ArrayList<Aluno>();
 		Aluno aluno = null;
@@ -102,10 +104,10 @@ public class AlunoDAOImpl implements DAO<Aluno> {
 			}
 			statement.close();
 		} catch (SQLException e) {
-			logger.error("Erro selecao o dado no base de dados", e);
+			logger.error("Erro selecao no banco", e);
 			throw new DAOException(e.getMessage());
 		}
-
+		logger.info("Pegar os aluno: " + listaAluno.toString());
 		return listaAluno;
 	}
 
@@ -115,13 +117,13 @@ public class AlunoDAOImpl implements DAO<Aluno> {
 	 */
 	@Override
 	public int inserir(Aluno obj) throws DAOException {
-		logger.info("Executa o metodo 'inserir' com param objeto : " + obj);
+		logger.info("Executa o metodo 'inserir' do aluno: " + obj);
 		int id = AlunoDAOImpl.ID_FAKE;
 
 		if (obj != null) {
 			connection = new Conexao().getConexao();
 			String sql = "INSERT INTO aluno "
-					+ "(curso_idcurso, matricula , rg, cpf, nome, mae,  naturalidade, endereco, telefone, ano, periodo, senha) "
+					+ "(curso_id, matricula , rg, cpf, nome, mae,  naturalidade, endereco, telefone, ano, periodo, senha) "
 					+ "VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
 			try {
 				statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -141,13 +143,15 @@ public class AlunoDAOImpl implements DAO<Aluno> {
 				resultSet = statement.getGeneratedKeys();
 				if (resultSet.next()) {
 					id = resultSet.getInt(1);
+					obj.setId(id);
 				}
 				statement.close();
 			} catch (SQLException e) {
-				logger.error("Erro insercao o dado no base de dados", e);
+				logger.error("Erro insercao no banco", e);
 				throw new DAOException(e.getMessage());
 			}
 		}
+		logger.info("O aluno foi inserido: " + obj);
 		return id;
 	}
 
@@ -157,10 +161,10 @@ public class AlunoDAOImpl implements DAO<Aluno> {
 	 */
 	@Override
 	public void remover(Aluno obj) throws DAOException {
-		logger.info("Executa o metodo 'remover' com param objeto : " + obj);
+		logger.info("Executa o metodo 'remover' do aluno : " + obj);
 		if (obj != null) {
 			connection = new Conexao().getConexao();
-			String sql = "DELETE FROM aluno WHERE aluno.idaluno = ?";
+			String sql = "DELETE FROM aluno WHERE aluno.id = ?";
 
 			try {
 				statement = connection.prepareStatement(sql);
@@ -168,6 +172,7 @@ public class AlunoDAOImpl implements DAO<Aluno> {
 				statement.execute();
 
 				statement.close();
+				logger.info("O aluno foi removido" + obj);
 			} catch (SQLException e) {
 				logger.error("Erro remocao o dado no base de dados", e);
 				throw new DAOException(e.getMessage());
@@ -182,12 +187,12 @@ public class AlunoDAOImpl implements DAO<Aluno> {
 	 */
 	@Override
 	public void atualizar(Aluno obj) throws DAOException {
-		logger.info("Executa o metodo 'atualizar' com param objeto : " + obj);
+		logger.info("Executa o metodo 'atualizar' do aluno: " + obj);
 		if (obj != null) {
 			connection = new Conexao().getConexao();
 			String sql = "UPDATE aluno SET "
-					+ "matricula = ?, curso_idcurso = ?, rg = ?, cpf = ?, nome = ?, mae = ?, naturalidade = ?, "
-					+ "endereco = ?, telefone = ?, ano = ?, periodo = ?, senha = ?";
+					+ "matricula = ?, curso_id = ?, rg = ?, cpf = ?, nome = ?, mae = ?, naturalidade = ?, "
+					+ "endereco = ?, telefone = ?, ano = ?, periodo = ?, senha = ? WHERE id = ?";
 
 			try {
 				statement = connection.prepareStatement(sql);
@@ -203,12 +208,15 @@ public class AlunoDAOImpl implements DAO<Aluno> {
 				statement.setString(10, obj.getAno());
 				statement.setString(11, obj.getPeriodoIngresso());
 				statement.setString(12, obj.getSenha());
+				
+				statement.setInt(13, obj.getId());
 
 				statement.execute();
 
 				statement.close();
+				logger.info("O aluno foi atualizado: " + obj);
 			} catch (SQLException e) {
-				logger.error("Erro atualizacao o dado no base de dados", e);
+				logger.error("Erro atualizacao no banco", e);
 				throw new DAOException(e.getMessage());
 			}
 		}
@@ -217,16 +225,17 @@ public class AlunoDAOImpl implements DAO<Aluno> {
 
 	/**
 	 * Pegar o ultimo id do aluno cadastrado no base de dados
+	 * Esse metodo eh especifico para criacao da matricula do aluno
 	 * 
 	 * @return int ultimo id cadastrado
 	 * @throws DAOException
 	 */
 	public int getUltimoId() throws DAOException {
-		logger.info("Executa o metodo 'getUltimoId' para pegar o ultimo id do aluno");
+		logger.info("Executa o metodo 'getUltimoId' do aluno");
 
 		connection = new Conexao().getConexao();
 
-		String sql = "SELECT max(aluno.idaluno) FROM aluno";
+		String sql = "SELECT max(aluno.id) FROM aluno";
 
 		int ultimoId = AlunoDAOImpl.ID_FAKE;
 
@@ -239,9 +248,10 @@ public class AlunoDAOImpl implements DAO<Aluno> {
 			}
 			statement.close();
 		} catch (SQLException e) {
-			logger.error("Erro selecao o dado no base de dados", e);
+			logger.error("Erro selecao o dado no banco", e);
 			throw new DAOException(e.getMessage());
 		}
+		logger.info("O ultmo id do aluno foi selecionado: " + ultimoId);
 		return ultimoId;
 	}
 
@@ -251,6 +261,7 @@ public class AlunoDAOImpl implements DAO<Aluno> {
 	 */
 	@Override
 	public boolean isExiste(Aluno obj) throws DAOException {
+		logger.info("Executar metodo 'isExiste' do aluno: " + obj);
 		if (obj != null) {
 			connection = new Conexao().getConexao();
 			String sql = "SELECT * FROM aluno WHERE matricula = ?";
@@ -262,12 +273,14 @@ public class AlunoDAOImpl implements DAO<Aluno> {
 
 				if (resultSet.next()) {
 					statement.close();
+					logger.info("Esse aluno ja existe no banco: " + obj);
 					return true;
 				}
 				statement.close();
+				logger.info("Esse aluno nao existe no banco: " + obj);
 				return false;
 			} catch (SQLException e) {
-				logger.error("Erro selecao o dado no base de dados", e);
+				logger.error("Erro selecao no banco", e);
 				throw new DAOException(e.getMessage());
 			}
 		}
