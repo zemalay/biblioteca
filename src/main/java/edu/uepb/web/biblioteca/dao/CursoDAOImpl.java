@@ -31,11 +31,11 @@ public class CursoDAOImpl implements DAO<Curso> {
 	 */
 	@Override
 	public Curso get(int id) throws DAOException {
-		logger.info("Executa o metodo 'get' com param id : " + id);
+		logger.info("Executa o metodo 'get' do curso: " + id);
 
 		connection = new Conexao().getConexao();
 
-		String sql = "SELECT * FROM curso WHERE curso.idcurso = ?";
+		String sql = "SELECT * FROM curso WHERE curso.id = ?";
 
 		Curso curso = null;
 
@@ -56,6 +56,7 @@ public class CursoDAOImpl implements DAO<Curso> {
 			logger.error("Erro selecao o dado no base de dados", e);
 			throw new DAOException(e.getMessage());
 		}
+		logger.info("O curso foi selecionado: " + curso);
 		return curso;
 	}
 
@@ -65,7 +66,7 @@ public class CursoDAOImpl implements DAO<Curso> {
 	 */
 	@Override
 	public List<Curso> getLista() throws DAOException {
-		logger.info("Executa o metodo 'getLista' ");
+		logger.info("Executa o metodo 'getLista' do curso");
 		connection = new Conexao().getConexao();
 
 		String sql = "SELECT * FROM curso";
@@ -98,7 +99,7 @@ public class CursoDAOImpl implements DAO<Curso> {
 	 */
 	@Override
 	public int inserir(Curso obj) throws DAOException {
-		logger.info("Executa o metodo 'inserir' com param objeto : " + obj);
+		logger.info("Executa o metodo 'inserir' do curso : " + obj);
 		int id = -1;
 		connection = new Conexao().getConexao();
 		String sql = "INSERT INTO curso (nome, tipoNivel, area) VALUES (?,?,?)";
@@ -112,13 +113,15 @@ public class CursoDAOImpl implements DAO<Curso> {
 				resultSet = statement.getGeneratedKeys();
 				if (resultSet.next()) {
 					id = resultSet.getInt(1);
+					obj.setId(id);
 				}
 				statement.close();
 			} catch (SQLException e) {
-				logger.error("Erro insercao o dado no base de dados", e);
+				logger.error("Erro insercao o dado no banco", e);
 				throw new DAOException(e.getMessage());
 			}
 		}
+		logger.info("O curso foi inserido: " + obj);
 		return id;
 	}
 
@@ -128,11 +131,11 @@ public class CursoDAOImpl implements DAO<Curso> {
 	 */
 	@Override
 	public void remover(Curso obj) throws DAOException {
-		logger.info("Executa o metodo 'remover' com param objeto : " + obj);
+		logger.info("Executa o metodo 'remover' do curso : " + obj);
 
 		if (obj != null) {
 			connection = new Conexao().getConexao();
-			String sql = "DELETE FROM curso WHERE idcurso = ?";
+			String sql = "DELETE FROM curso WHERE id = ?";
 
 			try {
 				statement = connection.prepareStatement(sql);
@@ -140,6 +143,7 @@ public class CursoDAOImpl implements DAO<Curso> {
 				statement.execute();
 
 				statement.close();
+				logger.info("O curso foi removido" + obj);
 			} catch (SQLException e) {
 				logger.error("Erro remocao o dado no base de dados", e);
 				throw new DAOException(e.getMessage());
@@ -154,10 +158,10 @@ public class CursoDAOImpl implements DAO<Curso> {
 	 */
 	@Override
 	public void atualizar(Curso obj) throws DAOException {
-		logger.info("Executa o metodo 'atualizar' com param objeto : " + obj);
+		logger.info("Executa o metodo 'atualizar' do curso : " + obj);
 		if (obj != null) {
 			connection = new Conexao().getConexao();
-			String sql = "UPDATE curso SET nome = ?, tipoNivel = ? , area = ? WHERE curso.idcurso = ?";
+			String sql = "UPDATE curso SET nome = ?, tipoNivel = ? , area = ? WHERE curso.id = ?";
 
 			try {
 				statement = connection.prepareStatement(sql);
@@ -169,8 +173,9 @@ public class CursoDAOImpl implements DAO<Curso> {
 				statement.execute();
 
 				statement.close();
+				logger.info("O item foi atualizado" + obj);
 			} catch (SQLException e) {
-				logger.error("Erro atualizacao o dado no base de dados", e);
+				logger.error("Erro atualizacao o dado no banco", e);
 				throw new DAOException(e.getMessage());
 			}
 		}
@@ -182,6 +187,7 @@ public class CursoDAOImpl implements DAO<Curso> {
 	 */
 	@Override
 	public boolean isExiste(Curso obj) throws DAOException {
+		logger.info("Executar metodo 'isExiste' do curso: " + obj);
 		if (obj != null) {
 			connection = new Conexao().getConexao();
 			String sql = "SELECT * FROM curso WHERE nome = ?";
@@ -193,9 +199,11 @@ public class CursoDAOImpl implements DAO<Curso> {
 
 				if (resultSet.next()) {
 					statement.close();
+					logger.info("Esse curso ja existe no banco: " + obj);
 					return true;
 				}
 				statement.close();
+				logger.info("Esse curso nao existe no banco: " + obj);
 				return false;
 			} catch (SQLException e) {
 				logger.error("Erro selecao o dado no base de dados", e);

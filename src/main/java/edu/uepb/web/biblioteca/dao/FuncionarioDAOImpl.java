@@ -32,7 +32,7 @@ public class FuncionarioDAOImpl implements DAO<Funcionario> {
 	 */
 	@Override
 	public Funcionario get(int id) throws DAOException {
-		logger.info("Executa o metodo 'get' com param id : " + id);
+		logger.info("Executa o metodo 'get' do funcionario : " + id);
 		connection = new Conexao().getConexao();
 
 		String sql = "SELECT * FROM funcionario WHERE funcionario.id = ?";
@@ -63,6 +63,7 @@ public class FuncionarioDAOImpl implements DAO<Funcionario> {
 		} catch (SQLException e) {
 			throw new DAOException(e.getMessage());
 		}
+		logger.info("O funcionario foi selecionado: " + funcionario);
 		return funcionario;
 	}
 
@@ -72,7 +73,7 @@ public class FuncionarioDAOImpl implements DAO<Funcionario> {
 	 */
 	@Override
 	public List<Funcionario> getLista() throws DAOException {
-		logger.info("Executa o metodo 'getLista'");
+		logger.info("Executa o metodo 'getLista' do funcionario");
 		connection = new Conexao().getConexao();
 
 		String sql = "SELECT * FROM funcionario";
@@ -102,6 +103,7 @@ public class FuncionarioDAOImpl implements DAO<Funcionario> {
 		} catch (SQLException e) {
 			throw new DAOException(e.getMessage());
 		}
+		logger.info("Pegar os funcionarios: " + listaFuncionario.toString());
 		return listaFuncionario;
 	}
 
@@ -111,7 +113,7 @@ public class FuncionarioDAOImpl implements DAO<Funcionario> {
 	 */
 	@Override
 	public int inserir(Funcionario obj) throws DAOException {
-		logger.info("Executa o metodo 'inserir' com param objeto : " + obj);
+		logger.info("Executa o metodo 'inserir' do funcionario : " + obj);
 		int id = FuncionarioDAOImpl.ID_FAKE;
 		if (obj != null) {
 			connection = new Conexao().getConexao();
@@ -134,12 +136,14 @@ public class FuncionarioDAOImpl implements DAO<Funcionario> {
 				resultSet = statement.getGeneratedKeys();
 				if (resultSet.next()) {
 					id = resultSet.getInt(1);
+					obj.setId(id);
 				}
 				statement.close();
 			} catch (SQLException e) {
 				throw new DAOException(e.getMessage());
 			}
 		}
+		logger.info("O funcionario foi inserido: " + obj);
 		return id;
 	}
 
@@ -149,7 +153,7 @@ public class FuncionarioDAOImpl implements DAO<Funcionario> {
 	 */
 	@Override
 	public void remover(Funcionario obj) throws DAOException {
-		logger.info("Executa o metodo 'remover' com param objeto : " + obj);
+		logger.info("Executa o metodo 'remover' funcionario : " + obj);
 		if (obj != null) {
 			connection = new Conexao().getConexao();
 			String sql = "DELETE FROM funcionario WHERE funcionario.id = ?";
@@ -160,6 +164,7 @@ public class FuncionarioDAOImpl implements DAO<Funcionario> {
 				statement.execute();
 
 				statement.close();
+				logger.info("O funcionario foi removido" + obj);
 			} catch (SQLException e) {
 				throw new DAOException(e.getMessage());
 			}
@@ -172,7 +177,7 @@ public class FuncionarioDAOImpl implements DAO<Funcionario> {
 	 */
 	@Override
 	public void atualizar(Funcionario obj) throws DAOException {
-		logger.info("Executa o metodo 'atualizar' com param objeto : " + obj);
+		logger.info("Executa o metodo 'atualizar' do funcionario : " + obj);
 		if (obj != null) {
 			connection = new Conexao().getConexao();
 			String sql = "UPDATE funcionario SET "
@@ -195,6 +200,7 @@ public class FuncionarioDAOImpl implements DAO<Funcionario> {
 				statement.setInt(11, obj.getId());
 				statement.execute();
 				statement.close();
+				logger.info("O funcionario foi atualizado" + obj);
 			} catch (SQLException e) {
 				throw new DAOException(e.getMessage());
 			}
@@ -207,6 +213,7 @@ public class FuncionarioDAOImpl implements DAO<Funcionario> {
 	 */
 	@Override
 	public boolean isExiste(Funcionario obj) throws DAOException {
+		logger.info("Executar metodo 'isExiste' do funcionario: " + obj);
 		if (obj != null) {
 			connection = new Conexao().getConexao();
 			String sql = "SELECT * FROM funcionario WHERE cpf = ?";
@@ -218,9 +225,11 @@ public class FuncionarioDAOImpl implements DAO<Funcionario> {
 
 				if (resultSet.next()) {
 					statement.close();
+					logger.info("Esse funcionario ja existe no banco: " + obj);
 					return true;
 				}
 				statement.close();
+				logger.info("Esse funcionario nao existe no banco: " + obj);
 				return false;
 			} catch (SQLException e) {
 				throw new DAOException(e.getMessage());

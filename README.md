@@ -20,7 +20,3 @@ Artefatos dos documentos do projeto:
     - biblioteca/doc/SQL/
     - Lembrando antes de importar precisa criar primeiro o schema com nome 'biblioteca'
  
-Executar o projeto:
- Para simular as funcionalidades de acordo com o pedido do Sprint 1, simulamos no arquivo FuncionarioDAOTest.
-
-Observações: Lembrando que ao testar cada caso de teste comentar os demais casos de testes para ter a execução adequada.
