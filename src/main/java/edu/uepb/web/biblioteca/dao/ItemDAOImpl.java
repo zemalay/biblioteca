@@ -24,7 +24,7 @@ public class ItemDAOImpl implements DAO<Item> {
 	private Connection connection;
 	private PreparedStatement statement;
 	private ResultSet resultSet;
-	
+
 	private static Logger logger = Logger.getLogger(ItemDAOImpl.class);
 
 	/**
@@ -63,6 +63,7 @@ public class ItemDAOImpl implements DAO<Item> {
 				item.setDataGravacao(resultSet.getString(17));
 				item.setOrientador(resultSet.getString(18));
 				item.setData(resultSet.getString(19));
+				item.setQuantidade(resultSet.getInt(20));
 			}
 			statement.close();
 		} catch (SQLException e) {
@@ -107,6 +108,7 @@ public class ItemDAOImpl implements DAO<Item> {
 				item.setDataGravacao(resultSet.getString(17));
 				item.setOrientador(resultSet.getString(18));
 				item.setData(resultSet.getString(19));
+				item.setQuantidade(resultSet.getInt(20));
 				listaAcervo.add(item);
 			}
 			statement.close();
@@ -129,8 +131,8 @@ public class ItemDAOImpl implements DAO<Item> {
 			connection = new Conexao().getConexao();
 			String sql = "INSERT INTO item" + "(tipo_item, isbn, titulo, tipo_anais, "
 					+ "tipo_midia, tipo_trabalho_conclusao, autor, congresso, ano_publicacao, local, editora, "
-					+ "edicao, numero_pagina, area, tema, data_gravacao, orientador, data) "
-					+ "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+					+ "edicao, numero_pagina, area, tema, data_gravacao, orientador, data, quantidade) "
+					+ "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
 			try {
 				statement = (PreparedStatement) connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -152,6 +154,7 @@ public class ItemDAOImpl implements DAO<Item> {
 				statement.setString(16, obj.getDataGravacao());
 				statement.setString(17, obj.getOrientador());
 				statement.setString(18, obj.getData());
+				statement.setInt(19, obj.getQuantidade());
 
 				statement.execute();
 				resultSet = statement.getGeneratedKeys();
@@ -184,7 +187,7 @@ public class ItemDAOImpl implements DAO<Item> {
 				statement = (PreparedStatement) connection.prepareStatement(sql);
 				statement.setInt(1, obj.getId());
 				statement.execute();
-				
+
 				statement.close();
 				logger.info("O item foi removido" + obj);
 			} catch (SQLException e) {
@@ -204,7 +207,7 @@ public class ItemDAOImpl implements DAO<Item> {
 			connection = new Conexao().getConexao();
 			String sql = "UPDATE item SET tipo_item = ?, isbn = ?, titulo = ?, tipo_anais = ?, "
 					+ "tipo_midia = ?, tipo_trabalho_conclusao = ?, autor = ?, congresso = ?, ano_publicacao = ?, local = ?, editora = ?, "
-					+ "edicao = ?, numero_pagina = ?, area = ?, tema = ?, data_gravacao = ?, orientador = ? , data = ?"
+					+ "edicao = ?, numero_pagina = ?, area = ?, tema = ?, data_gravacao = ?, orientador = ? , data = ?, quantidade = ? "
 					+ "WHERE id = ?";
 
 			try {
@@ -227,11 +230,12 @@ public class ItemDAOImpl implements DAO<Item> {
 				statement.setString(16, obj.getDataGravacao());
 				statement.setString(17, obj.getOrientador());
 				statement.setString(18, obj.getData());
+				statement.setInt(19, obj.getQuantidade());
 
-				statement.setInt(19, obj.getId());
+				statement.setInt(20, obj.getId());
 
 				statement.execute();
-				
+
 				connection.close();
 				logger.info("O item foi atualizado: " + obj);
 			} catch (SQLException e) {
