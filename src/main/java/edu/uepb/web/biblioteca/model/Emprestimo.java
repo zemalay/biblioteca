@@ -12,6 +12,7 @@ public class Emprestimo {
 	private Item item;
 	private String dataCadastrado;
 	private String dataDevolucao;
+	private int renovacao;
 
 	public String getDataDevolucao() {
 		return dataDevolucao;
@@ -59,6 +60,14 @@ public class Emprestimo {
 
 	public void setDataCadastrado(String dataCadastrado) {
 		this.dataCadastrado = dataCadastrado;
+	}
+
+	public int getRenovacao() {
+		return renovacao;
+	}
+
+	public void setRenovacao(int renovacao) {
+		this.renovacao = renovacao;
 	}
 
 	@Override

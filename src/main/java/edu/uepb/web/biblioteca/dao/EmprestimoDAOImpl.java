@@ -59,6 +59,7 @@ public class EmprestimoDAOImpl implements DAO<Emprestimo> {
 				emprestimo.setId(resultSet.getInt(1));
 				emprestimo.setDataCadastrado(resultSet.getString(5));
 				emprestimo.setDataDevolucao(resultSet.getString(6));
+				emprestimo.setRenovacao(resultSet.getInt(7));
 
 				funcionario = funcionarioDAOImpl.get(resultSet.getInt(2));
 				aluno = alunoDAOImpl.get(resultSet.getInt(3));
@@ -101,6 +102,7 @@ public class EmprestimoDAOImpl implements DAO<Emprestimo> {
 				emprestimo.setId(resultSet.getInt(1));
 				emprestimo.setDataCadastrado(resultSet.getString(5));
 				emprestimo.setDataDevolucao(resultSet.getString(6));
+				emprestimo.setRenovacao(resultSet.getInt(7));
 
 				funcionario = funcionarioDAOImpl.get(resultSet.getInt(2));
 				aluno = alunoDAOImpl.get(resultSet.getInt(3));
@@ -170,13 +172,14 @@ public class EmprestimoDAOImpl implements DAO<Emprestimo> {
 		logger.info("Executa o metodo 'atualizar' Emprestimo:" + obj);
 		if (obj != null) {
 			connection = new Conexao().getConexao();
-			String sql = "UPDATE emprestimo SET data_cadastrado = ?, data_devolucao = ? WHERE id = ?";
+			String sql = "UPDATE emprestimo SET data_cadastrado = ?, data_devolucao = ? , renovacao = ? WHERE id = ?";
 
 			try {
 				statement = connection.prepareStatement(sql);
 				statement.setString(1, obj.getDataCadastrado());
 				statement.setString(2, obj.getDataDevolucao());
-				statement.setInt(3, obj.getId());
+				statement.setInt(3, obj.getRenovacao());
+				statement.setInt(4, obj.getId());
 
 				statement.execute();
 				statement.close();

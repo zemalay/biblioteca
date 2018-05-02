@@ -30,7 +30,7 @@ public class Item {
 	private String dataGravacao;
 	private String orientador;
 	private String data;
-	private boolean disponivel;
+	private int quantidade;
 
 	public Item() {
 		this.tipoAnais = TipoAnais.NONE;
@@ -206,21 +206,44 @@ public class Item {
 		this.data = data;
 	}
 
-	public boolean isDisponivel() {
-		return disponivel;
+	public int getQuantidade() {
+		return quantidade;
 	}
 
-	public void setDisponivel(boolean disponivel) {
-		this.disponivel = disponivel;
+	public void setQuantidade(int quantidade) {
+		this.quantidade = quantidade;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + id;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Item other = (Item) obj;
+		if (id != other.id)
+			return false;
+		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "Acervo [id=" + id + ", tipoItem=" + tipoItem + ", isbn=" + isbn + ", titulo=" + titulo + ", tipoAnais="
+		return "Item [id=" + id + ", tipoItem=" + tipoItem + ", isbn=" + isbn + ", titulo=" + titulo + ", tipoAnais="
 				+ tipoAnais + ", tipoMidia=" + tipoMidia + ", tipoTrabalho=" + tipoTrabalho + ", autor=" + autor
 				+ ", congresso=" + congresso + ", anoPublicacao=" + anoPublicacao + ", local=" + local + ", editora="
 				+ editora + ", edicao=" + edicao + ", numeroPagina=" + numeroPagina + ", area=" + area + ", tema="
-				+ tema + ", dataGravacao=" + dataGravacao + ", orientador=" + orientador + "]";
+				+ tema + ", dataGravacao=" + dataGravacao + ", orientador=" + orientador + ", data=" + data
+				+ ", quantidade=" + quantidade + "]";
 	}
 
 }

@@ -4,15 +4,20 @@ import org.apache.log4j.Logger;
 
 import edu.uepb.web.biblioteca.dao.AlunoDAOImpl;
 import edu.uepb.web.biblioteca.dao.CursoDAOImpl;
+import edu.uepb.web.biblioteca.dao.EmprestimoDAOImpl;
+import edu.uepb.web.biblioteca.dao.FuncionarioDAOImpl;
 import edu.uepb.web.biblioteca.dao.ItemDAOImpl;
 import edu.uepb.web.biblioteca.enums.TipoFuncionario;
 import edu.uepb.web.biblioteca.exception.AutenticacaoException;
 import edu.uepb.web.biblioteca.exception.DAOException;
+import edu.uepb.web.biblioteca.exception.EmprestimoException;
 import edu.uepb.web.biblioteca.exception.ExistException;
 import edu.uepb.web.biblioteca.model.Aluno;
 import edu.uepb.web.biblioteca.model.Curso;
+import edu.uepb.web.biblioteca.model.Emprestimo;
 import edu.uepb.web.biblioteca.model.Funcionario;
 import edu.uepb.web.biblioteca.model.Item;
+import edu.uepb.web.biblioteca.utils.BibliotecaDateTime;
 
 /**
  * @autor geovanniovinhas <vinhasgeovannio@gmail.com
@@ -22,8 +27,10 @@ import edu.uepb.web.biblioteca.model.Item;
 public class FuncionarioBusiness {
 	private static Logger logger = Logger.getLogger(FuncionarioBusiness.class);
 	private ItemDAOImpl itemDAO;
+	private FuncionarioDAOImpl funcionarioDAO;
 	private AlunoDAOImpl alunoDAO;
 	private CursoDAOImpl cursoDAO;
+	private EmprestimoDAOImpl emprestimoDAO;
 
 	/**
 	 * Cadastra os itens de acordo com os seus tipos. So o admin que pode realizar
@@ -237,7 +244,7 @@ public class FuncionarioBusiness {
 	 * @throws AutenticacaoException
 	 */
 	public boolean removerAluno(Funcionario funcionario, Aluno aluno) throws DAOException, AutenticacaoException {
-		logger.info("Executa o metodo 'removerAluno' com param Funcionario: " + funcionario + " e aluno: " + aluno);
+		logger.info("Executa o metodo 'removerAluno' do funcionarioBusiness: " + funcionario + " e aluno: " + aluno);
 		if (!funcionario.getTipoFunc().equals(TipoFuncionario.ADMINISTRADOR)) {
 			throw new AutenticacaoException("Este funcionario nao esta autorizado");
 		} else {
@@ -256,15 +263,54 @@ public class FuncionarioBusiness {
 	 * @param aluno
 	 * @return boolean
 	 * @throws DAOException
-	 * @throws AutenticacaoException
 	 */
-	public boolean atualizarAluno(Funcionario funcionario, Aluno aluno) throws DAOException, AutenticacaoException {
-		logger.info("Executa o metodo 'atualizarAluno' com param Funcionario: " + funcionario + " e aluno: " + aluno);
+	public boolean atualizarAluno(Funcionario funcionario, Aluno aluno) throws DAOException {
+		logger.info("Executa o metodo 'atualizarAluno' funcionarioBusiness: " + funcionario + " e aluno: " + aluno);
 
 		alunoDAO = new AlunoDAOImpl();
 		alunoDAO.atualizar(aluno);
 		logger.info("O Aluno atualizado com sucesso: " + aluno);
 		return true;
+	}
+
+	/**
+	 * O funcionario cadastrar um emprestimo que foi pedido pelo aluno
+	 * 
+	 * @param idFuncionario
+	 * @param idAluno
+	 * @param idItem
+	 * @return id do emprestimo cadastrado
+	 * @throws DAOException
+	 * @throws EmprestimoException
+	 */
+	public int cadastrarEmprestimo(int idFuncionario, int idAluno, int idItem)
+			throws DAOException, EmprestimoException {
+		itemDAO = new ItemDAOImpl();
+		Item item = itemDAO.get(idItem);
+
+		if (item.getQuantidade() < 1) {
+			throw new EmprestimoException("O item esta faltando no estoque");
+		}
+		funcionarioDAO = new FuncionarioDAOImpl();
+		alunoDAO = new AlunoDAOImpl();
+		emprestimoDAO = new EmprestimoDAOImpl();
+		Emprestimo emprestimo = new Emprestimo();
+
+		Aluno aluno = alunoDAO.get(idAluno);
+
+		emprestimo.setFuncionario(funcionarioDAO.get(idFuncionario));
+		emprestimo.setAluno(aluno);
+		emprestimo.setItem(item);
+		emprestimo.setDataCadastrado(BibliotecaDateTime.getDataCadastrado());
+		emprestimo.setDataDevolucao(BibliotecaDateTime.getDataDevolucao(aluno.getCurso().getNivel()));
+
+		int idEmprestimo = emprestimoDAO.inserir(emprestimo);
+
+		// Atualizar a quantidade do item
+		item.setQuantidade(item.getQuantidade() - 1);
+		itemDAO.atualizar(item);
+
+		return idEmprestimo;
 	}
 
 }

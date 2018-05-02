@@ -42,11 +42,13 @@ public class ItemDAOTest {
 		midia.setTitulo("Titulo Midia123");
 		midia.setTipoMidia(TipoMidia.CD);
 		midia.setDataGravacao("12/02/2009");
+		midia.setQuantidade(10);
 
 		jornal = new Item();
 		jornal.setTipoItem(TipoItem.JORNAL);
 		jornal.setTitulo("Titulo Jornal");
 		jornal.setData("02/04/2003");
+		jornal.setQuantidade(2);
 
 		livro = new Item();
 		livro.setTipoItem(TipoItem.LIVRO);
@@ -58,6 +60,7 @@ public class ItemDAOTest {
 		livro.setNumeroPagina(300);
 		livro.setArea("Saude");
 		livro.setTema("HHH");
+		livro.setQuantidade(4);
 
 		revista = new Item();
 		revista.setTipoItem(TipoItem.REVISTA);
@@ -66,6 +69,7 @@ public class ItemDAOTest {
 		revista.setEdicao("4");
 		revista.setData("03/02/2013");
 		revista.setNumeroPagina(23);
+		revista.setQuantidade(6);
 		
 		anais = new Item();
 		anais.setTipoItem(TipoItem.ANAIS);
@@ -75,6 +79,7 @@ public class ItemDAOTest {
 		anais.setAnoPublicacao("2009");
 		anais.setLocal("LOSK");
 		anais.setAutor("SASA");
+		anais.setQuantidade(4);
 
 	}
 
@@ -90,6 +95,7 @@ public class ItemDAOTest {
 		jornal1.setTipoItem(TipoItem.JORNAL);
 		jornal1.setTitulo("Titulo Jornal1");
 		jornal1.setData("01/02/2013");
+		jornal.setQuantidade(2);
 		
 		int id = manager.inserir(jornal1);
 		
