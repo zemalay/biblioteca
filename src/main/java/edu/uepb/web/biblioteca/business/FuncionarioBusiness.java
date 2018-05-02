@@ -313,4 +313,31 @@ public class FuncionarioBusiness {
 		return idEmprestimo;
 	}
 
+	/**
+	 * Realizar a devolucao do item emprestado boolean
+	 * 
+	 * @param idFuncionario
+	 * @param idAluno
+	 * @param idEmprestimo
+	 * @return
+	 * @throws DAOException
+	 */
+	public boolean devolucaoEmprestimo(int idFuncionario, int idAluno, int idEmprestimo) throws DAOException {
+		emprestimoDAO = new EmprestimoDAOImpl();
+		itemDAO = new ItemDAOImpl();
+
+		Emprestimo emprestimo = emprestimoDAO.get(idEmprestimo);
+		Item item = itemDAO.get(emprestimo.getId());
+
+		// aumentar a quantidade do item no estoque
+		item.setQuantidade(item.getQuantidade() + 1);
+		itemDAO.atualizar(item);
+
+		// atualizar o status do emprestimo como entregado
+		emprestimo.setEntregou(true);
+		emprestimoDAO.atualizar(emprestimo);
+
+		return true;
+	}
+
 }

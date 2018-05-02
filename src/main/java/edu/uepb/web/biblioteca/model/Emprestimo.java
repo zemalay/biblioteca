@@ -13,6 +13,7 @@ public class Emprestimo {
 	private String dataCadastrado;
 	private String dataDevolucao;
 	private int renovacao;
+	private boolean entregou;
 
 	public String getDataDevolucao() {
 		return dataDevolucao;
@@ -70,10 +71,19 @@ public class Emprestimo {
 		this.renovacao = renovacao;
 	}
 
+	public boolean isEntregou() {
+		return entregou;
+	}
+
+	public void setEntregou(boolean entregou) {
+		this.entregou = entregou;
+	}
+
 	@Override
 	public String toString() {
 		return "Emprestimo [id=" + id + ", funcionario=" + funcionario + ", aluno=" + aluno + ", item=" + item
-				+ ", dataCadastrado=" + dataCadastrado + ", dataDevolucao=" + dataDevolucao + "]";
+				+ ", dataCadastrado=" + dataCadastrado + ", dataDevolucao=" + dataDevolucao + ", renovacao=" + renovacao
+				+ ", entregou=" + entregou + "]";
 	}
 
 }

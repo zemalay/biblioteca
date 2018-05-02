@@ -20,6 +20,7 @@ import edu.uepb.web.biblioteca.enums.TipoItem;
 import edu.uepb.web.biblioteca.enums.TipoNivel;
 import edu.uepb.web.biblioteca.exception.AutenticacaoException;
 import edu.uepb.web.biblioteca.exception.DAOException;
+import edu.uepb.web.biblioteca.exception.EmprestimoException;
 import edu.uepb.web.biblioteca.exception.ExistException;
 import edu.uepb.web.biblioteca.model.Aluno;
 import edu.uepb.web.biblioteca.model.Curso;
@@ -110,7 +111,7 @@ public class FuncionarioBusinessTest {
 	}
 
 	@Test
-	public void inserir() throws AutenticacaoException, DAOException, ExistException {
+	public void inserir() throws AutenticacaoException, DAOException, ExistException, EmprestimoException {
 		int idCurso = service.cadastraCurso(admin, historia);
 		aluno1.setCurso(cursoDAO.get(idCurso));
 		int idAluno = service.cadastrarAluno(operador, aluno1);
