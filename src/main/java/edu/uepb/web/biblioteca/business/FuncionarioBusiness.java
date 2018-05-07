@@ -21,8 +21,6 @@ import edu.uepb.web.biblioteca.utils.BibliotecaDateTime;
 
 /**
  * @autor geovanniovinhas <vinhasgeovannio@gmail.com
- *
- *
  */
 public class FuncionarioBusiness {
 	private static Logger logger = Logger.getLogger(FuncionarioBusiness.class);
@@ -33,9 +31,22 @@ public class FuncionarioBusiness {
 	private EmprestimoDAOImpl emprestimoDAO;
 
 	/**
+	 * Autenticar o funcionario
+	 * 
+	 * @param usuario
+	 * @param senha
+	 * @return Funcionario
+	 * @throws AutenticacaoException
+	 * @throws DAOException
+	 */
+	public Funcionario autenticar(String usuario, String senha) throws AutenticacaoException, DAOException {
+		funcionarioDAO = new FuncionarioDAOImpl();
+		return funcionarioDAO.login(usuario, senha);
+	}
+
+	/**
 	 * Cadastra os itens de acordo com os seus tipos. So o admin que pode realizar
-	 * essa funcionalidade, retornar o id salvo do banco se nao retornar id_fake =
-	 * -1
+	 * essa funcionalidade, retornar o id salvo do banco
 	 * 
 	 * @param funcionario
 	 * @param item
@@ -110,7 +121,7 @@ public class FuncionarioBusiness {
 
 	/**
 	 * Cadastra o curso. So o admin que pode realizar essa funcionalidade, retornar
-	 * o id salvo do banco se nao retornar id_fake = -1
+	 * o id salvo do banco
 	 * 
 	 * @param funcionariro
 	 * @param curso
@@ -132,7 +143,7 @@ public class FuncionarioBusiness {
 
 	/**
 	 * Remova o curso. So o admin que pode realizar essa funcionalidade, retornar o
-	 * id salvo do banco se nao retornar id_fake = -1
+	 * id salvo do banco
 	 * 
 	 * @param funcionario
 	 * @param curso

@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import edu.uepb.web.biblioteca.exception.AutenticacaoException;
 import edu.uepb.web.biblioteca.exception.DAOException;
 import edu.uepb.web.biblioteca.model.Aluno;
 
@@ -208,7 +209,7 @@ public class AlunoDAOImpl implements DAO<Aluno> {
 				statement.setString(10, obj.getAno());
 				statement.setString(11, obj.getPeriodoIngresso());
 				statement.setString(12, obj.getSenha());
-				
+
 				statement.setInt(13, obj.getId());
 
 				statement.execute();
@@ -224,8 +225,8 @@ public class AlunoDAOImpl implements DAO<Aluno> {
 	}
 
 	/**
-	 * Pegar o ultimo id do aluno cadastrado no base de dados
-	 * Esse metodo eh especifico para criacao da matricula do aluno
+	 * Pegar o ultimo id do aluno cadastrado no base de dados Esse metodo eh
+	 * especifico para criacao da matricula do aluno
 	 * 
 	 * @return int ultimo id cadastrado
 	 * @throws DAOException
@@ -285,6 +286,44 @@ public class AlunoDAOImpl implements DAO<Aluno> {
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * Autenticar o aluno de acordo com parametros dados
+	 * 
+	 * @param matricula
+	 * @param senha
+	 * @return Aluno
+	 * @throws AutenticacaoException
+	 * @throws DAOException
+	 */
+	public Aluno login(String matricula, String senha) throws AutenticacaoException, DAOException {
+		logger.info("Executar metodo 'login' do aluno: " + matricula + " : " + senha);
+
+		connection = new Conexao().getConexao();
+		Aluno aluno = null;
+		String sql = "SELECT id, matricula, senha FROM aluno WHERE matricula = ?";
+
+		try {
+			statement = (PreparedStatement) connection.prepareStatement(sql);
+			statement.setString(1, matricula);
+			resultSet = statement.executeQuery();
+			if (resultSet.next()) {
+				if (resultSet.getString(3).equals(senha)) {
+					aluno = new Aluno();
+					aluno.setId(resultSet.getInt(1));
+					aluno.setMatricula(resultSet.getString(2));
+					aluno.setSenha(resultSet.getString(3));
+				} else {
+					throw new AutenticacaoException("Senha Invalida");
+				}
+			} else {
+				throw new AutenticacaoException("Matricula Invalida");
+			}
+		} catch (SQLException e) {
+			throw new DAOException(e.getMessage());
+		}
+		return aluno;
 	}
 
 }

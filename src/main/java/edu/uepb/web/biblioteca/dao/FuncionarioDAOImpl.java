@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import edu.uepb.web.biblioteca.exception.AutenticacaoException;
 import edu.uepb.web.biblioteca.exception.DAOException;
 import edu.uepb.web.biblioteca.model.Funcionario;
 
@@ -236,5 +237,43 @@ public class FuncionarioDAOImpl implements DAO<Funcionario> {
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * Autenticar o funcionario de acordo com parametros dados
+	 * 
+	 * @param matricula
+	 * @param senha
+	 * @return Aluno
+	 * @throws AutenticacaoException
+	 * @throws DAOException
+	 */
+	public Funcionario login(String usuario, String senha) throws AutenticacaoException, DAOException {
+		logger.info("Executar metodo 'login' do funcionario: " + usuario + " : " + senha);
+
+		connection = new Conexao().getConexao();
+		Funcionario funcionario = null;
+		String sql = "SELECT id, usuario, senha FROM funcionario WHERE usuario = ?";
+
+		try {
+			statement = (PreparedStatement) connection.prepareStatement(sql);
+			statement.setString(1, usuario);
+			resultSet = statement.executeQuery();
+			if (resultSet.next()) {
+				if (resultSet.getString(3).equals(senha)) {
+					funcionario = new Funcionario();
+					funcionario.setId(resultSet.getInt(1));
+					funcionario.setUsuario(resultSet.getString(2));
+					funcionario.setSenha(resultSet.getString(3));
+				} else {
+					throw new AutenticacaoException("Senha Invalida");
+				}
+			} else {
+				throw new AutenticacaoException("Matricula Invalida");
+			}
+		} catch (SQLException e) {
+			throw new DAOException(e.getMessage());
+		}
+		return funcionario;
 	}
 }
