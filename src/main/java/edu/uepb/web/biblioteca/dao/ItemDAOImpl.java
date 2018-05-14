@@ -1,6 +1,7 @@
 package edu.uepb.web.biblioteca.dao;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -9,7 +10,6 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.mysql.cj.jdbc.PreparedStatement;
 
 import edu.uepb.web.biblioteca.exception.DAOException;
 import edu.uepb.web.biblioteca.model.Item;

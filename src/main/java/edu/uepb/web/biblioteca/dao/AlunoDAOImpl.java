@@ -320,6 +320,7 @@ public class AlunoDAOImpl implements DAO<Aluno> {
 			} else {
 				throw new AutenticacaoException("Matricula Invalida");
 			}
+			statement.close();
 		} catch (SQLException e) {
 			throw new DAOException(e.getMessage());
 		}

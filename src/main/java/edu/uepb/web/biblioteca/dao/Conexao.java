@@ -20,10 +20,16 @@ public class Conexao {
 	 */
 	public Connection getConexao() {
 		String path = "jdbc:mysql://localhost:3306/biblioteca?autoReconnect=true&useSSL=false";
+		Connection connection = null;
 		try {
-			return DriverManager.getConnection(path, "root", "");
+
+			Class.forName("com.mysql.jdbc.Driver");
+			connection = DriverManager.getConnection(path, "root", "");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
+		return connection;
 	}
 }

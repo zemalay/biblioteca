@@ -1,6 +1,7 @@
 package edu.uepb.web.biblioteca.business;
 
 import org.apache.log4j.Logger;
+import org.springframework.stereotype.Service;
 
 import edu.uepb.web.biblioteca.dao.AlunoDAOImpl;
 import edu.uepb.web.biblioteca.dao.CursoDAOImpl;
@@ -8,6 +9,7 @@ import edu.uepb.web.biblioteca.dao.EmprestimoDAOImpl;
 import edu.uepb.web.biblioteca.dao.FuncionarioDAOImpl;
 import edu.uepb.web.biblioteca.dao.ItemDAOImpl;
 import edu.uepb.web.biblioteca.enums.TipoFuncionario;
+import edu.uepb.web.biblioteca.enums.TipoNivel;
 import edu.uepb.web.biblioteca.exception.AutenticacaoException;
 import edu.uepb.web.biblioteca.exception.DAOException;
 import edu.uepb.web.biblioteca.exception.EmprestimoException;
@@ -22,6 +24,7 @@ import edu.uepb.web.biblioteca.utils.BibliotecaDateTime;
 /**
  * @autor geovanniovinhas <vinhasgeovannio@gmail.com
  */
+@Service
 public class FuncionarioBusiness {
 	private static Logger logger = Logger.getLogger(FuncionarioBusiness.class);
 	private ItemDAOImpl itemDAO;
@@ -346,6 +349,36 @@ public class FuncionarioBusiness {
 
 		// atualizar o status do emprestimo como entregado
 		emprestimo.setEntregou(true);
+		emprestimoDAO.atualizar(emprestimo);
+
+		return true;
+	}
+	
+	/**
+	 * O Funcionario realizar a renovacao do seu emprestimo
+	 * 
+	 * @param idFuncionario
+	 * @param idAluno
+	 * @param idEmprestimo
+	 * @return boolean
+	 * @throws DAOException
+	 * @throws EmprestimoException
+	 */
+	public boolean renovarEmprestimo(int idAluno, int idEmprestimo) throws DAOException, EmprestimoException {
+		emprestimoDAO = new EmprestimoDAOImpl();
+		Emprestimo emprestimo = emprestimoDAO.get(idEmprestimo);
+
+		alunoDAO = new AlunoDAOImpl();
+		Aluno aluno = alunoDAO.get(idEmprestimo);
+
+		// aluno graduacao nao pode renovar mais de uma vez.
+		if (aluno.getCurso().getNivel() == TipoNivel.GRADUACAO && emprestimo.getRenovacao() != 1) {
+			throw new EmprestimoException("Ja estourou o limite da renovacao!");
+		}
+
+		emprestimo.setDataDevolucao(BibliotecaDateTime.getDataDevolucao(aluno.getCurso().getNivel()));
+		emprestimo.setRenovacao(emprestimo.getRenovacao() + 1);
+
 		emprestimoDAO.atualizar(emprestimo);
 
 		return true;

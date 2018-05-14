@@ -269,8 +269,9 @@ public class FuncionarioDAOImpl implements DAO<Funcionario> {
 					throw new AutenticacaoException("Senha Invalida");
 				}
 			} else {
-				throw new AutenticacaoException("Matricula Invalida");
+				throw new AutenticacaoException("Usuario Invalido");
 			}
+			statement.close();
 		} catch (SQLException e) {
 			throw new DAOException(e.getMessage());
 		}

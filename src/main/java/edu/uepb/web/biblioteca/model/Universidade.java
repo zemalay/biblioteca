@@ -4,6 +4,7 @@ package edu.uepb.web.biblioteca.model;
  * @autor geovanniovinhas <vinhasgeovannio@gmail.com
  */
 public class Universidade {
+
 	private int id;
 	private String nome;
 	private String endereco;

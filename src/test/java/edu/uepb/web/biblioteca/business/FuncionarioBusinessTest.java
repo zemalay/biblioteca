@@ -77,14 +77,14 @@ public class FuncionarioBusinessTest {
 		aluno3 = new Aluno("", "00", "384748", "Dom", "Sani", "Brasil", "Redencao", "9893434", null, "2006", "1",
 				"dsenr");
 
-		historia = new Curso("C23", TipoNivel.DOUTORADO, "Sociais");
-		geografia = new Curso("Curso83", TipoNivel.ESPECIALIZACAO, "Sociais");
-		contabeis = new Curso("Ciencia435", TipoNivel.MESTRADO, "Exatas");
+		historia = new Curso("1213", TipoNivel.DOUTORADO, "Sociais");
+		geografia = new Curso("4516", TipoNivel.ESPECIALIZACAO, "Sociais");
+		contabeis = new Curso("Cien44ci1a435", TipoNivel.MESTRADO, "Exatas");
 
 		livro = new Item();
 		livro.setTipoItem(TipoItem.LIVRO);
-		livro.setIsbn("13-1383");
-		livro.setTitulo("Livro 654");
+		livro.setIsbn("13-1333183");
+		livro.setTitulo("Livro 65334");
 		livro.setAutor("bnas");
 		livro.setEdicao("2");
 		livro.setEditora("NNN");
@@ -95,7 +95,7 @@ public class FuncionarioBusinessTest {
 
 		anais = new Item();
 		anais.setTipoItem(TipoItem.ANAIS);
-		anais.setTitulo("Titulo Anais 2001");
+		anais.setTitulo("Titulo Anais 2331001");
 		anais.setTipoAnais(TipoAnais.RESUMO);
 		anais.setCongresso("ASH");
 		anais.setAnoPublicacao("1999");
@@ -105,7 +105,7 @@ public class FuncionarioBusinessTest {
 
 		jornal = new Item();
 		jornal.setTipoItem(TipoItem.JORNAL);
-		jornal.setTitulo("Titulo Jornal 2300");
+		jornal.setTitulo("Titulo Jornal 2331300");
 		jornal.setData("22/03/2014");
 		jornal.setQuantidade(3);
 	}
