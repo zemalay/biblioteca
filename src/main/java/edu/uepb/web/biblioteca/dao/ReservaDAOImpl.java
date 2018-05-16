@@ -168,10 +168,11 @@ public class ReservaDAOImpl implements DAO<Reserva> {
 	@Override
 	public void atualizar(Reserva obj) throws DAOException {
 		// TODO Auto-generated method stub
-
 	}
 
 	/**
+	 * Verificar se o item ainda nao reservado por alguem
+	 * 
 	 * @throws DAOException
 	 * @see {@link DAO#isExiste(Object)}
 	 */
@@ -180,16 +181,16 @@ public class ReservaDAOImpl implements DAO<Reserva> {
 		logger.info("Executar metodo 'isExiste' da reserva: " + obj);
 		if (obj != null) {
 			connection = new Conexao().getConexao();
-			String sql = "SELECT * FROM reserva WHERE id = ?";
+			String sql = "SELECT * FROM reserva WHERE item_iditem = ?";
 
 			try {
 				statement = (PreparedStatement) connection.prepareStatement(sql);
-				statement.setInt(1, obj.getId());
+				statement.setInt(1, obj.getItem().getId());
 				resultSet = statement.executeQuery();
 
 				if (resultSet.next()) {
 					statement.close();
-					logger.info("Esta reserva ja existe no banco: " + obj);
+					logger.info("A reserva para esse item ja existe no banco: " + obj);
 					return true;
 				}
 				statement.close();
@@ -201,5 +202,5 @@ public class ReservaDAOImpl implements DAO<Reserva> {
 		}
 		return false;
 	}
-
+	
 }

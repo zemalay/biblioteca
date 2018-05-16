@@ -6,19 +6,12 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<link rel="stylesheet" href='<c:url value="/resources/css/style.css"/>' />
 <link rel="stylesheet"
-	href='<c:url value="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />'
-	integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-	crossorigin="anonymous">
-<script
-	src="<c:url value="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" />"
-	integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-	crossorigin="anonymous"></script>
+	href='<c:url value="/resources/bootstrap/css/bootstrap.min.css"/>' />
+<script src="<c:url value="/resources/bootstrap/js/bootstrap.min.js" />"></script>
 <title>HelloWorld page</title>
 </head>
 <body>
-
 	<div class="row">
 		<div class="col-4">
 			<c:if test="${!empty mensagem }">
@@ -43,7 +36,7 @@
 		</div>
 	</div>
 
-
+	<script type="text/javascript" src="/resources/javascript/action.js"></script>
 
 </body>
 </html>

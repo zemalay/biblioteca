@@ -31,4 +31,8 @@ public class BibliotecaDateTime {
 		return dateTime.plusDays(limiteDiaPosGraduacao).toString(default_format);
 	}
 
+	public static DateTime stringToDateTime(String context) {
+		return dateTime = DateTime.parse(context, default_format);
+	}
+
 }

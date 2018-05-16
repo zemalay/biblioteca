@@ -27,7 +27,7 @@ public class FuncionarioController {
 	@RequestMapping(value = { "/login" }, method = RequestMethod.GET)
 	public String index(Model model) {
 		model.addAttribute("funcionario", new Funcionario());
-		return "login";
+		return "default";
 	}
 
 	@RequestMapping(value = "/auth", method = RequestMethod.POST)
