@@ -13,6 +13,8 @@ import edu.uepb.web.biblioteca.model.Funcionario;
 import edu.uepb.web.biblioteca.model.Item;
 
 /**
+ * A Classe Servidce do Item
+ * 
  * @autor geovanniovinhas <vinhasgeovannio@gmail.com
  */
 @Service
@@ -20,12 +22,24 @@ public class ItemService {
 	private ItemDAOImpl itemDAO;
 	private static Logger logger = Logger.getLogger(ItemService.class);
 
-	public Item getItem(int idItem) {
+	/**
+	 * Pegar o item pelo seu ID
+	 * 
+	 * @param idItem
+	 * @return {@link Item}
+	 */
+	public Item getItemById(int idItem) {
 		itemDAO = new ItemDAOImpl();
 		return itemDAO.getById(idItem);
 	}
 
-	public List<Item> getItens() {
+	/**
+	 * Retornar a lista dos itens cadastrados no sistema
+	 * 
+	 * @return List<Item>
+	 */
+	public List<Item> getListaItem() {
+		logger.info("Executa o metodo 'getListaItem' do itemService");
 		itemDAO = new ItemDAOImpl();
 		return itemDAO.getLista();
 	}
@@ -38,8 +52,7 @@ public class ItemService {
 	 * @param item
 	 * @return int
 	 * @throws AutenticacaoException
-	 * @ @throws
-	 *       ExistException
+	 * @throws ExistException
 	 */
 	public int cadastraItem(Funcionario funcionario, Item item) throws AutenticacaoException, ExistException {
 		logger.info("Executa o metodo 'cadastraItem' com param fucionario : " + funcionario + " e item : " + item);
@@ -64,8 +77,7 @@ public class ItemService {
 	 * @param item
 	 * @return boolean
 	 * @throws AutenticacaoException
-	 * @ @throws
-	 *       ExistException
+	 * @throws ExistException
 	 */
 	public boolean atualizarItem(Funcionario funcionario, Item item) throws AutenticacaoException, ExistException {
 		logger.info("Executa o metodo 'atualizarItem' com param fucionario : " + funcionario + " e item : " + item);
@@ -87,7 +99,6 @@ public class ItemService {
 	 * @param item
 	 * @return boolean
 	 * @throws AutenticacaoException
-	 * @
 	 */
 	public boolean removerItem(Funcionario funcionario, Item item) throws AutenticacaoException {
 		logger.info("Executa o metodo 'removerItem' com param fucionario : " + funcionario + " e item : " + item);

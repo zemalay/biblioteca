@@ -1,11 +1,10 @@
 package edu.uepb.web.biblioteca.service;
 
+import java.util.List;
+
 import org.apache.log4j.Logger;
 
 import edu.uepb.web.biblioteca.dao.AlunoDAOImpl;
-import edu.uepb.web.biblioteca.dao.EmprestimoDAOImpl;
-import edu.uepb.web.biblioteca.dao.ItemDAOImpl;
-import edu.uepb.web.biblioteca.dao.ReservaDAOImpl;
 import edu.uepb.web.biblioteca.enums.TipoFuncionario;
 import edu.uepb.web.biblioteca.exception.AutenticacaoException;
 import edu.uepb.web.biblioteca.exception.ExistException;
@@ -18,17 +17,16 @@ import edu.uepb.web.biblioteca.model.Funcionario;
 public class AlunoService {
 	private static Logger logger = Logger.getLogger(AlunoService.class);
 	private AlunoDAOImpl alunoDAO;
-	private EmprestimoDAOImpl emprestimoDAO;
-	private ReservaDAOImpl reservaDAO;
-	private ItemDAOImpl itemDAO;
 
 	/**
 	 * Autenticar aluno
 	 * 
-	 * @param matricula @param senha @return Aluno @throws
-	 * AutenticacaoException @throws
+	 * @param matricula
+	 * @param senha
+	 * @return Aluno @throws AutenticacaoException @throws
 	 */
 	public Aluno autenticar(String matricula, String senha) throws AutenticacaoException {
+		logger.info("Executa o metodo 'autenticar' do alunoService");
 		alunoDAO = new AlunoDAOImpl();
 		return alunoDAO.login(matricula, senha);
 	}
@@ -45,7 +43,7 @@ public class AlunoService {
 	 *             ExistException
 	 */
 	public int cadastrarAluno(Funcionario funcionario, Aluno aluno) throws AutenticacaoException, ExistException {
-		logger.info("Executa o metodo 'cadastrarAluno' com param Funcionario : " + funcionario + " e aluno: " + aluno);
+		logger.info("Executa o metodo 'cadastrarAluno' do alunoService com param: " + funcionario + " e : " + aluno);
 
 		alunoDAO = new AlunoDAOImpl();
 		aluno.setMatricula(this.gerarMatricula(aluno));
@@ -59,7 +57,8 @@ public class AlunoService {
 	/**
 	 * Gera matricula para o aluno cadastrado. A matricula e unico para cada aluno.
 	 * 
-	 * @param aluno @return matricula gerado @throws
+	 * @param aluno
+	 * @return matricula gerado @throws
 	 */
 	public String gerarMatricula(Aluno aluno) {
 		logger.info("Execucao metodo  'gerarMatricula'");
@@ -134,10 +133,11 @@ public class AlunoService {
 	}
 
 	/**
-	 * 
 	 * Atualizar dados do aluno. Qualquer funcion�rio poder� atualizar.
 	 * 
-	 * @param funcionario @param aluno @return boolean @throws
+	 * @param funcionario
+	 * @param aluno
+	 * @return boolean @throws
 	 */
 	public boolean atualizarAluno(Funcionario funcionario, Aluno aluno) {
 		logger.info("Executa o metodo 'atualizarAluno' alunoBusiness: " + funcionario + " e aluno: " + aluno);
@@ -146,6 +146,12 @@ public class AlunoService {
 		alunoDAO.atualizar(aluno);
 		logger.info("O Aluno atualizado com sucesso: " + aluno);
 		return true;
+	}
+	
+	public List<Aluno> getListaAluno(){
+		logger.info("Executa o metodo 'getListaAluno' do AlunoService");
+		alunoDAO = new AlunoDAOImpl();
+		return alunoDAO.getLista();
 	}
 
 }
