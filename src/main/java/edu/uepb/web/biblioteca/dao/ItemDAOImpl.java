@@ -126,10 +126,7 @@ public class ItemDAOImpl implements DAO<Item> {
 		int id = ItemDAOImpl.FAKE_ID;
 		if (obj != null) {
 			connection = new Conexao().getConexao();
-			String sql = "INSERT INTO item" + "(tipo_item, isbn, titulo, tipo_anais, "
-					+ "tipo_midia, tipo_trabalho_conclusao, autor, congresso, ano_publicacao, local, editora, "
-					+ "edicao, numero_pagina, area, tema, data_gravacao, orientador, data, quantidade) "
-					+ "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+			String sql = "INSERT INTO item (tipo_item, isbn, titulo, tipo_anais, tipo_midia, tipo_trabalho_conclusao, autor, congresso, ano_publicacao, local, editora, edicao, numero_pagina, area, tema, data_gravacao, orientador, data, quantidade) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
 			try {
 				statement = (PreparedStatement) connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -200,10 +197,7 @@ public class ItemDAOImpl implements DAO<Item> {
 		logger.info("Executar metodo 'atualizar' do Item: " + obj);
 		if (obj != null) {
 			connection = new Conexao().getConexao();
-			String sql = "UPDATE item SET tipo_item = ?, isbn = ?, titulo = ?, tipo_anais = ?, "
-					+ "tipo_midia = ?, tipo_trabalho_conclusao = ?, autor = ?, congresso = ?, ano_publicacao = ?, local = ?, editora = ?, "
-					+ "edicao = ?, numero_pagina = ?, area = ?, tema = ?, data_gravacao = ?, orientador = ? , data = ?, quantidade = ? "
-					+ "WHERE id = ?";
+			String sql = "UPDATE item SET tipo_item = ?, isbn = ?, titulo = ?, tipo_anais = ?, tipo_midia = ?, tipo_trabalho_conclusao = ?, autor = ?, congresso = ?, ano_publicacao = ?, local = ?, editora = ?, edicao = ?, numero_pagina = ?, area = ?, tema = ?, data_gravacao = ?, orientador = ? , data = ?, quantidade = ? WHERE id = ?";
 
 			try {
 				statement = (PreparedStatement) connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);

@@ -27,7 +27,7 @@ public class FuncionarioDAOImpl implements DAO<Funcionario> {
 	private static Logger logger = Logger.getLogger(FuncionarioDAOImpl.class);
 
 	/**
-	 * @ @see {@link DAO#getById(int)}
+	 * @see {@link DAO#getById(int)}
 	 */
 	@Override
 	public Funcionario getById(int id) {
@@ -67,7 +67,7 @@ public class FuncionarioDAOImpl implements DAO<Funcionario> {
 	}
 
 	/**
-	 * @ @see {@link DAO#getLista()}
+	 * @see {@link DAO#getLista()}
 	 */
 	@Override
 	public List<Funcionario> getLista() {
@@ -106,7 +106,7 @@ public class FuncionarioDAOImpl implements DAO<Funcionario> {
 	}
 
 	/**
-	 * @ @see {@link DAO#inserir(Object)}
+	 * @see {@link DAO#inserir(Object)}
 	 */
 	@Override
 	public int inserir(Funcionario obj) {
@@ -145,7 +145,7 @@ public class FuncionarioDAOImpl implements DAO<Funcionario> {
 	}
 
 	/**
-	 * @ @see {@link DAO#remover(Object)}
+	 * @see {@link DAO#remover(Object)}
 	 */
 	@Override
 	public void remover(Funcionario obj) {
@@ -168,16 +168,14 @@ public class FuncionarioDAOImpl implements DAO<Funcionario> {
 	}
 
 	/**
-	 * @ @see {@link DAO#atualizar(Object)}
+	 * @see {@link DAO#atualizar(Object)}
 	 */
 	@Override
 	public void atualizar(Funcionario obj) {
 		logger.info("Executa o metodo 'atualizar' do funcionario : " + obj);
 		if (obj != null) {
 			connection = new Conexao().getConexao();
-			String sql = "UPDATE funcionario SET "
-					+ "nome = ?, tipo_funcionario = ? , cpf = ?, rg = ?, naturalidade = ?, endereco = ?, telefone = ?, email = ?, usuario = ?, senha = ?"
-					+ "WHERE funcionario.id = ?";
+			String sql = "UPDATE funcionario SET nome = ?, tipo_funcionario = ? , cpf = ?, rg = ?, naturalidade = ?, endereco = ?, telefone = ?, email = ?, usuario = ?, senha = ? WHERE funcionario.id = ?";
 
 			try {
 				statement = connection.prepareStatement(sql);
@@ -203,7 +201,7 @@ public class FuncionarioDAOImpl implements DAO<Funcionario> {
 	}
 
 	/**
-	 * @ @see {@link DAO#isExiste(Object)}
+	 * @see {@link DAO#isExiste(Object)}
 	 */
 	@Override
 	public boolean isExiste(Funcionario obj) {

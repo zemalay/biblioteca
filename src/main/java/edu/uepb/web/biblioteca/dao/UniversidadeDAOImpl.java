@@ -83,6 +83,9 @@ public class UniversidadeDAOImpl implements DAO<Universidade> {
 				statement.setString(3, obj.getPeriodo());
 				statement.setString(4, obj.getInicioPeriodo());
 				statement.setString(5, obj.getFimPeriodo());
+				
+				statement.execute();
+				resultSet = statement.getGeneratedKeys();
 				if (resultSet.next()) {
 					id = resultSet.getInt(1);
 					obj.setId(id);
@@ -92,7 +95,7 @@ public class UniversidadeDAOImpl implements DAO<Universidade> {
 				e.printStackTrace();
 			}
 		}
-		logger.info("A universidade foi inserid: " + obj);
+		logger.info("A universidade foi inserida: " + obj);
 		return id;
 	}
 
@@ -109,7 +112,7 @@ public class UniversidadeDAOImpl implements DAO<Universidade> {
 	public void atualizar(Universidade obj) {
 		logger.info("Executa o metodo 'atualizar' Universidade:" + obj);
 		if (obj != null) {
-			String sql = "UPDATE universidade SET nome = ?, endereco = ? , periodo = ?, data_inicioPeriodo = ?, data_fimPeriodo WHERE id = ?";
+			String sql = "UPDATE universidade SET nome = ?, endereco = ? , periodo = ?, data_inicioPeriodo = ?, data_fimPeriodo = ? WHERE id = ?";
 
 			try {
 				statement = connection.prepareStatement(sql);
