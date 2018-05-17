@@ -58,6 +58,7 @@ public class ReservaDAOImpl implements DAO<Reserva> {
 				reserva.setAluno(aluno);
 				reserva.setItem(item);
 				reserva.setDataReservado(resultSet.getString(4));
+				reserva.setDataPegar(resultSet.getString(5));
 			}
 			statement.close();
 		} catch (SQLException e) {
@@ -93,7 +94,8 @@ public class ReservaDAOImpl implements DAO<Reserva> {
 				reserva.setAluno(aluno);
 				reserva.setItem(item);
 				reserva.setDataReservado(resultSet.getString(4));
-
+				reserva.setDataPegar(resultSet.getString(5));
+				
 				listaReserva.add(reserva);
 			}
 			statement.close();
@@ -122,6 +124,7 @@ public class ReservaDAOImpl implements DAO<Reserva> {
 				statement.setInt(1, obj.getAluno().getId());
 				statement.setInt(2, obj.getItem().getId());
 				statement.setString(3, obj.getDataReservado());
+				statement.setString(4, obj.getDataPegar());
 				statement.execute();
 				resultSet = statement.getGeneratedKeys();
 				if (resultSet.next()) {

@@ -10,6 +10,7 @@ public class Reserva {
 	private Aluno aluno;
 	private Item item;
 	private String dataReservado;
+	private String dataPegar;
 
 	public int getId() {
 		return id;
@@ -43,9 +44,18 @@ public class Reserva {
 		this.dataReservado = dataReservado;
 	}
 
+	public String getDataPegar() {
+		return dataPegar;
+	}
+
+	public void setDataPegar(String dataPegar) {
+		this.dataPegar = dataPegar;
+	}
+
 	@Override
 	public String toString() {
-		return "Reserva [id=" + id + ", aluno=" + aluno + ", item=" + item + ", dataReservado=" + dataReservado + "]";
+		return "Reserva [id=" + id + ", aluno=" + aluno + ", item=" + item + ", dataReservado=" + dataReservado
+				+ ", dataPegar=" + dataPegar + "]";
 	}
 
 }
