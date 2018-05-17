@@ -1,6 +1,7 @@
 package edu.uepb.web.biblioteca.service;
 
 import edu.uepb.web.biblioteca.dao.AlunoDAOImpl;
+import edu.uepb.web.biblioteca.dao.DividaDAOImpl;
 import edu.uepb.web.biblioteca.dao.ItemDAOImpl;
 import edu.uepb.web.biblioteca.dao.ReservaDAOImpl;
 import edu.uepb.web.biblioteca.exception.EmprestimoException;
@@ -16,23 +17,30 @@ public class ReservaService {
 	private ReservaDAOImpl reservaDAO;
 	private AlunoDAOImpl alunoDAO;
 	private ItemDAOImpl itemDAO;
+	private DividaDAOImpl dividaDAO;
 
 	/**
 	 * Aluno realiza a reserva de um item
 	 * 
-	 * @param idALuno
+	 * @param idAluno
 	 * @param idItem
 	 * @param dataReservada
 	 * @return boolean
 	 * @throws DAOException
 	 * @throws EmprestimoException
 	 */
-	public boolean reservaItem(int idALuno, int idItem) throws EmprestimoException {
+	public boolean reservaItem(int idAluno, int idItem) throws EmprestimoException {
 		reservaDAO = new ReservaDAOImpl();
 		alunoDAO = new AlunoDAOImpl();
+		dividaDAO = new DividaDAOImpl();
+
+		// Verifica se o aluno tem divida ainda
+		if (dividaDAO.dividaByAlunoId(idAluno)) {
+			throw new EmprestimoException("O aluno ainda tem divida ainda pago");
+		}
 
 		Item item = itemDAO.getById(idItem);
-		Aluno aluno = alunoDAO.getById(idALuno);
+		Aluno aluno = alunoDAO.getById(idAluno);
 
 		Reserva reserva = new Reserva();
 		reserva.setAluno(aluno);

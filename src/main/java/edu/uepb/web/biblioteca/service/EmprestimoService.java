@@ -40,13 +40,22 @@ public class EmprestimoService {
 	 * @param idAluno
 	 * @param idItem
 	 * @return id do emprestimo cadastrado
-	 * @throws @throws
-	 *             EmprestimoException
+	 * @throws EmprestimoException
 	 */
 	public int cadastrarEmprestimo(int idFuncionario, int idAluno, int idItem) throws EmprestimoException {
 		itemDAO = new ItemDAOImpl();
-		Item item = itemDAO.getById(idItem);
+		alunoDAO = new AlunoDAOImpl();
+		dividaDAO = new DividaDAOImpl();
 
+		Item item = itemDAO.getById(idItem);
+		Aluno aluno = alunoDAO.getById(idAluno);
+
+		// Verifica se o aluno tem divida ainda
+		if (dividaDAO.dividaByAlunoId(idAluno)) {
+			throw new EmprestimoException("O aluno ainda tem divida ainda pago");
+		}
+
+		// Verifica a quantidade do item no estoque
 		if (item.getQuantidade() < 1) {
 			throw new EmprestimoException("O item esta faltando no estoque");
 		}
@@ -55,6 +64,8 @@ public class EmprestimoService {
 
 		List<Reserva> listaReserva = reservaDAO.getLista();
 
+		// Verifica se o aluno reservou o item que ira emprestar, se for remove o
+		// cadastro da reserva
 		for (Reserva reserva : listaReserva) {
 			if (reserva.getAluno().getId() == idAluno && reserva.getItem().getId() == idItem) {
 				reservaDAO.remover(reserva);
@@ -62,11 +73,8 @@ public class EmprestimoService {
 		}
 
 		funcionarioDAO = new FuncionarioDAOImpl();
-		alunoDAO = new AlunoDAOImpl();
 		emprestimoDAO = new EmprestimoDAOImpl();
 		Emprestimo emprestimo = new Emprestimo();
-
-		Aluno aluno = alunoDAO.getById(idAluno);
 
 		emprestimo.setFuncionario(funcionarioDAO.getById(idFuncionario));
 		emprestimo.setAluno(aluno);
@@ -88,7 +96,7 @@ public class EmprestimoService {
 	 * 
 	 * @param idFuncionario
 	 * @param idEmprestimo
-	 * @return @throws
+	 * @return
 	 */
 	public boolean devolucaoEmprestimo(int idFuncionario, int idEmprestimo) {
 		emprestimoDAO = new EmprestimoDAOImpl();
@@ -120,8 +128,7 @@ public class EmprestimoService {
 	 * @param idAluno
 	 * @param idEmprestimo
 	 * @return boolean
-	 * @throws @throws
-	 *             EmprestimoException
+	 * @throws EmprestimoException
 	 */
 	public boolean renovarEmprestimo(int idAluno, int idEmprestimo) throws EmprestimoException {
 		emprestimoDAO = new EmprestimoDAOImpl();

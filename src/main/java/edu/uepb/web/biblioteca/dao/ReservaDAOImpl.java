@@ -167,7 +167,7 @@ public class ReservaDAOImpl implements DAO<Reserva> {
 	}
 
 	/**
-	 * Verificar se o item ainda nao reservado por alguem
+	 * Verificar se o item ainda nao reservado por alguem (aluno)
 	 * 
 	 * @see {@link DAO#isExiste(Object)}
 	 */

@@ -141,8 +141,8 @@ public class DividaDAOImpl implements DAO<Divida> {
 	}
 
 	/**
-	 * Remover a divida de acordo com id do aluno
-	 * Nao com id da divida
+	 * Remover a divida de acordo com id do aluno Nao com id da divida
+	 * 
 	 * @see DAO#remover(Object)
 	 */
 	@Override
@@ -187,6 +187,31 @@ public class DividaDAOImpl implements DAO<Divida> {
 			}
 		}
 
+	}
+
+	public boolean dividaByAlunoId(int idAluno) {
+		logger.info("Executar metodo 'dividaByAlunoId' da divida: " + idAluno);
+		if (idAluno > 0) {
+			String sql = "SELECT * FROM divida WHERE aluno_id = ?";
+			try {
+				statement = (PreparedStatement) connection.prepareStatement(sql);
+				statement.setInt(1, idAluno);
+				resultSet = statement.executeQuery();
+
+				while (resultSet.next()) {
+					if (resultSet.getBoolean(5)) {
+						statement.close();
+						logger.info("O aluno tem divida registrado");
+						return true;
+					}
+				}
+				statement.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return false;
 	}
 
 	@Override
