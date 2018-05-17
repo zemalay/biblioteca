@@ -116,7 +116,7 @@ public class ReservaDAOImpl implements DAO<Reserva> {
 		if (obj != null) {
 			connection = new Conexao().getConexao();
 
-			String sql = "INSERT INTO reserva (reserva.aluno_idaluno, reserva.item_iditem, reserva.data_reservado) VALUES (?,?,?)";
+			String sql = "INSERT INTO reserva (reserva.aluno_idaluno, reserva.item_iditem, reserva.data_reservado, reserva.data_pegar) VALUES (?,?,?,?)";
 
 			try {
 				statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -125,6 +125,7 @@ public class ReservaDAOImpl implements DAO<Reserva> {
 				statement.setInt(2, obj.getItem().getId());
 				statement.setString(3, obj.getDataReservado());
 				statement.setString(4, obj.getDataPegar());
+				statement.setString(5, obj.getDataPegar());
 				statement.execute();
 				resultSet = statement.getGeneratedKeys();
 				if (resultSet.next()) {
