@@ -13,6 +13,7 @@ import edu.uepb.web.biblioteca.model.Aluno;
 import edu.uepb.web.biblioteca.model.Item;
 import edu.uepb.web.biblioteca.model.Reserva;
 import edu.uepb.web.biblioteca.utils.BibliotecaDateTime;
+import edu.uepb.web.biblioteca.utils.Email;
 
 /**
  * @autor geovanniovinhas <vinhasgeovannio@gmail.com
@@ -40,12 +41,11 @@ public class ReservaService {
 	 * 
 	 * @param idAluno
 	 * @param idItem
-	 * @param dataReservada
-	 * @return boolean
-	 * @throws DAOException
+	 * @param enviarEmail
+	 * @return
 	 * @throws EmprestimoException
 	 */
-	public boolean reservaItem(int idAluno, int idItem) throws EmprestimoException {
+	public boolean reservaItem(int idAluno, int idItem, int enviarEmail) throws EmprestimoException {
 		logger.info("Executa o metodo 'reservaItem' do reservaService com param: " + idAluno + " e " + idItem);
 		reservaDAO = new ReservaDAOImpl();
 		alunoDAO = new AlunoDAOImpl();
@@ -80,6 +80,11 @@ public class ReservaService {
 			throw new EmprestimoException("A reserva para este item ja existe");
 		}
 		reservaDAO.inserir(reserva);
+
+		if (enviarEmail != 0) {
+			Email email = new Email();
+			email.sendNotificacaoReserva(aluno, item);
+		}
 		return true;
 	}
 

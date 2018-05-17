@@ -94,6 +94,7 @@ public class EmprestimoService {
 		emprestimo.setItem(item);
 		emprestimo.setDataCadastrado(BibliotecaDateTime.getDataCadastrado());
 		emprestimo.setDataDevolucao(BibliotecaDateTime.getDataDevolucao(aluno.getCurso().getNivel()));
+		emprestimo.setEntregou(false);
 
 		int idEmprestimo = emprestimoDAO.inserir(emprestimo);
 

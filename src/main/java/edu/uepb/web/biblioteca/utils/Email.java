@@ -11,7 +11,9 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import edu.uepb.web.biblioteca.model.Aluno;
 import edu.uepb.web.biblioteca.model.Divida;
+import edu.uepb.web.biblioteca.model.Item;
 import edu.uepb.web.biblioteca.model.Reserva;
 
 /**
@@ -43,7 +45,7 @@ public class Email {
 		return session;
 	}
 
-	public boolean sendNotificacaoReserva() {
+	public boolean sendNotificacaoReserva(Aluno aluno, Item item) {
 		Session session = emailConfig();
 
 		String subject = "Reserva do Item";
