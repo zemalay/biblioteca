@@ -10,11 +10,11 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import edu.uepb.web.biblioteca.business.FuncionarioBusiness;
 import edu.uepb.web.biblioteca.enums.TipoNivel;
 import edu.uepb.web.biblioteca.exception.DAOException;
 import edu.uepb.web.biblioteca.model.Aluno;
 import edu.uepb.web.biblioteca.model.Curso;
+import edu.uepb.web.biblioteca.service.FuncionarioService;
 
 /**
  * @autor geovanniovinhas <vinhasgeovannio@gmail.com
@@ -35,13 +35,13 @@ public class AlunoDAOTest {
 
 	CursoDAOImpl cursoDAO;
 	AlunoDAOImpl manager;
-	FuncionarioBusiness funService;
+	FuncionarioService funService;
 	Connection conn;
 
 	@Before
 	public void setUp() throws Exception {
 		conn = new Conexao().getConexao();
-		funService = new FuncionarioBusiness();
+		funService = new FuncionarioService();
 		manager = new AlunoDAOImpl();
 		cursoDAO = new CursoDAOImpl();
 

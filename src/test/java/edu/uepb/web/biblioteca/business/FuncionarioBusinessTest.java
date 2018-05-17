@@ -26,6 +26,7 @@ import edu.uepb.web.biblioteca.model.Aluno;
 import edu.uepb.web.biblioteca.model.Curso;
 import edu.uepb.web.biblioteca.model.Funcionario;
 import edu.uepb.web.biblioteca.model.Item;
+import edu.uepb.web.biblioteca.service.FuncionarioService;
 
 /**
  * @autor geovanniovinhas <vinhasgeovannio@gmail.com
@@ -33,7 +34,7 @@ import edu.uepb.web.biblioteca.model.Item;
  *
  */
 public class FuncionarioBusinessTest {
-	FuncionarioBusiness service;
+	FuncionarioService service;
 	CursoDAOImpl cursoDAO;
 	AlunoDAOImpl alunoDAO;
 	ItemDAOImpl itemDAO;
@@ -56,7 +57,7 @@ public class FuncionarioBusinessTest {
 
 	@Before
 	public void setUp() throws Exception {
-		service = new FuncionarioBusiness();
+		service = new FuncionarioService();
 		alunoDAO = new AlunoDAOImpl();
 		cursoDAO = new CursoDAOImpl();
 		itemDAO = new ItemDAOImpl();

@@ -1,4 +1,4 @@
-package edu.uepb.web.biblioteca.business;
+package edu.uepb.web.biblioteca.service;
 
 import java.util.List;
 
@@ -20,8 +20,8 @@ import edu.uepb.web.biblioteca.utils.BibliotecaDateTime;
 /**
  * @autor geovanniovinhas <vinhasgeovannio@gmail.com
  */
-public class EmprestimoBusiness {
-	private static Logger logger = Logger.getLogger(EmprestimoBusiness.class);
+public class EmprestimoService {
+	private static Logger logger = Logger.getLogger(EmprestimoService.class);
 	private FuncionarioDAOImpl funcionarioDAO;
 	private ItemDAOImpl itemDAO;
 	private AlunoDAOImpl alunoDAO;

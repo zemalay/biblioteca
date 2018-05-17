@@ -1,4 +1,4 @@
-package edu.uepb.web.biblioteca.business;
+package edu.uepb.web.biblioteca.service;
 
 import org.apache.log4j.Logger;
 
@@ -15,8 +15,8 @@ import edu.uepb.web.biblioteca.model.Funcionario;
 /**
  * @autor geovanniovinhas <vinhasgeovannio@gmail.com
  */
-public class AlunoBusiness {
-	private static Logger logger = Logger.getLogger(AlunoBusiness.class);
+public class AlunoService {
+	private static Logger logger = Logger.getLogger(AlunoService.class);
 	private AlunoDAOImpl alunoDAO;
 	private EmprestimoDAOImpl emprestimoDAO;
 	private ReservaDAOImpl reservaDAO;

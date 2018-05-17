@@ -1,4 +1,4 @@
-package edu.uepb.web.biblioteca.business;
+package edu.uepb.web.biblioteca.service;
 
 import java.util.List;
 
@@ -16,9 +16,9 @@ import edu.uepb.web.biblioteca.model.Item;
  * @autor geovanniovinhas <vinhasgeovannio@gmail.com
  */
 @Service
-public class ItemBusiness {
+public class ItemService {
 	private ItemDAOImpl itemDAO;
-	private static Logger logger = Logger.getLogger(ItemBusiness.class);
+	private static Logger logger = Logger.getLogger(ItemService.class);
 
 	public Item getItem(int idItem) {
 		itemDAO = new ItemDAOImpl();

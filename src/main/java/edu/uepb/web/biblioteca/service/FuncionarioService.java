@@ -1,4 +1,4 @@
-package edu.uepb.web.biblioteca.business;
+package edu.uepb.web.biblioteca.service;
 
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
@@ -15,8 +15,8 @@ import edu.uepb.web.biblioteca.model.Funcionario;
  * @autor geovanniovinhas <vinhasgeovannio@gmail.com
  */
 @Service
-public class FuncionarioBusiness {
-	private static Logger logger = Logger.getLogger(FuncionarioBusiness.class);
+public class FuncionarioService {
+	private static Logger logger = Logger.getLogger(FuncionarioService.class);
 	private FuncionarioDAOImpl funcionarioDAO;
 	private CursoDAOImpl cursoDAO;
 

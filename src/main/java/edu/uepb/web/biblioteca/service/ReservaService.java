@@ -1,4 +1,4 @@
-package edu.uepb.web.biblioteca.business;
+package edu.uepb.web.biblioteca.service;
 
 import edu.uepb.web.biblioteca.dao.AlunoDAOImpl;
 import edu.uepb.web.biblioteca.dao.ItemDAOImpl;
@@ -12,7 +12,7 @@ import edu.uepb.web.biblioteca.utils.BibliotecaDateTime;
 /**
  * @autor geovanniovinhas <vinhasgeovannio@gmail.com
  */
-public class ReservaBusiness {
+public class ReservaService {
 	private ReservaDAOImpl reservaDAO;
 	private AlunoDAOImpl alunoDAO;
 	private ItemDAOImpl itemDAO;
