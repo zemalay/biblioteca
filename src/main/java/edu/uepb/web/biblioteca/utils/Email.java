@@ -79,6 +79,41 @@ public class Email {
 		return true;
 
 	}
+	
+	public boolean sendNotificacaoDevolucao(Aluno aluno, Item item) {
+		Session session = emailConfig();
+
+		String subject = "O item reservado esta disponivel";
+		String body = "";
+		
+		
+
+		try {
+			MimeMessage msg = new MimeMessage(session);
+			// set headers da mensagem
+			msg.addHeader("Content-type", "text/HTML; charset=UTF-8");
+			msg.addHeader("format", "flowed");
+			msg.addHeader("Content-Transfer-Encoding", "8bit");
+
+			msg.setFrom(new InternetAddress("no_reply@example.com", "NoReply-JD"));
+
+			msg.setReplyTo(InternetAddress.parse("no_reply@example.com", false));
+
+			msg.setSubject(subject, "UTF-8");
+
+			msg.setText(body, "UTF-8");
+
+			msg.setSentDate(new Date());
+
+			msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(emailDestino, false));
+			Transport.send(msg);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return true;
+
+	}
 
 	public String getEmailDestino() {
 		return emailDestino;

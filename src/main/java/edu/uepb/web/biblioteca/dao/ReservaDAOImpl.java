@@ -95,7 +95,7 @@ public class ReservaDAOImpl implements DAO<Reserva> {
 				reserva.setItem(item);
 				reserva.setDataReservado(resultSet.getString(4));
 				reserva.setDataPegar(resultSet.getString(5));
-				
+
 				listaReserva.add(reserva);
 			}
 			statement.close();
@@ -199,6 +199,91 @@ public class ReservaDAOImpl implements DAO<Reserva> {
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * Pegar objeto Reserva com parametro ID do Aluno e ID do Item
+	 * 
+	 * @param idAluno
+	 * @param idItem
+	 * @return Reserva
+	 */
+	public Reserva getByAlunoItemId(int idAluno, int idItem) {
+		logger.info("Executa o metodo 'get' do reserva : " + idAluno + " " + idItem);
+		connection = new Conexao().getConexao();
+
+		String sql = "SELECT * FROM reserva WHERE aluno_idaluno = ? and item_iditem = ?";
+
+		Reserva reserva = null;
+
+		try {
+			statement = connection.prepareStatement(sql);
+			statement.setInt(1, idAluno);
+			statement.setInt(2, idItem);
+			resultSet = statement.executeQuery();
+
+			if (resultSet.next()) {
+				reserva = new Reserva();
+				alunoDAO = new AlunoDAOImpl();
+				itemDAO = new ItemDAOImpl();
+
+				reserva.setId(resultSet.getInt(1));
+				aluno = alunoDAO.getById(resultSet.getInt(2));
+				item = itemDAO.getById(resultSet.getInt(3));
+
+				reserva.setAluno(aluno);
+				reserva.setItem(item);
+				reserva.setDataReservado(resultSet.getString(4));
+				reserva.setDataPegar(resultSet.getString(5));
+			}
+			statement.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		logger.info("O reserva foi selecionado: " + reserva);
+		return reserva;
+	}
+
+	/**
+	 * Pegar objeto Reserva com parametro ID do Item
+	 * 
+	 * @param idItem
+	 * @return Reserva
+	 */
+	public Reserva getByItemId(int idItem) {
+		logger.info("Executa o metodo 'get' do reserva : " + idItem);
+		connection = new Conexao().getConexao();
+
+		String sql = "SELECT * FROM reserva WHERE item_iditem = ?";
+
+		Reserva reserva = null;
+
+		try {
+			statement = connection.prepareStatement(sql);
+			statement.setInt(1, idItem);
+			resultSet = statement.executeQuery();
+
+			if (resultSet.next()) {
+				reserva = new Reserva();
+				alunoDAO = new AlunoDAOImpl();
+				itemDAO = new ItemDAOImpl();
+
+				reserva.setId(resultSet.getInt(1));
+				aluno = alunoDAO.getById(resultSet.getInt(2));
+				item = itemDAO.getById(resultSet.getInt(3));
+
+				reserva.setAluno(aluno);
+				reserva.setItem(item);
+				reserva.setDataReservado(resultSet.getString(4));
+				reserva.setDataPegar(resultSet.getString(5));
+			}
+			statement.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		logger.info("O reserva foi selecionado: " + reserva);
+		return reserva;
+
 	}
 
 }

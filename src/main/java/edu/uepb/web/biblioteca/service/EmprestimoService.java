@@ -1,7 +1,5 @@
 package edu.uepb.web.biblioteca.service;
 
-import java.util.List;
-
 import org.apache.log4j.Logger;
 
 import edu.uepb.web.biblioteca.dao.AlunoDAOImpl;
@@ -17,6 +15,7 @@ import edu.uepb.web.biblioteca.model.Emprestimo;
 import edu.uepb.web.biblioteca.model.Item;
 import edu.uepb.web.biblioteca.model.Reserva;
 import edu.uepb.web.biblioteca.utils.BibliotecaDateTime;
+import edu.uepb.web.biblioteca.utils.Email;
 
 /**
  * @autor geovanniovinhas <vinhasgeovannio@gmail.com
@@ -72,17 +71,13 @@ public class EmprestimoService {
 			throw new EmprestimoException("O item esta faltando no estoque");
 		}
 
-		reservaDAO = new ReservaDAOImpl();
-
-		List<Reserva> listaReserva = reservaDAO.getLista();
-
 		// Verifica se o aluno reservou o item que ira emprestar, se for remove o
 		// cadastro da reserva
-		for (Reserva reserva : listaReserva) {
-			if (reserva.getAluno().getId() == idAluno && reserva.getItem().getId() == idItem) {
-				reservaDAO.remover(reserva);
-				logger.info("A reserva foi removido: idAluno:" + idAluno + "idItem: " + idItem);
-			}
+		reservaDAO = new ReservaDAOImpl();
+		Reserva reserva = reservaDAO.getByAlunoItemId(idAluno, idItem);
+		if (reserva != null) {
+			reservaDAO.remover(reserva);
+			logger.info("A reserva foi removido: idAluno:" + idAluno + "idItem: " + idItem);
 		}
 
 		funcionarioDAO = new FuncionarioDAOImpl();
@@ -117,6 +112,7 @@ public class EmprestimoService {
 		emprestimoDAO = new EmprestimoDAOImpl();
 		itemDAO = new ItemDAOImpl();
 		dividaService = new DividaService();
+		reservaDAO = new ReservaDAOImpl();
 
 		Emprestimo emprestimo = emprestimoDAO.getById(idEmprestimo);
 		Aluno aluno = emprestimo.getAluno();
@@ -124,7 +120,14 @@ public class EmprestimoService {
 		// Verfica se tem dias atraso, se tiver calcular a divida
 		dividaService.calcularDivida(aluno, emprestimo, emprestimo.getDataDevolucao());
 
-		Item item = itemDAO.getById(emprestimo.getId());
+		Item item = itemDAO.getById(emprestimo.getItem().getId());
+
+		// Verifica se o item devolvido foi reservado, se for envia email para o aluno
+		Reserva reserva = reservaDAO.getByItemId(item.getId());
+		if (reserva != null) {
+			Email email = new Email();
+			email.sendNotificacaoDevolucao(aluno, item);
+		}
 
 		// aumentar a quantidade do item no estoque
 		item.setQuantidade(item.getQuantidade() + 1);
@@ -160,13 +163,12 @@ public class EmprestimoService {
 			logger.warn("O aluno de graduacao nao pode renovar mais e uma vez: idAluno" + aluno.getId());
 			throw new EmprestimoException("Ja estourou o limite da renovacao!");
 		}
-		List<Reserva> listaReserva = reservaDAO.getLista();
 
-		for (Reserva reserva : listaReserva) {
-			if (emprestimo.getItem().getId() == reserva.getItem().getId()) {
-				logger.warn("O item ja foi reservado por alguem: idItem: " + emprestimo.getItem().getId());
-				throw new EmprestimoException("Nao pode realizar a renovacao, o item ja foi reservado por alguem");
-			}
+		// Verificar se item ja foi reservado por alguem
+		Reserva reserva = reservaDAO.getByItemId(emprestimo.getItem().getId());
+		if (reserva != null) {
+			logger.warn("O item ja foi reservado por alguem: idItem: " + emprestimo.getItem().getId());
+			throw new EmprestimoException("Nao pode realizar a renovacao, o item ja foi reservado por alguem");
 		}
 
 		// Verifica se falta mais de 20 dias para terminar o periodo
