@@ -3,7 +3,6 @@ package edu.uepb.web.biblioteca.business;
 import edu.uepb.web.biblioteca.dao.AlunoDAOImpl;
 import edu.uepb.web.biblioteca.dao.ItemDAOImpl;
 import edu.uepb.web.biblioteca.dao.ReservaDAOImpl;
-import edu.uepb.web.biblioteca.exception.DAOException;
 import edu.uepb.web.biblioteca.exception.EmprestimoException;
 import edu.uepb.web.biblioteca.model.Aluno;
 import edu.uepb.web.biblioteca.model.Item;
@@ -26,27 +25,25 @@ public class ReservaBusiness {
 	 * @param dataReservada
 	 * @return boolean
 	 * @throws DAOException
-	 * @throws EmprestimoException 
+	 * @throws EmprestimoException
 	 */
-	public boolean reservaItem(int idALuno, int idItem) throws DAOException, EmprestimoException {
+	public boolean reservaItem(int idALuno, int idItem) throws EmprestimoException {
 		reservaDAO = new ReservaDAOImpl();
 		alunoDAO = new AlunoDAOImpl();
 
-		Item item = itemDAO.get(idItem);
-		Aluno aluno = alunoDAO.get(idALuno);
+		Item item = itemDAO.getById(idItem);
+		Aluno aluno = alunoDAO.getById(idALuno);
 
 		Reserva reserva = new Reserva();
 		reserva.setAluno(aluno);
 		reserva.setItem(item);
 		reserva.setDataReservado(BibliotecaDateTime.getDataCadastrado());
-		
+
 		if (reservaDAO.isExiste(reserva)) {
 			throw new EmprestimoException("A reserva para este item ja existe");
 		}
 		reservaDAO.inserir(reserva);
 		return true;
 	}
-	
-	
 
 }

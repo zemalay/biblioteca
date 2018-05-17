@@ -1,9 +1,9 @@
 package edu.uepb.web.biblioteca.model;
 
 /**
+ * A classe POJO do Emprestimo
+ * 
  * @autor geovanniovinhas <vinhasgeovannio@gmail.com
- *
- *
  */
 public class Emprestimo {
 	private int id;

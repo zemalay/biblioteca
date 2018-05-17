@@ -1,9 +1,9 @@
 package edu.uepb.web.biblioteca.model;
 
 /**
+ * A classe POJO da Reserva
+ * 
  * @autor geovanniovinhas <vinhasgeovannio@gmail.com
- *
- *
  */
 public class Reserva {
 	private int id;

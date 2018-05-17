@@ -99,7 +99,7 @@ public class ItemDAOTest {
 		
 		int id = manager.inserir(jornal1);
 		
-		assertNotEquals(null, manager.get(id));
+		assertNotEquals(null, manager.getById(id));
 	}
 
 	@Test
@@ -116,7 +116,7 @@ public class ItemDAOTest {
 		revista.setNumeroPagina(27);
 
 		manager.atualizar(revista);
-		assertEquals(27, manager.get(revista.getId()).getNumeroPagina());
+		assertEquals(27, manager.getById(revista.getId()).getNumeroPagina());
 	}
 	
 	@Test
@@ -124,7 +124,7 @@ public class ItemDAOTest {
 		int id = manager.inserir(anais);
 		anais.setId(id);
 		manager.remover(anais);
-		assertEquals(null, manager.get(id));
+		assertEquals(null, manager.getById(id));
 	}
 	
 	@Test

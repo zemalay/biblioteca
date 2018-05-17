@@ -10,7 +10,6 @@ import edu.uepb.web.biblioteca.dao.FuncionarioDAOImpl;
 import edu.uepb.web.biblioteca.dao.ItemDAOImpl;
 import edu.uepb.web.biblioteca.dao.ReservaDAOImpl;
 import edu.uepb.web.biblioteca.enums.TipoNivel;
-import edu.uepb.web.biblioteca.exception.DAOException;
 import edu.uepb.web.biblioteca.exception.EmprestimoException;
 import edu.uepb.web.biblioteca.model.Aluno;
 import edu.uepb.web.biblioteca.model.Emprestimo;
@@ -36,13 +35,12 @@ public class EmprestimoBusiness {
 	 * @param idAluno
 	 * @param idItem
 	 * @return id do emprestimo cadastrado
-	 * @throws DAOException
-	 * @throws EmprestimoException
+	 * @throws @throws
+	 *             EmprestimoException
 	 */
-	public int cadastrarEmprestimo(int idFuncionario, int idAluno, int idItem)
-			throws DAOException, EmprestimoException {
+	public int cadastrarEmprestimo(int idFuncionario, int idAluno, int idItem) throws EmprestimoException {
 		itemDAO = new ItemDAOImpl();
-		Item item = itemDAO.get(idItem);
+		Item item = itemDAO.getById(idItem);
 
 		if (item.getQuantidade() < 1) {
 			throw new EmprestimoException("O item esta faltando no estoque");
@@ -63,9 +61,9 @@ public class EmprestimoBusiness {
 		emprestimoDAO = new EmprestimoDAOImpl();
 		Emprestimo emprestimo = new Emprestimo();
 
-		Aluno aluno = alunoDAO.get(idAluno);
+		Aluno aluno = alunoDAO.getById(idAluno);
 
-		emprestimo.setFuncionario(funcionarioDAO.get(idFuncionario));
+		emprestimo.setFuncionario(funcionarioDAO.getById(idFuncionario));
 		emprestimo.setAluno(aluno);
 		emprestimo.setItem(item);
 		emprestimo.setDataCadastrado(BibliotecaDateTime.getDataCadastrado());
@@ -83,18 +81,14 @@ public class EmprestimoBusiness {
 	/**
 	 * Realizar a devolucao do item emprestado boolean
 	 * 
-	 * @param idFuncionario
-	 * @param idAluno
-	 * @param idEmprestimo
-	 * @return
-	 * @throws DAOException
+	 * @param idFuncionario @param idAluno @param idEmprestimo @return @throws
 	 */
-	public boolean devolucaoEmprestimo(int idFuncionario, int idAluno, int idEmprestimo) throws DAOException {
+	public boolean devolucaoEmprestimo(int idFuncionario, int idAluno, int idEmprestimo) {
 		emprestimoDAO = new EmprestimoDAOImpl();
 		itemDAO = new ItemDAOImpl();
 
-		Emprestimo emprestimo = emprestimoDAO.get(idEmprestimo);
-		Item item = itemDAO.get(emprestimo.getId());
+		Emprestimo emprestimo = emprestimoDAO.getById(idEmprestimo);
+		Item item = itemDAO.getById(emprestimo.getId());
 
 		// aumentar a quantidade do item no estoque
 		item.setQuantidade(item.getQuantidade() + 1);
@@ -114,16 +108,16 @@ public class EmprestimoBusiness {
 	 * @param idAluno
 	 * @param idEmprestimo
 	 * @return boolean
-	 * @throws DAOException
-	 * @throws EmprestimoException
+	 * @throws @throws
+	 *             EmprestimoException
 	 */
-	public boolean renovarEmprestimo(int idAluno, int idEmprestimo) throws DAOException, EmprestimoException {
+	public boolean renovarEmprestimo(int idAluno, int idEmprestimo) throws EmprestimoException {
 		emprestimoDAO = new EmprestimoDAOImpl();
 		reservaDAO = new ReservaDAOImpl();
-		Emprestimo emprestimo = emprestimoDAO.get(idEmprestimo);
+		Emprestimo emprestimo = emprestimoDAO.getById(idEmprestimo);
 
 		alunoDAO = new AlunoDAOImpl();
-		Aluno aluno = alunoDAO.get(idEmprestimo);
+		Aluno aluno = alunoDAO.getById(idEmprestimo);
 
 		// aluno graduacao nao pode renovar mais de uma vez.
 		if (aluno.getCurso().getNivel() == TipoNivel.GRADUACAO && emprestimo.getRenovacao() != 1) {
@@ -144,5 +138,5 @@ public class EmprestimoBusiness {
 
 		return true;
 	}
-	
+
 }

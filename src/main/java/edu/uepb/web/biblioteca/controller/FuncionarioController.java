@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import edu.uepb.web.biblioteca.business.FuncionarioBusiness;
 import edu.uepb.web.biblioteca.exception.AutenticacaoException;
-import edu.uepb.web.biblioteca.exception.DAOException;
 import edu.uepb.web.biblioteca.model.Funcionario;
 
 /**
@@ -38,12 +37,10 @@ public class FuncionarioController {
 			funcionarioLogado = service.autenticar(funcionario.getUsuario(), funcionario.getSenha());
 			model.addAttribute("funcionario", funcionarioLogado);
 			return "home";
-		} catch (AutenticacaoException | DAOException e) {
+		} catch (AutenticacaoException e) {
 			model.addAttribute("mensagem", e);
 			return "login";
 		}
 
-		// System.out.println(funcionario.getUsuario());
-		// service.autenticar(funcionario.getUsuario(), funcionario);
 	}
 }

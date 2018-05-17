@@ -1,6 +1,8 @@
 package edu.uepb.web.biblioteca.model;
 
 /**
+ * A classe POJO do Aluno
+ * 
  * @autor geovanniovinhas <vinhasgeovannio@gmail.com
  */
 public class Aluno {
@@ -33,9 +35,10 @@ public class Aluno {
 		this.periodoIngresso = periodoIngresso;
 		this.senha = senha;
 	}
-	
-	public Aluno() {}
-	
+
+	public Aluno() {
+	}
+
 	public int getId() {
 		return id;
 	}

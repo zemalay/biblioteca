@@ -51,7 +51,7 @@ public class CursoDAOTest {
 	@Test
 	public void get() throws DAOException {
 		int id = manager.inserir(administracao);
-		assertNotEquals(null, manager.get(id));
+		assertNotEquals(null, manager.getById(id));
 	}
 
 	@Test
@@ -69,7 +69,7 @@ public class CursoDAOTest {
 		letras.setId(manager.inserir(letras));
 		manager.remover(letras);
 
-		assertEquals(null, manager.get(letras.getId()));
+		assertEquals(null, manager.getById(letras.getId()));
 	}
 
 	@Test
@@ -79,7 +79,7 @@ public class CursoDAOTest {
 		direito.setNivel(TipoNivel.ESPECIALIZACAO);
 		manager.atualizar(direito);
 
-		assertEquals(TipoNivel.ESPECIALIZACAO, manager.get(id).getNivel());
+		assertEquals(TipoNivel.ESPECIALIZACAO, manager.getById(id).getNivel());
 	}
 
 	@Test

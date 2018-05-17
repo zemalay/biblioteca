@@ -10,7 +10,6 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import edu.uepb.web.biblioteca.exception.DAOException;
 import edu.uepb.web.biblioteca.model.Curso;
 
 /**
@@ -26,11 +25,10 @@ public class CursoDAOImpl implements DAO<Curso> {
 	private static Logger logger = Logger.getLogger(CursoDAOImpl.class);
 
 	/**
-	 * @throws DAOException
-	 * @see {@link DAO#get(int)}
+	 * @ @see {@link DAO#getById(int)}
 	 */
 	@Override
-	public Curso get(int id) throws DAOException {
+	public Curso getById(int id) {
 		logger.info("Executa o metodo 'get' do curso: " + id);
 
 		connection = new Conexao().getConexao();
@@ -54,18 +52,17 @@ public class CursoDAOImpl implements DAO<Curso> {
 			statement.close();
 		} catch (SQLException e) {
 			logger.error("Erro selecao o dado no base de dados", e);
-			throw new DAOException(e.getMessage());
+			e.printStackTrace();
 		}
 		logger.info("O curso foi selecionado: " + curso);
 		return curso;
 	}
 
 	/**
-	 * @throws DAOException
-	 * @see {@link DAO#getLista()}
+	 * @ @see {@link DAO#getLista()}
 	 */
 	@Override
-	public List<Curso> getLista() throws DAOException {
+	public List<Curso> getLista() {
 		logger.info("Executa o metodo 'getLista' do curso");
 		connection = new Conexao().getConexao();
 
@@ -88,17 +85,16 @@ public class CursoDAOImpl implements DAO<Curso> {
 			statement.close();
 		} catch (SQLException e) {
 			logger.error("Erro selecao o dado no base de dados", e);
-			throw new DAOException(e.getMessage());
+			e.printStackTrace();
 		}
 		return listaCurso;
 	}
 
 	/**
-	 * @throws DAOException
-	 * @see {@link DAO#inserir(Object)}
+	 * @ @see {@link DAO#inserir(Object)}
 	 */
 	@Override
-	public int inserir(Curso obj) throws DAOException {
+	public int inserir(Curso obj) {
 		logger.info("Executa o metodo 'inserir' do curso : " + obj);
 		int id = -1;
 		connection = new Conexao().getConexao();
@@ -118,7 +114,7 @@ public class CursoDAOImpl implements DAO<Curso> {
 				statement.close();
 			} catch (SQLException e) {
 				logger.error("Erro insercao o dado no banco", e);
-				throw new DAOException(e.getMessage());
+				e.printStackTrace();
 			}
 		}
 		logger.info("O curso foi inserido: " + obj);
@@ -126,11 +122,10 @@ public class CursoDAOImpl implements DAO<Curso> {
 	}
 
 	/**
-	 * @throws DAOException
-	 * @see {@link DAO#remover(Object)}
+	 * @ @see {@link DAO#remover(Object)}
 	 */
 	@Override
-	public void remover(Curso obj) throws DAOException {
+	public void remover(Curso obj) {
 		logger.info("Executa o metodo 'remover' do curso : " + obj);
 
 		if (obj != null) {
@@ -146,18 +141,17 @@ public class CursoDAOImpl implements DAO<Curso> {
 				logger.info("O curso foi removido" + obj);
 			} catch (SQLException e) {
 				logger.error("Erro remocao o dado no base de dados", e);
-				throw new DAOException(e.getMessage());
+				e.printStackTrace();
 			}
 		}
 
 	}
 
 	/**
-	 * @throws DAOException
-	 * @see {@link DAO#atualizar(Object)}
+	 * @ @see {@link DAO#atualizar(Object)}
 	 */
 	@Override
-	public void atualizar(Curso obj) throws DAOException {
+	public void atualizar(Curso obj) {
 		logger.info("Executa o metodo 'atualizar' do curso : " + obj);
 		if (obj != null) {
 			connection = new Conexao().getConexao();
@@ -176,17 +170,16 @@ public class CursoDAOImpl implements DAO<Curso> {
 				logger.info("O item foi atualizado" + obj);
 			} catch (SQLException e) {
 				logger.error("Erro atualizacao o dado no banco", e);
-				throw new DAOException(e.getMessage());
+				e.printStackTrace();
 			}
 		}
 	}
 
 	/**
-	 * @throws DAOException
-	 * @see {@link DAO#isExiste(Object)}
+	 * @ @see {@link DAO#isExiste(Object)}
 	 */
 	@Override
-	public boolean isExiste(Curso obj) throws DAOException {
+	public boolean isExiste(Curso obj) {
 		logger.info("Executar metodo 'isExiste' do curso: " + obj);
 		if (obj != null) {
 			connection = new Conexao().getConexao();
@@ -207,7 +200,7 @@ public class CursoDAOImpl implements DAO<Curso> {
 				return false;
 			} catch (SQLException e) {
 				logger.error("Erro selecao o dado no base de dados", e);
-				throw new DAOException(e.getMessage());
+				e.printStackTrace();
 			}
 		}
 		return false;

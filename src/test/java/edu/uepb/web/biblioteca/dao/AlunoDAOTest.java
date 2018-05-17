@@ -67,7 +67,7 @@ public class AlunoDAOTest {
 	@Test
 	public void inserir() throws DAOException {
 		int idcurso = cursoDAO.inserir(farmacia);
-		aluno1.setCurso(cursoDAO.get(idcurso));
+		aluno1.setCurso(cursoDAO.getById(idcurso));
 
 		aluno1.setMatricula(funService.gerarMatricula(aluno1));
 		int idaluno = manager.inserir(aluno1);
@@ -81,11 +81,11 @@ public class AlunoDAOTest {
 	@Test
 	public void get() throws DAOException {
 		int idCurso = cursoDAO.inserir(psicologia);
-		aluno2.setCurso(cursoDAO.get(idCurso));
+		aluno2.setCurso(cursoDAO.getById(idCurso));
 		
 		aluno2.setMatricula(funService.gerarMatricula(aluno2));
 		int id = manager.inserir(aluno2);
-		assertNotEquals(null, manager.get(id));
+		assertNotEquals(null, manager.getById(id));
 	}
 
 	@Test
@@ -99,18 +99,18 @@ public class AlunoDAOTest {
 	@Test
 	public void remover() throws DAOException {
 		int idCurso = cursoDAO.inserir(matematica);
-		aluno3.setCurso(cursoDAO.get(idCurso));
+		aluno3.setCurso(cursoDAO.getById(idCurso));
 		
 		int id = manager.inserir(aluno3);
 		aluno3.setMatricula(funService.gerarMatricula(aluno3));
 		manager.remover(aluno3);
-		assertNotEquals(null, manager.get(id));
+		assertNotEquals(null, manager.getById(id));
 	}
 
 	@Test
 	public void atualizar() throws DAOException {
 		int idCurso = cursoDAO.inserir(quimica);
-		aluno4.setCurso(cursoDAO.get(idCurso));
+		aluno4.setCurso(cursoDAO.getById(idCurso));
 
 		aluno4.setMatricula(funService.gerarMatricula(aluno4));
 		int id = manager.inserir(aluno4);
@@ -119,7 +119,7 @@ public class AlunoDAOTest {
 
 		manager.atualizar(aluno4);
 
-		assertEquals("Canada", manager.get(id).getEndereco());
+		assertEquals("Canada", manager.getById(id).getEndereco());
 
 	}
 	
@@ -129,7 +129,7 @@ public class AlunoDAOTest {
 		Aluno aluno5 = new Aluno();
 		
 		int idCurso = cursoDAO.inserir(relacoes);
-		aluno5.setCurso(cursoDAO.get(idCurso));
+		aluno5.setCurso(cursoDAO.getById(idCurso));
 		
 		aluno5.setRg("3454");
 		aluno5.setCpf("re3454");

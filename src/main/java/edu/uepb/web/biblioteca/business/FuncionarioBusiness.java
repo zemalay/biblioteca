@@ -7,7 +7,6 @@ import edu.uepb.web.biblioteca.dao.CursoDAOImpl;
 import edu.uepb.web.biblioteca.dao.FuncionarioDAOImpl;
 import edu.uepb.web.biblioteca.enums.TipoFuncionario;
 import edu.uepb.web.biblioteca.exception.AutenticacaoException;
-import edu.uepb.web.biblioteca.exception.DAOException;
 import edu.uepb.web.biblioteca.exception.ExistException;
 import edu.uepb.web.biblioteca.model.Curso;
 import edu.uepb.web.biblioteca.model.Funcionario;
@@ -28,9 +27,9 @@ public class FuncionarioBusiness {
 	 * @param senha
 	 * @return Funcionario
 	 * @throws AutenticacaoException
-	 * @throws DAOException
+	 * @
 	 */
-	public Funcionario autenticar(String usuario, String senha) throws AutenticacaoException, DAOException {
+	public Funcionario autenticar(String usuario, String senha) throws AutenticacaoException {
 		funcionarioDAO = new FuncionarioDAOImpl();
 		return funcionarioDAO.login(usuario, senha);
 	}
@@ -40,9 +39,9 @@ public class FuncionarioBusiness {
 	 * 
 	 * @param funcionario
 	 * @return id do funcionario cadastrado
-	 * @throws DAOException
+	 * @
 	 */
-	public int cadastrarFuncionario(Funcionario funcionario) throws DAOException {
+	public int cadastrarFuncionario(Funcionario funcionario)  {
 		logger.info("Executa o metodo 'cadastrarFuncionario' com param aluno: " + funcionario);
 		funcionarioDAO = new FuncionarioDAOImpl();
 		return funcionarioDAO.inserir(funcionario);
@@ -53,9 +52,9 @@ public class FuncionarioBusiness {
 	 * boolean
 	 * @param funcionario
 	 * @return
-	 * @throws DAOException
+	 * @
 	 */
-	public boolean atualizarFuncionario(Funcionario funcionario) throws DAOException {
+	public boolean atualizarFuncionario(Funcionario funcionario)  {
 		logger.info("Executa o metodo 'atualizarAluno' funcionarioBusiness: " + funcionario);
 
 		funcionarioDAO = new FuncionarioDAOImpl();
@@ -71,11 +70,11 @@ public class FuncionarioBusiness {
 	 * @param curso
 	 * @return
 	 * @throws AutenticacaoException
-	 * @throws DAOException
+	 * @
 	 * @throws ExistException
 	 */
 	public int cadastraCurso(Funcionario funcionario, Curso curso)
-			throws AutenticacaoException, DAOException, ExistException {
+			throws AutenticacaoException,ExistException {
 		logger.info("Executa o metodo 'cadastraCurso' com param fucionario : " + funcionario + " e curso : " + curso);
 		cursoDAO = new CursoDAOImpl();
 		if (cursoDAO.isExiste(curso)) {
@@ -93,9 +92,9 @@ public class FuncionarioBusiness {
 	 * @param curso
 	 * @return
 	 * @throws AutenticacaoException
-	 * @throws DAOException
+	 * @
 	 */
-	public boolean removerCurso(Funcionario funcionario, Curso curso) throws AutenticacaoException, DAOException {
+	public boolean removerCurso(Funcionario funcionario, Curso curso) throws AutenticacaoException {
 		logger.info("Executa o metodo 'removerCurso' com param fucionario : " + funcionario + " e item : " + curso);
 		if (!funcionario.getTipoFunc().equals(TipoFuncionario.ADMINISTRADOR)) {
 			throw new AutenticacaoException("Este funcionario nao esta autorizado");

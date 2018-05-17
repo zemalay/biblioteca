@@ -113,7 +113,7 @@ public class FuncionarioBusinessTest {
 	@Test
 	public void inserir() throws AutenticacaoException, DAOException, ExistException, EmprestimoException {
 		int idCurso = service.cadastraCurso(admin, historia);
-		aluno1.setCurso(cursoDAO.get(idCurso));
+		aluno1.setCurso(cursoDAO.getById(idCurso));
 		int idAluno = service.cadastrarAluno(operador, aluno1);
 
 		int idItem = service.cadastraItem(admin, livro);

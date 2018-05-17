@@ -7,17 +7,10 @@ import edu.uepb.web.biblioteca.dao.EmprestimoDAOImpl;
 import edu.uepb.web.biblioteca.dao.ItemDAOImpl;
 import edu.uepb.web.biblioteca.dao.ReservaDAOImpl;
 import edu.uepb.web.biblioteca.enums.TipoFuncionario;
-import edu.uepb.web.biblioteca.enums.TipoNivel;
 import edu.uepb.web.biblioteca.exception.AutenticacaoException;
-import edu.uepb.web.biblioteca.exception.DAOException;
-import edu.uepb.web.biblioteca.exception.EmprestimoException;
 import edu.uepb.web.biblioteca.exception.ExistException;
 import edu.uepb.web.biblioteca.model.Aluno;
-import edu.uepb.web.biblioteca.model.Emprestimo;
 import edu.uepb.web.biblioteca.model.Funcionario;
-import edu.uepb.web.biblioteca.model.Item;
-import edu.uepb.web.biblioteca.model.Reserva;
-import edu.uepb.web.biblioteca.utils.BibliotecaDateTime;
 
 /**
  * @autor geovanniovinhas <vinhasgeovannio@gmail.com
@@ -32,13 +25,10 @@ public class AlunoBusiness {
 	/**
 	 * Autenticar aluno
 	 * 
-	 * @param matricula
-	 * @param senha
-	 * @return Aluno
-	 * @throws AutenticacaoException
-	 * @throws DAOException
+	 * @param matricula @param senha @return Aluno @throws
+	 * AutenticacaoException @throws
 	 */
-	public Aluno autenticar(String matricula, String senha) throws AutenticacaoException, DAOException {
+	public Aluno autenticar(String matricula, String senha) throws AutenticacaoException {
 		alunoDAO = new AlunoDAOImpl();
 		return alunoDAO.login(matricula, senha);
 	}
@@ -51,11 +41,10 @@ public class AlunoBusiness {
 	 * @param aluno
 	 * @return id do aluno cadastrado
 	 * @throws AutenticacaoException
-	 * @throws DAOException
-	 * @throws ExistException
+	 * @throws @throws
+	 *             ExistException
 	 */
-	public int cadastrarAluno(Funcionario funcionario, Aluno aluno)
-			throws AutenticacaoException, DAOException, ExistException {
+	public int cadastrarAluno(Funcionario funcionario, Aluno aluno) throws AutenticacaoException, ExistException {
 		logger.info("Executa o metodo 'cadastrarAluno' com param Funcionario : " + funcionario + " e aluno: " + aluno);
 
 		alunoDAO = new AlunoDAOImpl();
@@ -70,11 +59,9 @@ public class AlunoBusiness {
 	/**
 	 * Gera matricula para o aluno cadastrado. A matricula e unico para cada aluno.
 	 * 
-	 * @param aluno
-	 * @return matricula gerado
-	 * @throws DAOException
+	 * @param aluno @return matricula gerado @throws
 	 */
-	public String gerarMatricula(Aluno aluno) throws DAOException {
+	public String gerarMatricula(Aluno aluno) {
 		logger.info("Execucao metodo  'gerarMatricula'");
 		String nivelAbreviacao = "", cursoAbreviacao, anoAbreviacao, firstAbreviacao, secondAbreviacao, curso, ano,
 				codigo;
@@ -131,10 +118,10 @@ public class AlunoBusiness {
 	 * @param funcionario
 	 * @param aluno
 	 * @return true se foi removido
-	 * @throws DAOException
-	 * @throws AutenticacaoException
+	 * @throws @throws
+	 *             AutenticacaoException
 	 */
-	public boolean removerAluno(Funcionario funcionario, Aluno aluno) throws DAOException, AutenticacaoException {
+	public boolean removerAluno(Funcionario funcionario, Aluno aluno) throws AutenticacaoException {
 		logger.info("Executa o metodo 'removerAluno' do alunoBusiness: " + funcionario + " e aluno: " + aluno);
 		if (!funcionario.getTipoFunc().equals(TipoFuncionario.ADMINISTRADOR)) {
 			throw new AutenticacaoException("Este funcionario nao esta autorizado");
@@ -150,12 +137,9 @@ public class AlunoBusiness {
 	 * 
 	 * Atualizar dados do aluno. Qualquer funcion�rio poder� atualizar.
 	 * 
-	 * @param funcionario
-	 * @param aluno
-	 * @return boolean
-	 * @throws DAOException
+	 * @param funcionario @param aluno @return boolean @throws
 	 */
-	public boolean atualizarAluno(Funcionario funcionario, Aluno aluno) throws DAOException {
+	public boolean atualizarAluno(Funcionario funcionario, Aluno aluno) {
 		logger.info("Executa o metodo 'atualizarAluno' alunoBusiness: " + funcionario + " e aluno: " + aluno);
 
 		alunoDAO = new AlunoDAOImpl();
@@ -164,5 +148,4 @@ public class AlunoBusiness {
 		return true;
 	}
 
-	
 }

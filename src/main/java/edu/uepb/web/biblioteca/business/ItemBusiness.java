@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import edu.uepb.web.biblioteca.dao.ItemDAOImpl;
 import edu.uepb.web.biblioteca.enums.TipoFuncionario;
 import edu.uepb.web.biblioteca.exception.AutenticacaoException;
-import edu.uepb.web.biblioteca.exception.DAOException;
 import edu.uepb.web.biblioteca.exception.ExistException;
 import edu.uepb.web.biblioteca.model.Funcionario;
 import edu.uepb.web.biblioteca.model.Item;
@@ -20,17 +19,17 @@ import edu.uepb.web.biblioteca.model.Item;
 public class ItemBusiness {
 	private ItemDAOImpl itemDAO;
 	private static Logger logger = Logger.getLogger(ItemBusiness.class);
-	
-	public Item getItem(int idItem) throws DAOException {
+
+	public Item getItem(int idItem) {
 		itemDAO = new ItemDAOImpl();
-		return itemDAO.get(idItem);
+		return itemDAO.getById(idItem);
 	}
-	
-	public List<Item> getItens() throws DAOException{
+
+	public List<Item> getItens() {
 		itemDAO = new ItemDAOImpl();
 		return itemDAO.getLista();
 	}
-	
+
 	/**
 	 * Cadastra os itens de acordo com os seus tipos. So o admin que pode realizar
 	 * essa funcionalidade, retornar o id salvo do banco
@@ -39,11 +38,10 @@ public class ItemBusiness {
 	 * @param item
 	 * @return int
 	 * @throws AutenticacaoException
-	 * @throws DAOException
-	 * @throws ExistException
+	 * @ @throws
+	 *       ExistException
 	 */
-	public int cadastraItem(Funcionario funcionario, Item item)
-			throws AutenticacaoException, DAOException, ExistException {
+	public int cadastraItem(Funcionario funcionario, Item item) throws AutenticacaoException, ExistException {
 		logger.info("Executa o metodo 'cadastraItem' com param fucionario : " + funcionario + " e item : " + item);
 		if (!funcionario.getTipoFunc().equals(TipoFuncionario.ADMINISTRADOR)) {
 			throw new AutenticacaoException("Este funcionario nao esta autorizado");
@@ -66,11 +64,10 @@ public class ItemBusiness {
 	 * @param item
 	 * @return boolean
 	 * @throws AutenticacaoException
-	 * @throws DAOException
-	 * @throws ExistException
+	 * @ @throws
+	 *       ExistException
 	 */
-	public boolean atualizarItem(Funcionario funcionario, Item item)
-			throws AutenticacaoException, DAOException, ExistException {
+	public boolean atualizarItem(Funcionario funcionario, Item item) throws AutenticacaoException, ExistException {
 		logger.info("Executa o metodo 'atualizarItem' com param fucionario : " + funcionario + " e item : " + item);
 		if (!funcionario.getTipoFunc().equals(TipoFuncionario.ADMINISTRADOR)) {
 			throw new AutenticacaoException("Este funcionario nao esta autorizado");
@@ -90,9 +87,9 @@ public class ItemBusiness {
 	 * @param item
 	 * @return boolean
 	 * @throws AutenticacaoException
-	 * @throws DAOException
+	 * @
 	 */
-	public boolean removerItem(Funcionario funcionario, Item item) throws AutenticacaoException, DAOException {
+	public boolean removerItem(Funcionario funcionario, Item item) throws AutenticacaoException {
 		logger.info("Executa o metodo 'removerItem' com param fucionario : " + funcionario + " e item : " + item);
 		if (!funcionario.getTipoFunc().equals(TipoFuncionario.ADMINISTRADOR)) {
 			throw new AutenticacaoException("Este funcionario nao esta autorizado");
@@ -103,8 +100,5 @@ public class ItemBusiness {
 			return true;
 		}
 	}
-	
-	
 
 }
-

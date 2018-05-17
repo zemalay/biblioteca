@@ -10,11 +10,11 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-
-import edu.uepb.web.biblioteca.exception.DAOException;
 import edu.uepb.web.biblioteca.model.Item;
 
 /**
+ * A classe para acessar os dados no banco associando ao objeto {@link Item}
+ * 
  * @autor geovanniovinhas <vinhasgeovannio@gmail.com
  *
  */
@@ -28,11 +28,10 @@ public class ItemDAOImpl implements DAO<Item> {
 	private static Logger logger = Logger.getLogger(ItemDAOImpl.class);
 
 	/**
-	 * @throws DAOException
-	 * @see {@link DAO#get(int)}
+	 * @ @see {@link DAO#getById(int)}
 	 */
 	@Override
-	public Item get(int id) throws DAOException {
+	public Item getById(int id) {
 		logger.info("Executar o metodo 'get' do item" + id);
 		connection = new Conexao().getConexao();
 		String sql = "SELECT * FROM item WHERE item.id = ?";
@@ -67,18 +66,17 @@ public class ItemDAOImpl implements DAO<Item> {
 			}
 			statement.close();
 		} catch (SQLException e) {
-			throw new DAOException(e.getMessage());
+			e.printStackTrace();
 		}
 		logger.info("O item foi selecionado: " + item);
 		return item;
 	}
 
 	/**
-	 * @throws DAOException
-	 * @see {@link DAO#getLista()}
+	 * @ @see {@link DAO#getLista()}
 	 */
 	@Override
-	public List<Item> getLista() throws DAOException {
+	public List<Item> getLista() {
 		logger.info("Executar o metodo 'getLista' do item");
 		connection = new Conexao().getConexao();
 		List<Item> listaAcervo = new ArrayList<>();
@@ -113,18 +111,17 @@ public class ItemDAOImpl implements DAO<Item> {
 			}
 			statement.close();
 		} catch (SQLException e) {
-			throw new DAOException(e.getMessage());
+			e.printStackTrace();
 		}
 		logger.info("Pegar os itens: " + listaAcervo.toString());
 		return listaAcervo;
 	}
 
 	/**
-	 * @throws DAOException
-	 * @see {@link DAO#inserir(Object)}
+	 * @ @see {@link DAO#inserir(Object)}
 	 */
 	@Override
-	public int inserir(Item obj) throws DAOException {
+	public int inserir(Item obj) {
 		logger.info("Executar o metodo 'inserir' do item" + obj);
 		int id = ItemDAOImpl.FAKE_ID;
 		if (obj != null) {
@@ -165,7 +162,7 @@ public class ItemDAOImpl implements DAO<Item> {
 				}
 				statement.close();
 			} catch (SQLException e) {
-				throw new DAOException(e.getMessage());
+				e.printStackTrace();
 			}
 		}
 		logger.info("O item foi inserido: " + obj);
@@ -173,11 +170,10 @@ public class ItemDAOImpl implements DAO<Item> {
 	}
 
 	/**
-	 * @throws DAOException
-	 * @see {@link DAO#remover(Object)}
+	 * @ @see {@link DAO#remover(Object)}
 	 */
 	@Override
-	public void remover(Item obj) throws DAOException {
+	public void remover(Item obj) {
 		logger.info("Executar o metodo 'remover' do item" + obj);
 		if (obj != null) {
 			connection = new Conexao().getConexao();
@@ -191,17 +187,16 @@ public class ItemDAOImpl implements DAO<Item> {
 				statement.close();
 				logger.info("O item foi removido" + obj);
 			} catch (SQLException e) {
-				throw new DAOException(e.getMessage());
+				e.printStackTrace();
 			}
 		}
 	}
 
 	/**
-	 * @throws DAOException
-	 * @see {@link DAO#atualizar(Object)}
+	 * @ @see {@link DAO#atualizar(Object)}
 	 */
 	@Override
-	public void atualizar(Item obj) throws DAOException {
+	public void atualizar(Item obj) {
 		logger.info("Executar metodo 'atualizar' do Item: " + obj);
 		if (obj != null) {
 			connection = new Conexao().getConexao();
@@ -239,17 +234,16 @@ public class ItemDAOImpl implements DAO<Item> {
 				connection.close();
 				logger.info("O item foi atualizado: " + obj);
 			} catch (SQLException e) {
-				throw new DAOException(e.getMessage());
+				e.printStackTrace();
 			}
 		}
 	}
 
 	/**
-	 * @throws DAOException
-	 * @see {@link DAO#isExiste(Object)}
+	 * @ @see {@link DAO#isExiste(Object)}
 	 */
 	@Override
-	public boolean isExiste(Item obj) throws DAOException {
+	public boolean isExiste(Item obj) {
 		logger.info("Executar metodo 'isExiste' do Item: " + obj);
 		if (obj != null) {
 			connection = new Conexao().getConexao();
@@ -269,7 +263,7 @@ public class ItemDAOImpl implements DAO<Item> {
 				logger.info("Esse item nao existe no banco: " + obj);
 				return false;
 			} catch (SQLException e) {
-				throw new DAOException(e.getMessage());
+				e.printStackTrace();
 			}
 		}
 		logger.warn("O objeto item e invalido/null: " + obj);

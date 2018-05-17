@@ -6,9 +6,9 @@ import edu.uepb.web.biblioteca.enums.TipoMidia;
 import edu.uepb.web.biblioteca.enums.TipoTrabalhoConclusao;
 
 /**
+ * A classe POJO do Item
+ * 
  * @autor geovanniovinhas <vinhasgeovannio@gmail.com
- *
- *
  */
 public class Item {
 	private int id;

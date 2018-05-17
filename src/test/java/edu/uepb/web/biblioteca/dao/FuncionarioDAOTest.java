@@ -94,7 +94,7 @@ public class FuncionarioDAOTest {
 	@Test
 	public void get() throws DAOException {
 		int id = manager.inserir(operador1);
-		assertNotEquals(null, manager.get(id));
+		assertNotEquals(null, manager.getById(id));
 	}
 
 	@Test
@@ -110,7 +110,7 @@ public class FuncionarioDAOTest {
 		int id = manager.inserir(operador2);
 		operador2.setId(id);
 		manager.remover(operador2);
-		assertEquals(null, manager.get(id));
+		assertEquals(null, manager.getById(id));
 	}
 
 	@Test
@@ -120,7 +120,7 @@ public class FuncionarioDAOTest {
 		operador3.setEmail("jj@email.com");
 
 		manager.atualizar(operador3);
-		assertEquals("jj@email.com", manager.get(operador3.getId()).getEmail());
+		assertEquals("jj@email.com", manager.getById(operador3.getId()).getEmail());
 	}
 
 	@Test

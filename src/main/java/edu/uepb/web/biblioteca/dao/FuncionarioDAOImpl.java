@@ -11,7 +11,6 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import edu.uepb.web.biblioteca.exception.AutenticacaoException;
-import edu.uepb.web.biblioteca.exception.DAOException;
 import edu.uepb.web.biblioteca.model.Funcionario;
 
 /**
@@ -28,11 +27,10 @@ public class FuncionarioDAOImpl implements DAO<Funcionario> {
 	private static Logger logger = Logger.getLogger(FuncionarioDAOImpl.class);
 
 	/**
-	 * @throws DAOException
-	 * @see {@link DAO#get(int)}
+	 * @ @see {@link DAO#getById(int)}
 	 */
 	@Override
-	public Funcionario get(int id) throws DAOException {
+	public Funcionario getById(int id) {
 		logger.info("Executa o metodo 'get' do funcionario : " + id);
 		connection = new Conexao().getConexao();
 
@@ -62,18 +60,17 @@ public class FuncionarioDAOImpl implements DAO<Funcionario> {
 			}
 			statement.close();
 		} catch (SQLException e) {
-			throw new DAOException(e.getMessage());
+			e.printStackTrace();
 		}
 		logger.info("O funcionario foi selecionado: " + funcionario);
 		return funcionario;
 	}
 
 	/**
-	 * @throws DAOException
-	 * @see {@link DAO#getLista()}
+	 * @ @see {@link DAO#getLista()}
 	 */
 	@Override
-	public List<Funcionario> getLista() throws DAOException {
+	public List<Funcionario> getLista() {
 		logger.info("Executa o metodo 'getLista' do funcionario");
 		connection = new Conexao().getConexao();
 
@@ -102,18 +99,17 @@ public class FuncionarioDAOImpl implements DAO<Funcionario> {
 
 			statement.close();
 		} catch (SQLException e) {
-			throw new DAOException(e.getMessage());
+			e.printStackTrace();
 		}
 		logger.info("Pegar os funcionarios: " + listaFuncionario.toString());
 		return listaFuncionario;
 	}
 
 	/**
-	 * @throws DAOException
-	 * @see {@link DAO#inserir(Object)}
+	 * @ @see {@link DAO#inserir(Object)}
 	 */
 	@Override
-	public int inserir(Funcionario obj) throws DAOException {
+	public int inserir(Funcionario obj) {
 		logger.info("Executa o metodo 'inserir' do funcionario : " + obj);
 		int id = FuncionarioDAOImpl.ID_FAKE;
 		if (obj != null) {
@@ -141,7 +137,7 @@ public class FuncionarioDAOImpl implements DAO<Funcionario> {
 				}
 				statement.close();
 			} catch (SQLException e) {
-				throw new DAOException(e.getMessage());
+				e.printStackTrace();
 			}
 		}
 		logger.info("O funcionario foi inserido: " + obj);
@@ -149,11 +145,10 @@ public class FuncionarioDAOImpl implements DAO<Funcionario> {
 	}
 
 	/**
-	 * @throws DAOException
-	 * @see {@link DAO#remover(Object)}
+	 * @ @see {@link DAO#remover(Object)}
 	 */
 	@Override
-	public void remover(Funcionario obj) throws DAOException {
+	public void remover(Funcionario obj) {
 		logger.info("Executa o metodo 'remover' funcionario : " + obj);
 		if (obj != null) {
 			connection = new Conexao().getConexao();
@@ -167,17 +162,16 @@ public class FuncionarioDAOImpl implements DAO<Funcionario> {
 				statement.close();
 				logger.info("O funcionario foi removido" + obj);
 			} catch (SQLException e) {
-				throw new DAOException(e.getMessage());
+				e.printStackTrace();
 			}
 		}
 	}
 
 	/**
-	 * @throws DAOException
-	 * @see {@link DAO#atualizar(Object)}
+	 * @ @see {@link DAO#atualizar(Object)}
 	 */
 	@Override
-	public void atualizar(Funcionario obj) throws DAOException {
+	public void atualizar(Funcionario obj) {
 		logger.info("Executa o metodo 'atualizar' do funcionario : " + obj);
 		if (obj != null) {
 			connection = new Conexao().getConexao();
@@ -203,17 +197,16 @@ public class FuncionarioDAOImpl implements DAO<Funcionario> {
 				statement.close();
 				logger.info("O funcionario foi atualizado" + obj);
 			} catch (SQLException e) {
-				throw new DAOException(e.getMessage());
+				e.printStackTrace();
 			}
 		}
 	}
 
 	/**
-	 * @throws DAOException
-	 * @see {@link DAO#isExiste(Object)}
+	 * @ @see {@link DAO#isExiste(Object)}
 	 */
 	@Override
-	public boolean isExiste(Funcionario obj) throws DAOException {
+	public boolean isExiste(Funcionario obj) {
 		logger.info("Executar metodo 'isExiste' do funcionario: " + obj);
 		if (obj != null) {
 			connection = new Conexao().getConexao();
@@ -233,7 +226,7 @@ public class FuncionarioDAOImpl implements DAO<Funcionario> {
 				logger.info("Esse funcionario nao existe no banco: " + obj);
 				return false;
 			} catch (SQLException e) {
-				throw new DAOException(e.getMessage());
+				e.printStackTrace();
 			}
 		}
 		return false;
@@ -246,9 +239,9 @@ public class FuncionarioDAOImpl implements DAO<Funcionario> {
 	 * @param senha
 	 * @return Aluno
 	 * @throws AutenticacaoException
-	 * @throws DAOException
+	 * @
 	 */
-	public Funcionario login(String usuario, String senha) throws AutenticacaoException, DAOException {
+	public Funcionario login(String usuario, String senha) throws AutenticacaoException {
 		logger.info("Executar metodo 'login' do funcionario: " + usuario + " : " + senha);
 
 		connection = new Conexao().getConexao();
@@ -273,7 +266,7 @@ public class FuncionarioDAOImpl implements DAO<Funcionario> {
 			}
 			statement.close();
 		} catch (SQLException e) {
-			throw new DAOException(e.getMessage());
+			e.printStackTrace();
 		}
 		return funcionario;
 	}

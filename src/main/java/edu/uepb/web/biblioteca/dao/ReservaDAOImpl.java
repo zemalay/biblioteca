@@ -10,15 +10,14 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import edu.uepb.web.biblioteca.exception.DAOException;
 import edu.uepb.web.biblioteca.model.Aluno;
 import edu.uepb.web.biblioteca.model.Item;
 import edu.uepb.web.biblioteca.model.Reserva;
 
 /**
+ * A classe para acessar os dados no banco associando ao objeto {@link Reserva}
+ * 
  * @autor geovanniovinhas <vinhasgeovannio@gmail.com
- *
- *
  */
 public class ReservaDAOImpl implements DAO<Reserva> {
 	private static Logger logger = Logger.getLogger(Reserva.class);
@@ -31,11 +30,10 @@ public class ReservaDAOImpl implements DAO<Reserva> {
 	private Item item;
 
 	/**
-	 * @throws DAOException
-	 * @see {@link DAO#get(int)}
+	 * @see {@link DAO#getById(int)}
 	 */
 	@Override
-	public Reserva get(int id) throws DAOException {
+	public Reserva getById(int id) {
 		logger.info("Executa o metodo 'get' do reserva : " + id);
 		connection = new Conexao().getConexao();
 
@@ -53,8 +51,9 @@ public class ReservaDAOImpl implements DAO<Reserva> {
 				alunoDAO = new AlunoDAOImpl();
 				itemDAO = new ItemDAOImpl();
 
-				aluno = alunoDAO.get(resultSet.getInt(2));
-				item = itemDAO.get(resultSet.getInt(3));
+				reserva.setId(resultSet.getInt(1));
+				aluno = alunoDAO.getById(resultSet.getInt(2));
+				item = itemDAO.getById(resultSet.getInt(3));
 
 				reserva.setAluno(aluno);
 				reserva.setItem(item);
@@ -62,18 +61,17 @@ public class ReservaDAOImpl implements DAO<Reserva> {
 			}
 			statement.close();
 		} catch (SQLException e) {
-			throw new DAOException(e.getMessage());
+			e.printStackTrace();
 		}
 		logger.info("O reserva foi selecionado: " + reserva);
 		return reserva;
 	}
 
 	/**
-	 * @throws DAOException
 	 * @see {@link DAO#getLista()}
 	 */
 	@Override
-	public List<Reserva> getLista() throws DAOException {
+	public List<Reserva> getLista() {
 		logger.info("Executa o metodo 'getLista' do reserva");
 		connection = new Conexao().getConexao();
 		String sql = "SELECT	 * FROM reserva";
@@ -89,8 +87,8 @@ public class ReservaDAOImpl implements DAO<Reserva> {
 				alunoDAO = new AlunoDAOImpl();
 				itemDAO = new ItemDAOImpl();
 
-				aluno = alunoDAO.get(resultSet.getInt(2));
-				item = itemDAO.get(resultSet.getInt(3));
+				aluno = alunoDAO.getById(resultSet.getInt(2));
+				item = itemDAO.getById(resultSet.getInt(3));
 
 				reserva.setAluno(aluno);
 				reserva.setItem(item);
@@ -100,24 +98,23 @@ public class ReservaDAOImpl implements DAO<Reserva> {
 			}
 			statement.close();
 		} catch (SQLException e) {
-			throw new DAOException(e.getMessage());
+			e.printStackTrace();
 		}
 		logger.info("Pegar as reservas: " + listaReserva.toString());
 		return listaReserva;
 	}
 
 	/**
-	 * @throws DAOException
 	 * @see {@link DAO#inserir(Object)}
 	 */
 	@Override
-	public int inserir(Reserva obj) throws DAOException {
+	public int inserir(Reserva obj) {
 		logger.info("Executa o metodo 'inserir' do emprestimo: " + obj);
 		int id = -1;
 		if (obj != null) {
 			connection = new Conexao().getConexao();
 
-			String sql = "INSERT INTO reserva (reserva.aluno_idaluno, reserva.item_iditem, reserva.data_reservado)";
+			String sql = "INSERT INTO reserva (reserva.aluno_idaluno, reserva.item_iditem, reserva.data_reservado) VALUES (?,?,?)";
 
 			try {
 				statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -133,7 +130,7 @@ public class ReservaDAOImpl implements DAO<Reserva> {
 				}
 				statement.close();
 			} catch (SQLException e) {
-				throw new DAOException(e.getMessage());
+				e.printStackTrace();
 			}
 
 		}
@@ -142,11 +139,10 @@ public class ReservaDAOImpl implements DAO<Reserva> {
 	}
 
 	/**
-	 * @throws DAOException
 	 * @see {@link DAO#remover(Object)}
 	 */
 	@Override
-	public void remover(Reserva obj) throws DAOException {
+	public void remover(Reserva obj) {
 		logger.info("Executa o metodo 'remover' reserva : " + obj);
 		if (obj != null) {
 			connection = new Conexao().getConexao();
@@ -160,24 +156,23 @@ public class ReservaDAOImpl implements DAO<Reserva> {
 				statement.close();
 				logger.info("A reserva foi removida" + obj);
 			} catch (SQLException e) {
-				throw new DAOException(e.getMessage());
+				e.printStackTrace();
 			}
 		}
 	}
 
 	@Override
-	public void atualizar(Reserva obj) throws DAOException {
+	public void atualizar(Reserva obj) {
 		// TODO Auto-generated method stub
 	}
 
 	/**
 	 * Verificar se o item ainda nao reservado por alguem
 	 * 
-	 * @throws DAOException
 	 * @see {@link DAO#isExiste(Object)}
 	 */
 	@Override
-	public boolean isExiste(Reserva obj) throws DAOException {
+	public boolean isExiste(Reserva obj) {
 		logger.info("Executar metodo 'isExiste' da reserva: " + obj);
 		if (obj != null) {
 			connection = new Conexao().getConexao();
@@ -197,10 +192,10 @@ public class ReservaDAOImpl implements DAO<Reserva> {
 				logger.info("Esta reserva nao existe no banco: " + obj);
 				return false;
 			} catch (SQLException e) {
-				throw new DAOException(e.getMessage());
+				e.printStackTrace();
 			}
 		}
 		return false;
 	}
-	
+
 }
