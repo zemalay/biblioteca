@@ -12,6 +12,7 @@ import edu.uepb.web.biblioteca.dao.EmprestimoDAOImpl;
 import edu.uepb.web.biblioteca.dao.FuncionarioDAOImpl;
 import edu.uepb.web.biblioteca.dao.ItemDAOImpl;
 import edu.uepb.web.biblioteca.dao.ReservaDAOImpl;
+import edu.uepb.web.biblioteca.dao.UniversidadeDAOImpl;
 import edu.uepb.web.biblioteca.enums.TipoNivel;
 import edu.uepb.web.biblioteca.exception.EmprestimoException;
 import edu.uepb.web.biblioteca.model.Aluno;
@@ -19,6 +20,7 @@ import edu.uepb.web.biblioteca.model.Divida;
 import edu.uepb.web.biblioteca.model.Emprestimo;
 import edu.uepb.web.biblioteca.model.Item;
 import edu.uepb.web.biblioteca.model.Reserva;
+import edu.uepb.web.biblioteca.model.Universidade;
 import edu.uepb.web.biblioteca.utils.BibliotecaDateTime;
 
 /**
@@ -32,6 +34,7 @@ public class EmprestimoService {
 	private EmprestimoDAOImpl emprestimoDAO;
 	private ReservaDAOImpl reservaDAO;
 	private DividaDAOImpl dividaDAO;
+	private UniversidadeDAOImpl universidadeDAO;
 
 	/**
 	 * O funcionario cadastrar um emprestimo que foi pedido pelo aluno
@@ -52,15 +55,25 @@ public class EmprestimoService {
 		Item item = itemDAO.getById(idItem);
 		Aluno aluno = alunoDAO.getById(idAluno);
 
+		// Verifica se falta mais de 20 dias para terminar o periodo
+		String dataDevolucao = BibliotecaDateTime.getDataDevolucao(aluno.getCurso().getNivel());
+		int dias = diasParaFimPeriodo(dataDevolucao);
+		if (dias < 20) {
+			logger.error(
+					"O emprestimo nao podera realizado, tem menos 20 dias para fim do periodo. dias para fim periodo: "
+							+ dias);
+			throw new EmprestimoException("O emprestimo nao podera realizado, tem menos 20 dias para fim do periodo");
+		}
+
 		// Verifica se o aluno tem divida ainda
 		if (dividaDAO.isAlunoTemDivida(idAluno)) {
-			logger.warn("O aluno ainda tem divida ainda nao pago: " + idAluno + " e " + idItem);
+			logger.error("O aluno ainda tem divida ainda nao pago: " + idAluno + " e " + idItem);
 			throw new EmprestimoException("O aluno ainda tem divida ainda nao pago");
 		}
 
 		// Verifica a quantidade do item no estoque
 		if (item.getQuantidade() < 1) {
-			logger.warn("O item esta faltando no estoque" + idItem + " qtd: " + item.getQuantidade());
+			logger.error("O item esta faltando no estoque" + idItem + " qtd: " + item.getQuantidade());
 			throw new EmprestimoException("O item esta faltando no estoque");
 		}
 
@@ -202,7 +215,17 @@ public class EmprestimoService {
 			// Cadastrar a divida do aluno no sistema
 			dividaDAO.inserir(divida);
 		}
+	}
 
+	public int diasParaFimPeriodo(String dataDevolucao) {
+		universidadeDAO = new UniversidadeDAOImpl();
+		Universidade universidade = universidadeDAO.getById(1);
+		DateTime dateDevolucao = BibliotecaDateTime.stringToDateTime(dataDevolucao);
+		DateTime dateFimPeriodo = BibliotecaDateTime.stringToDateTime(universidade.getFimPeriodo());
+
+		int dias = Days.daysBetween(dateDevolucao.toLocalDate(), dateFimPeriodo.toLocalDate()).getDays();
+
+		return dias;
 	}
 
 }
