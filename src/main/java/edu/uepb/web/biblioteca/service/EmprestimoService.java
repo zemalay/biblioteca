@@ -3,8 +3,6 @@ package edu.uepb.web.biblioteca.service;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.joda.time.DateTime;
-import org.joda.time.Days;
 
 import edu.uepb.web.biblioteca.dao.AlunoDAOImpl;
 import edu.uepb.web.biblioteca.dao.DividaDAOImpl;
@@ -12,15 +10,12 @@ import edu.uepb.web.biblioteca.dao.EmprestimoDAOImpl;
 import edu.uepb.web.biblioteca.dao.FuncionarioDAOImpl;
 import edu.uepb.web.biblioteca.dao.ItemDAOImpl;
 import edu.uepb.web.biblioteca.dao.ReservaDAOImpl;
-import edu.uepb.web.biblioteca.dao.UniversidadeDAOImpl;
 import edu.uepb.web.biblioteca.enums.TipoNivel;
 import edu.uepb.web.biblioteca.exception.EmprestimoException;
 import edu.uepb.web.biblioteca.model.Aluno;
-import edu.uepb.web.biblioteca.model.Divida;
 import edu.uepb.web.biblioteca.model.Emprestimo;
 import edu.uepb.web.biblioteca.model.Item;
 import edu.uepb.web.biblioteca.model.Reserva;
-import edu.uepb.web.biblioteca.model.Universidade;
 import edu.uepb.web.biblioteca.utils.BibliotecaDateTime;
 
 /**
@@ -34,7 +29,7 @@ public class EmprestimoService {
 	private EmprestimoDAOImpl emprestimoDAO;
 	private ReservaDAOImpl reservaDAO;
 	private DividaDAOImpl dividaDAO;
-	private UniversidadeDAOImpl universidadeDAO;
+	private DividaService dividaService;
 
 	/**
 	 * O funcionario cadastrar um emprestimo que foi pedido pelo aluno
@@ -57,7 +52,7 @@ public class EmprestimoService {
 
 		// Verifica se falta mais de 20 dias para terminar o periodo
 		String dataDevolucao = BibliotecaDateTime.getDataDevolucao(aluno.getCurso().getNivel());
-		int dias = diasParaFimPeriodo(dataDevolucao);
+		int dias = BibliotecaDateTime.diasParaFimPeriodo(dataDevolucao);
 		if (dias < 20) {
 			logger.error(
 					"O emprestimo nao podera realizado, tem menos 20 dias para fim do periodo. dias para fim periodo: "
@@ -120,12 +115,13 @@ public class EmprestimoService {
 		logger.info("Executa metodo 'devolucaoEmprestimo' do emprestimoService: idEmprestimo " + idEmprestimo);
 		emprestimoDAO = new EmprestimoDAOImpl();
 		itemDAO = new ItemDAOImpl();
+		dividaService = new DividaService();
 
 		Emprestimo emprestimo = emprestimoDAO.getById(idEmprestimo);
 		Aluno aluno = emprestimo.getAluno();
 
 		// Verfica se tem dias atraso, se tiver calcular a divida
-		calcularDivida(aluno, emprestimo, emprestimo.getDataDevolucao());
+		dividaService.calcularDivida(aluno, emprestimo, emprestimo.getDataDevolucao());
 
 		Item item = itemDAO.getById(emprestimo.getId());
 
@@ -172,60 +168,22 @@ public class EmprestimoService {
 			}
 		}
 
+		// Verifica se falta mais de 20 dias para terminar o periodo
+		String dataDevolucao = BibliotecaDateTime.getDataDevolucao(aluno.getCurso().getNivel());
+		int dias = BibliotecaDateTime.diasParaFimPeriodo(dataDevolucao);
+		if (dias < 20) {
+			logger.error(
+					"A renovacao nao podera realizada, tem menos 20 dias para fim do periodo. dias para fim periodo: "
+							+ dias);
+			throw new EmprestimoException("A renovacao nao podera realizada, tem menos 20 dias para fim do periodo");
+		}
+
 		emprestimo.setDataDevolucao(BibliotecaDateTime.getDataDevolucao(aluno.getCurso().getNivel()));
 		emprestimo.setRenovacao(emprestimo.getRenovacao() + 1);
 
 		emprestimoDAO.atualizar(emprestimo);
 
 		return true;
-	}
-
-	/**
-	 * Verificar a data da devolucao do emprestimo, se passou a data calcula a
-	 * divida e cadastra-lo no sistema
-	 * 
-	 * @param aluno
-	 * @param emprestimo
-	 * @param dataDevolucao
-	 */
-	public void calcularDivida(Aluno aluno, Emprestimo emprestimo, String dataDevolucao) {
-		logger.info("Executar o metodo 'calcularDivida' do emprestimoService: aluno: " + aluno + " emprestimo: "
-				+ emprestimo + " dataDevolucao: " + dataDevolucao);
-		// Data de hoje
-		DateTime dataInicio = new DateTime();
-
-		// data devolucao do item
-		DateTime dataFim = BibliotecaDateTime.stringToDateTime(dataDevolucao);
-
-		// Pegar os dias atrasos usando biblioteca JodaDateTime
-		int diasAtraso = Days.daysBetween(dataInicio.toLocalDate(), dataFim.toLocalDate()).getDays();
-
-		if (diasAtraso > 0) {
-			logger.info("O item esta com atraso: dias de atraso: " + diasAtraso);
-			float saldo = (float) (diasAtraso * 0.5);
-
-			dividaDAO = new DividaDAOImpl();
-			Divida divida = new Divida();
-
-			divida.setAluno(aluno);
-			divida.setEmprestimo(emprestimo);
-			divida.setSaldo(saldo);
-			divida.setPago(false);
-
-			// Cadastrar a divida do aluno no sistema
-			dividaDAO.inserir(divida);
-		}
-	}
-
-	public int diasParaFimPeriodo(String dataDevolucao) {
-		universidadeDAO = new UniversidadeDAOImpl();
-		Universidade universidade = universidadeDAO.getById(1);
-		DateTime dateDevolucao = BibliotecaDateTime.stringToDateTime(dataDevolucao);
-		DateTime dateFimPeriodo = BibliotecaDateTime.stringToDateTime(universidade.getFimPeriodo());
-
-		int dias = Days.daysBetween(dateDevolucao.toLocalDate(), dateFimPeriodo.toLocalDate()).getDays();
-
-		return dias;
 	}
 
 }

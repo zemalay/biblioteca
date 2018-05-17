@@ -51,14 +51,24 @@ public class ReservaService {
 		alunoDAO = new AlunoDAOImpl();
 		dividaDAO = new DividaDAOImpl();
 
+		Item item = itemDAO.getById(idItem);
+		Aluno aluno = alunoDAO.getById(idAluno);
+
 		// Verifica se o aluno tem divida ainda
 		if (dividaDAO.isAlunoTemDivida(idAluno)) {
 			logger.error("O aluno ainda tem divida ainda nao pago: " + idAluno + " e " + idItem);
 			throw new EmprestimoException("O aluno ainda tem divida ainda nao pago");
 		}
 
-		Item item = itemDAO.getById(idItem);
-		Aluno aluno = alunoDAO.getById(idAluno);
+		// Verifica se falta mais de 20 dias para terminar o periodo
+		String dataDevolucao = BibliotecaDateTime.getDataDevolucao(aluno.getCurso().getNivel());
+		int dias = BibliotecaDateTime.diasParaFimPeriodo(dataDevolucao);
+		if (dias < 20) {
+			logger.error(
+					"O emprestimo nao podera realizado, tem menos 20 dias para fim do periodo. dias para fim periodo: "
+							+ dias);
+			throw new EmprestimoException("O emprestimo nao podera realizado, tem menos 20 dias para fim do periodo");
+		}
 
 		Reserva reserva = new Reserva();
 		reserva.setAluno(aluno);
