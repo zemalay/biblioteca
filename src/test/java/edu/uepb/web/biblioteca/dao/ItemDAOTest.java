@@ -13,7 +13,6 @@ import org.junit.Test;
 import edu.uepb.web.biblioteca.enums.TipoAnais;
 import edu.uepb.web.biblioteca.enums.TipoItem;
 import edu.uepb.web.biblioteca.enums.TipoMidia;
-import edu.uepb.web.biblioteca.exception.DAOException;
 import edu.uepb.web.biblioteca.exception.ExistException;
 import edu.uepb.web.biblioteca.model.Item;
 
@@ -84,12 +83,12 @@ public class ItemDAOTest {
 	}
 
 	@Test
-	public void inserir() throws DAOException {
+	public void inserir()  {
 		assertNotEquals(manager.inserir(midia), -1);
 	}
 
 	@Test
-	public void get() throws DAOException {
+	public void get()  {
 		Item jornal1 = new Item();
 		jornal1 = new Item();
 		jornal1.setTipoItem(TipoItem.JORNAL);
@@ -103,7 +102,7 @@ public class ItemDAOTest {
 	}
 
 	@Test
-	public void getList() throws DAOException {
+	public void getList()  {
 		listaItem = manager.getLista();
 		 if (listaItem.size() <= 0) {
 			Assert.fail();
@@ -111,7 +110,7 @@ public class ItemDAOTest {
 	}
 
 	@Test
-	public void atualizar() throws DAOException {
+	public void atualizar()  {
 		revista.setId(manager.inserir(revista));
 		revista.setNumeroPagina(27);
 
@@ -120,7 +119,7 @@ public class ItemDAOTest {
 	}
 	
 	@Test
-	public void remover() throws DAOException {
+	public void remover()  {
 		int id = manager.inserir(anais);
 		anais.setId(id);
 		manager.remover(anais);
@@ -128,7 +127,7 @@ public class ItemDAOTest {
 	}
 	
 	@Test
-	public void isExiste() throws DAOException, ExistException {
+	public void isExiste() throws ExistException {
 		Item item = new Item();
 		item.setTipoItem(TipoItem.JORNAL);
 		item.setTitulo("Titulo Item");

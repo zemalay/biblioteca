@@ -11,9 +11,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import edu.uepb.web.biblioteca.enums.TipoNivel;
-import edu.uepb.web.biblioteca.exception.DAOException;
 import edu.uepb.web.biblioteca.model.Aluno;
 import edu.uepb.web.biblioteca.model.Curso;
+import edu.uepb.web.biblioteca.service.AlunoService;
 import edu.uepb.web.biblioteca.service.FuncionarioService;
 
 /**
@@ -35,13 +35,13 @@ public class AlunoDAOTest {
 
 	CursoDAOImpl cursoDAO;
 	AlunoDAOImpl manager;
-	FuncionarioService funService;
+	AlunoService alunoService;
 	Connection conn;
 
 	@Before
 	public void setUp() throws Exception {
 		conn = new Conexao().getConexao();
-		funService = new FuncionarioService();
+		alunoService = new AlunoService();
 		manager = new AlunoDAOImpl();
 		cursoDAO = new CursoDAOImpl();
 
@@ -51,8 +51,8 @@ public class AlunoDAOTest {
 		matematica = new Curso("Matematica", TipoNivel.GRADUACAO, "Exatas");
 		relacoes = new Curso("Relacoes Int", TipoNivel.GRADUACAO, "Sociais");
 
-		aluno1 = new Aluno("", "435", "34331", "Lula", "Dina", "Brasil", "Sao Paulo", "9893434", null, "2016",
-				"2", "dsenr");
+		aluno1 = new Aluno("", "435", "34331", "Lula", "Dina", "Brasil", "Sao Paulo", "9893434", null, "2016", "2",
+				"dsenr");
 
 		aluno2 = new Aluno("", "wedfd", "0634.401-21", "Kaio", "Dilma", "Brasil", "Jooa Pessoa", "9893434", null,
 				"2016", "2", "eriaa");
@@ -65,11 +65,11 @@ public class AlunoDAOTest {
 	}
 
 	@Test
-	public void inserir() throws DAOException {
+	public void inserir() {
 		int idcurso = cursoDAO.inserir(farmacia);
 		aluno1.setCurso(cursoDAO.getById(idcurso));
 
-		aluno1.setMatricula(funService.gerarMatricula(aluno1));
+		aluno1.setMatricula(alunoService.gerarMatricula(aluno1));
 		int idaluno = manager.inserir(aluno1);
 
 		if (idaluno < 0) {
@@ -79,17 +79,17 @@ public class AlunoDAOTest {
 	}
 
 	@Test
-	public void get() throws DAOException {
+	public void get() {
 		int idCurso = cursoDAO.inserir(psicologia);
 		aluno2.setCurso(cursoDAO.getById(idCurso));
-		
-		aluno2.setMatricula(funService.gerarMatricula(aluno2));
+
+		aluno2.setMatricula(alunoService.gerarMatricula(aluno2));
 		int id = manager.inserir(aluno2);
 		assertNotEquals(null, manager.getById(id));
 	}
 
 	@Test
-	public void getLista() throws DAOException {
+	public void getLista() {
 		List<Aluno> listaAluno = manager.getLista();
 		if (listaAluno.size() < 0) {
 			Assert.fail();
@@ -97,22 +97,22 @@ public class AlunoDAOTest {
 	}
 
 	@Test
-	public void remover() throws DAOException {
+	public void remover() {
 		int idCurso = cursoDAO.inserir(matematica);
 		aluno3.setCurso(cursoDAO.getById(idCurso));
-		
+
 		int id = manager.inserir(aluno3);
-		aluno3.setMatricula(funService.gerarMatricula(aluno3));
+		aluno3.setMatricula(alunoService.gerarMatricula(aluno3));
 		manager.remover(aluno3);
-		assertNotEquals(null, manager.getById(id));
+		assertEquals(null, manager.getById(id));
 	}
 
 	@Test
-	public void atualizar() throws DAOException {
+	public void atualizar() {
 		int idCurso = cursoDAO.inserir(quimica);
 		aluno4.setCurso(cursoDAO.getById(idCurso));
 
-		aluno4.setMatricula(funService.gerarMatricula(aluno4));
+		aluno4.setMatricula(alunoService.gerarMatricula(aluno4));
 		int id = manager.inserir(aluno4);
 		aluno4.setId(id);
 		aluno4.setEndereco("Canada");
@@ -122,15 +122,15 @@ public class AlunoDAOTest {
 		assertEquals("Canada", manager.getById(id).getEndereco());
 
 	}
-	
+
 	@Test
-	public void isExiste() throws DAOException {
-		
+	public void isExiste() {
+
 		Aluno aluno5 = new Aluno();
-		
+
 		int idCurso = cursoDAO.inserir(relacoes);
 		aluno5.setCurso(cursoDAO.getById(idCurso));
-		
+
 		aluno5.setRg("3454");
 		aluno5.setCpf("re3454");
 		aluno5.setNome("Fred");
@@ -141,8 +141,8 @@ public class AlunoDAOTest {
 		aluno5.setAno("2017");
 		aluno5.setPeriodoIngresso("2");
 		aluno5.setSenha("erto");
-		aluno5.setMatricula(funService.gerarMatricula(aluno5));
-		
+		aluno5.setMatricula(alunoService.gerarMatricula(aluno5));
+
 		assertEquals(false, manager.isExiste(aluno5));
 	}
 
