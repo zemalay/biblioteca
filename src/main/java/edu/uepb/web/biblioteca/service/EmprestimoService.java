@@ -3,8 +3,11 @@ package edu.uepb.web.biblioteca.service;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
+import org.joda.time.Days;
 
 import edu.uepb.web.biblioteca.dao.AlunoDAOImpl;
+import edu.uepb.web.biblioteca.dao.DividaDAOImpl;
 import edu.uepb.web.biblioteca.dao.EmprestimoDAOImpl;
 import edu.uepb.web.biblioteca.dao.FuncionarioDAOImpl;
 import edu.uepb.web.biblioteca.dao.ItemDAOImpl;
@@ -12,6 +15,7 @@ import edu.uepb.web.biblioteca.dao.ReservaDAOImpl;
 import edu.uepb.web.biblioteca.enums.TipoNivel;
 import edu.uepb.web.biblioteca.exception.EmprestimoException;
 import edu.uepb.web.biblioteca.model.Aluno;
+import edu.uepb.web.biblioteca.model.Divida;
 import edu.uepb.web.biblioteca.model.Emprestimo;
 import edu.uepb.web.biblioteca.model.Item;
 import edu.uepb.web.biblioteca.model.Reserva;
@@ -27,6 +31,7 @@ public class EmprestimoService {
 	private AlunoDAOImpl alunoDAO;
 	private EmprestimoDAOImpl emprestimoDAO;
 	private ReservaDAOImpl reservaDAO;
+	private DividaDAOImpl dividaDAO;
 
 	/**
 	 * O funcionario cadastrar um emprestimo que foi pedido pelo aluno
@@ -81,13 +86,20 @@ public class EmprestimoService {
 	/**
 	 * Realizar a devolucao do item emprestado boolean
 	 * 
-	 * @param idFuncionario @param idAluno @param idEmprestimo @return @throws
+	 * @param idFuncionario
+	 * @param idEmprestimo
+	 * @return @throws
 	 */
-	public boolean devolucaoEmprestimo(int idFuncionario, int idAluno, int idEmprestimo) {
+	public boolean devolucaoEmprestimo(int idFuncionario, int idEmprestimo) {
 		emprestimoDAO = new EmprestimoDAOImpl();
 		itemDAO = new ItemDAOImpl();
 
 		Emprestimo emprestimo = emprestimoDAO.getById(idEmprestimo);
+		Aluno aluno = emprestimo.getAluno();
+
+		// Verfica se tem dias atraso, se tiver calcular a divida
+		calcularDivida(aluno, emprestimo, emprestimo.getDataDevolucao());
+
 		Item item = itemDAO.getById(emprestimo.getId());
 
 		// aumentar a quantidade do item no estoque
@@ -137,6 +149,40 @@ public class EmprestimoService {
 		emprestimoDAO.atualizar(emprestimo);
 
 		return true;
+	}
+
+	/**
+	 * Verificar a data da devolucao do emprestimo, se passou a data calcula a
+	 * divida e cadastra-lo no sistema
+	 * 
+	 * @param aluno
+	 * @param emprestimo
+	 * @param dataDevolucao
+	 */
+	public void calcularDivida(Aluno aluno, Emprestimo emprestimo, String dataDevolucao) {
+		// Data de hoje
+		DateTime dataInicio = new DateTime();
+
+		// data devolucao do item
+		DateTime dataFim = BibliotecaDateTime.stringToDateTime(dataDevolucao);
+
+		// Pegar os dias atrasos usando biblioteca JodaDateTime
+		int diasAtraso = Days.daysBetween(dataInicio.toLocalDate(), dataFim.toLocalDate()).getDays();
+
+		if (diasAtraso > 0) {
+			float saldo = (float) (diasAtraso * 0.5);
+
+			dividaDAO = new DividaDAOImpl();
+			Divida divida = new Divida();
+
+			divida.setAluno(aluno);
+			divida.setEmprestimo(emprestimo);
+			divida.setSaldo(saldo);
+
+			// Cadastrar a divida do aluno no sistema
+			dividaDAO.inserir(divida);
+		}
+
 	}
 
 }
