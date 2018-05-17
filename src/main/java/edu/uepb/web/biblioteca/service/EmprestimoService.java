@@ -43,6 +43,8 @@ public class EmprestimoService {
 	 * @throws EmprestimoException
 	 */
 	public int cadastrarEmprestimo(int idFuncionario, int idAluno, int idItem) throws EmprestimoException {
+		logger.info("Executa metodo 'cadastrarEmprestimo' do emprestimoService: " + idFuncionario + " " + idAluno + " "
+				+ idItem);
 		itemDAO = new ItemDAOImpl();
 		alunoDAO = new AlunoDAOImpl();
 		dividaDAO = new DividaDAOImpl();
@@ -51,12 +53,14 @@ public class EmprestimoService {
 		Aluno aluno = alunoDAO.getById(idAluno);
 
 		// Verifica se o aluno tem divida ainda
-		if (dividaDAO.dividaByAlunoId(idAluno)) {
-			throw new EmprestimoException("O aluno ainda tem divida ainda pago");
+		if (dividaDAO.isAlunoTemDivida(idAluno)) {
+			logger.warn("O aluno ainda tem divida ainda nao pago: " + idAluno + " e " + idItem);
+			throw new EmprestimoException("O aluno ainda tem divida ainda nao pago");
 		}
 
 		// Verifica a quantidade do item no estoque
 		if (item.getQuantidade() < 1) {
+			logger.warn("O item esta faltando no estoque" + idItem + " qtd: " + item.getQuantidade());
 			throw new EmprestimoException("O item esta faltando no estoque");
 		}
 
@@ -69,6 +73,7 @@ public class EmprestimoService {
 		for (Reserva reserva : listaReserva) {
 			if (reserva.getAluno().getId() == idAluno && reserva.getItem().getId() == idItem) {
 				reservaDAO.remover(reserva);
+				logger.info("A reserva foi removido: idAluno:" + idAluno + "idItem: " + idItem);
 			}
 		}
 
@@ -99,6 +104,7 @@ public class EmprestimoService {
 	 * @return
 	 */
 	public boolean devolucaoEmprestimo(int idFuncionario, int idEmprestimo) {
+		logger.info("Executa metodo 'devolucaoEmprestimo' do emprestimoService: idEmprestimo " + idEmprestimo);
 		emprestimoDAO = new EmprestimoDAOImpl();
 		itemDAO = new ItemDAOImpl();
 
@@ -131,21 +137,24 @@ public class EmprestimoService {
 	 * @throws EmprestimoException
 	 */
 	public boolean renovarEmprestimo(int idAluno, int idEmprestimo) throws EmprestimoException {
+		logger.info("Executa metodo 'renovarEmprestimo' do emprestimoService: idEmprestimo " + idEmprestimo);
 		emprestimoDAO = new EmprestimoDAOImpl();
 		reservaDAO = new ReservaDAOImpl();
 		Emprestimo emprestimo = emprestimoDAO.getById(idEmprestimo);
 
 		alunoDAO = new AlunoDAOImpl();
-		Aluno aluno = alunoDAO.getById(idEmprestimo);
+		Aluno aluno = alunoDAO.getById(idAluno);
 
 		// aluno graduacao nao pode renovar mais de uma vez.
 		if (aluno.getCurso().getNivel() == TipoNivel.GRADUACAO && emprestimo.getRenovacao() != 1) {
+			logger.warn("O aluno de graduacao nao pode renovar mais e uma vez: idAluno" + aluno.getId());
 			throw new EmprestimoException("Ja estourou o limite da renovacao!");
 		}
 		List<Reserva> listaReserva = reservaDAO.getLista();
 
 		for (Reserva reserva : listaReserva) {
 			if (emprestimo.getItem().getId() == reserva.getItem().getId()) {
+				logger.warn("O item ja foi reservado por alguem: idItem: " + emprestimo.getItem().getId());
 				throw new EmprestimoException("Nao pode realizar a renovacao, o item ja foi reservado por alguem");
 			}
 		}
@@ -167,6 +176,8 @@ public class EmprestimoService {
 	 * @param dataDevolucao
 	 */
 	public void calcularDivida(Aluno aluno, Emprestimo emprestimo, String dataDevolucao) {
+		logger.info("Executar o metodo 'calcularDivida' do emprestimoService: aluno: " + aluno + " emprestimo: "
+				+ emprestimo + " dataDevolucao: " + dataDevolucao);
 		// Data de hoje
 		DateTime dataInicio = new DateTime();
 
@@ -177,6 +188,7 @@ public class EmprestimoService {
 		int diasAtraso = Days.daysBetween(dataInicio.toLocalDate(), dataFim.toLocalDate()).getDays();
 
 		if (diasAtraso > 0) {
+			logger.info("O item esta com atraso: dias de atraso: " + diasAtraso);
 			float saldo = (float) (diasAtraso * 0.5);
 
 			dividaDAO = new DividaDAOImpl();
@@ -185,6 +197,7 @@ public class EmprestimoService {
 			divida.setAluno(aluno);
 			divida.setEmprestimo(emprestimo);
 			divida.setSaldo(saldo);
+			divida.setPago(false);
 
 			// Cadastrar a divida do aluno no sistema
 			dividaDAO.inserir(divida);

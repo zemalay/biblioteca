@@ -29,6 +29,7 @@ public class ItemService {
 	 * @return {@link Item}
 	 */
 	public Item getItemById(int idItem) {
+		logger.info("Executa o metodo 'getItemById' do itemService, idItem: " + idItem);
 		itemDAO = new ItemDAOImpl();
 		return itemDAO.getById(idItem);
 	}
@@ -57,10 +58,12 @@ public class ItemService {
 	public int cadastraItem(Funcionario funcionario, Item item) throws AutenticacaoException, ExistException {
 		logger.info("Executa o metodo 'cadastraItem' com param fucionario : " + funcionario + " e item : " + item);
 		if (!funcionario.getTipoFunc().equals(TipoFuncionario.ADMINISTRADOR)) {
+			logger.error("Funcionario nao autorizado, idFuncionario: " + funcionario.getId());
 			throw new AutenticacaoException("Este funcionario nao esta autorizado");
 		} else {
 			itemDAO = new ItemDAOImpl();
 			if (itemDAO.isExiste(item)) {
+				logger.warn("Item ja existe, titulo item: " + item.getTitulo());
 				throw new ExistException("Item ja existe");
 			} else {
 				logger.info("O item salvo com sucesso: " + item);
@@ -82,6 +85,7 @@ public class ItemService {
 	public boolean atualizarItem(Funcionario funcionario, Item item) throws AutenticacaoException, ExistException {
 		logger.info("Executa o metodo 'atualizarItem' com param fucionario : " + funcionario + " e item : " + item);
 		if (!funcionario.getTipoFunc().equals(TipoFuncionario.ADMINISTRADOR)) {
+			logger.error("Funcionario nao autorizado, idFuncionario: " + funcionario.getId());
 			throw new AutenticacaoException("Este funcionario nao esta autorizado");
 		} else {
 			itemDAO = new ItemDAOImpl();
@@ -103,6 +107,7 @@ public class ItemService {
 	public boolean removerItem(Funcionario funcionario, Item item) throws AutenticacaoException {
 		logger.info("Executa o metodo 'removerItem' com param fucionario : " + funcionario + " e item : " + item);
 		if (!funcionario.getTipoFunc().equals(TipoFuncionario.ADMINISTRADOR)) {
+			logger.error("Funcionario nao autorizado, idFuncionario: " + funcionario.getId());
 			throw new AutenticacaoException("Este funcionario nao esta autorizado");
 		} else {
 			itemDAO = new ItemDAOImpl();

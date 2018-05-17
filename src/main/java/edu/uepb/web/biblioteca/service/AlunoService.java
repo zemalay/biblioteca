@@ -48,6 +48,7 @@ public class AlunoService {
 		alunoDAO = new AlunoDAOImpl();
 		aluno.setMatricula(this.gerarMatricula(aluno));
 		if (alunoDAO.isExiste(aluno)) {
+			logger.error("Ja existe aluno com esta matricula, matricula: " + aluno.getMatricula());
 			throw new ExistException("O aluno ja cadastrado no sistema");
 		}
 		logger.info("O Aluno cadastrado com sucesso: " + aluno);
@@ -106,6 +107,10 @@ public class AlunoService {
 		// Criar codigo (e.g. 1 -> 001)
 		alunoDAO = new AlunoDAOImpl();
 		codigo = String.format("%03d", alunoDAO.getUltimoId() + 1);
+		
+		logger.info(nivelAbreviacao + cursoAbreviacao.toUpperCase() + "-" + anoAbreviacao + aluno.getPeriodoIngresso()
+				+ codigo);
+		
 		return nivelAbreviacao + cursoAbreviacao.toUpperCase() + "-" + anoAbreviacao + aluno.getPeriodoIngresso()
 				+ codigo;
 	}
@@ -123,6 +128,7 @@ public class AlunoService {
 	public boolean removerAluno(Funcionario funcionario, Aluno aluno) throws AutenticacaoException {
 		logger.info("Executa o metodo 'removerAluno' do alunoBusiness: " + funcionario + " e aluno: " + aluno);
 		if (!funcionario.getTipoFunc().equals(TipoFuncionario.ADMINISTRADOR)) {
+			logger.error("Funcionario nao autorizado, idFuncionario: " + funcionario.getId());
 			throw new AutenticacaoException("Este funcionario nao esta autorizado");
 		} else {
 			alunoDAO = new AlunoDAOImpl();
@@ -147,8 +153,8 @@ public class AlunoService {
 		logger.info("O Aluno atualizado com sucesso: " + aluno);
 		return true;
 	}
-	
-	public List<Aluno> getListaAluno(){
+
+	public List<Aluno> getListaAluno() {
 		logger.info("Executa o metodo 'getListaAluno' do AlunoService");
 		alunoDAO = new AlunoDAOImpl();
 		return alunoDAO.getLista();

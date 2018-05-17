@@ -74,16 +74,19 @@ public class DividaDAOImpl implements DAO<Divida> {
 	}
 
 	/**
+	 * Pegar todas as dividas que ainda nao pago
+	 * 
 	 * @see DAO#getLista()
 	 */
 	@Override
 	public List<Divida> getLista() {
 		logger.info("Executa o metodo 'getLista' da divida");
 
-		String sql = "SELECT * FROM divida";
+		String sql = "SELECT * FROM divida WHERE pago = ?";
 		List<Divida> listaDivida = new ArrayList<>();
 		try {
 			statement = connection.prepareStatement(sql);
+			statement.setBoolean(2, false);
 			resultSet = statement.executeQuery();
 
 			while (resultSet.next()) {
@@ -189,7 +192,13 @@ public class DividaDAOImpl implements DAO<Divida> {
 
 	}
 
-	public boolean dividaByAlunoId(int idAluno) {
+	/**
+	 * Verifica se o aluno tem divida que ainda nao pago
+	 * 
+	 * @param idAluno
+	 * @return boolean
+	 */
+	public boolean isAlunoTemDivida(int idAluno) {
 		logger.info("Executar metodo 'dividaByAlunoId' da divida: " + idAluno);
 		if (idAluno > 0) {
 			String sql = "SELECT * FROM divida WHERE aluno_id = ?";
@@ -212,6 +221,47 @@ public class DividaDAOImpl implements DAO<Divida> {
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * Pegar a divida do aluno que ainda nao pago
+	 * 
+	 * @param idAluno
+	 * @return Divida
+	 */
+	public Divida getDividaByAlunoId(int idAluno) {
+		logger.info("Executa o metodo 'get' da divida : " + idAluno);
+
+		String sql = "SELECT * FROM divida WHERE aluno_id = ? and pago = ?";
+		Divida divida = null;
+
+		try {
+			statement = connection.prepareStatement(sql);
+			statement.setInt(1, idAluno);
+			statement.setBoolean(2, false);
+			resultSet = statement.executeQuery();
+
+			if (resultSet.next()) {
+				divida = new Divida();
+				alunoDAO = new AlunoDAOImpl();
+				emprestimoDAO = new EmprestimoDAOImpl();
+
+				divida.setId(resultSet.getInt(1));
+				aluno = alunoDAO.getById(resultSet.getInt(2));
+				emprestimo = emprestimoDAO.getById(resultSet.getInt(3));
+
+				divida.setAluno(aluno);
+				divida.setEmprestimo(emprestimo);
+				divida.setSaldo(resultSet.getFloat(4));
+				divida.setPago(resultSet.getBoolean(5));
+
+			}
+			statement.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		logger.info("A divida foi selecionada: " + divida);
+		return divida;
 	}
 
 	@Override

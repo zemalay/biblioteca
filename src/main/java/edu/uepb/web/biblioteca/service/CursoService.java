@@ -34,6 +34,7 @@ public class CursoService {
 		logger.info("Executa o metodo 'cadastraCurso' do cursoService com param: " + funcionario + " e : " + curso);
 		cursoDAO = new CursoDAOImpl();
 		if (cursoDAO.isExiste(curso)) {
+			logger.warn("O curso ja existe, curso: " + curso);
 			throw new ExistException("O Curso ja existe");
 		}
 		logger.info("O curso salvo com sucesso: " + curso);
@@ -63,6 +64,7 @@ public class CursoService {
 	public boolean removerCurso(Funcionario funcionario, Curso curso) throws AutenticacaoException {
 		logger.info("Executa o metodo 'removerCurso' do cursoService com param: " + funcionario + " e : " + curso);
 		if (!funcionario.getTipoFunc().equals(TipoFuncionario.ADMINISTRADOR)) {
+			logger.error("Funcionario nao autorizado, idFuncionario: " + funcionario.getId());
 			throw new AutenticacaoException("Este funcionario nao esta autorizado");
 		} else {
 			cursoDAO = new CursoDAOImpl();
