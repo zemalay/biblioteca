@@ -257,10 +257,10 @@ public class FuncionarioDAOImpl implements DAO<Funcionario> {
 					funcionario.setUsuario(resultSet.getString(2));
 					funcionario.setSenha(resultSet.getString(3));
 				} else {
-					throw new AutenticacaoException("Senha Invalida");
+					throw new AutenticacaoException("Usuario ou Senha Invalida");
 				}
 			} else {
-				throw new AutenticacaoException("Usuario Invalido");
+				throw new AutenticacaoException("Usuario ou Senha Invalida");
 			}
 			statement.close();
 		} catch (SQLException e) {

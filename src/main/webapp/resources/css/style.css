@@ -1,3 +1,18 @@
+#search{
+    margin-top: 60%;
+    margin-left: -25%;
+}
+
+#funcionarioForm{
+    margin-left: 45%;
+}
+
+#linkAluno, #linkFuncionario{
+    margin-left: 20px;
+    color: white;
+}
+
+
 body {
   overflow-x: hidden;
 }

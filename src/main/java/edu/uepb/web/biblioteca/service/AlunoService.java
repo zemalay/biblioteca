@@ -3,6 +3,7 @@ package edu.uepb.web.biblioteca.service;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.springframework.stereotype.Service;
 
 import edu.uepb.web.biblioteca.dao.AlunoDAOImpl;
 import edu.uepb.web.biblioteca.dao.UniversidadeDAOImpl;
@@ -16,6 +17,7 @@ import edu.uepb.web.biblioteca.model.Universidade;
 /**
  * @autor geovanniovinhas <vinhasgeovannio@gmail.com
  */
+@Service
 public class AlunoService {
 	private static Logger logger = Logger.getLogger(AlunoService.class);
 	private AlunoDAOImpl alunoDAO;

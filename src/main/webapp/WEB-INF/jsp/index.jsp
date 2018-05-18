@@ -6,20 +6,20 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<link rel="stylesheet"
-	href='<c:url value="/resources/bootstrap/css/bootstrap.min.css"/>' />
+<link rel="stylesheet" href='<c:url value="/resources/bootstrap/css/bootstrap.min.css"/>' />
+<link rel="stylesheet" href='<c:url value="/resources/izitoast/css/iziToast.min.css"/>' />
 <link rel="stylesheet"
 	href='<c:url value="/resources/css/style.css"/>' />
 <script
 	src="<c:url value="/resources/javascript/jquery/jquery-3.3.1.min.js" />"></script>
 <script src="<c:url value="/resources/javascript/popper.min.js" />"></script>
 <script src="<c:url value="/resources/bootstrap/js/bootstrap.min.js" />"></script>
-<title>HelloWorld page</title>
+<title>Sistema BibLioteca</title>
 </head>
 <body>
 	<nav class="navbar navbar" style="background-color:darkcyan"> 
-	<form:form method="POST" action="/biblioteca/auth" modelAttribute="funcionario" class="form-inline"
-		style="margin-left: 40%;">
+	
+	<form:form id="funcionarioForm" modelAttribute="funcionario" method="POST" action="/biblioteca/funcionario/auth" class="form-inline">
 		<form:label path="usuario" class="sr-only">Usuario</form:label>
 		<form:input class="form-control mb-2 mr-sm-2" placeholder="usuario"
 			path="usuario" />
@@ -31,27 +31,27 @@
 		<div>
 			<input type="submit" class="btn btn-dark mb-2" value="Submit">
 		</div>
+		<div class="form-group">
+        		<a id="linkAluno" href="#">Aluno?</a>
+      	</div>
 	</form:form>
-
-	<%-- <form class="form-inline" style="margin-left: 40%;">
-		<label class="sr-only" for="inlineFormInputName2">Name</label> <input
-			type="text" class="form-control mb-2 mr-sm-2"
-			id="inlineFormInputName2" placeholder="Login"> <label
-			class="sr-only" for="inlineFormInputGroupUsername2">Senha</label>
+	
+	<form:form id="alunoForm" modelAttribute="aluno" method="POST" action="/biblioteca/aluno/auth" class="form-inline">
+		<form:label path="matricula" class="sr-only">Matricula</form:label>
+		<form:input class="form-control mb-2 mr-sm-2" placeholder="matricula"
+			path="matricula" />
+		<form:label class="sr-only" path="senha">Senha</form:label>
 		<div class="input-group mb-2 mr-sm-2">
 			<div class="input-group-prepend"></div>
-			<input type="password" class="form-control"
-				id="inlineFormInputGroupUsername2" placeholder="Senha">
+			<form:password class="form-control" placeholder="senha" path="senha" />
 		</div>
 		<div>
-			<button type="submit" class="btn btn-dark mb-2">Entrar</button>
-		</div> --%>
-
-		<!-- <div class="form-check mb-2 mr-sm-2">
-			<div class="dropdown-divider"></div>
-			<a class="dropdown-item" href="#" style="color: white">Não
-				possui cadastro? Cadastre-se</a>
-		</div> -->
+			<input type="submit" class="btn btn-dark mb-2" value="Submit">
+		</div>
+		<div class="form-group">
+        		<a id="linkFuncionario" href="#">Funcionario?</a>
+      	</div>
+	</form:form>
 
 	</nav>
 	<div class="row">
@@ -72,8 +72,21 @@
 			</form>
 		</div>
 	</div>
-	<script type="text/javascript"
-		src="<c:url value="/resources/javascript/action.js" />"></script>
+	<script type="text/javascript" src="<c:url value="/resources/izitoast/js/iziToast.min.js" />"></script>
+	<script type="text/javascript">
+	var mensagem = '${mensagem}';
+	console.log("mensagem :" + mensagem);
+	if ( mensagem != "") {
+	      iziToast.show({
+	        title: 'Erro',
+	        message: mensagem,
+	        color: 'red',
+	        timeout: false,
+	        position: 'topRight'
+	      });
+	    }
+	</script>
+	<script type="text/javascript" src="<c:url value="/resources/javascript/action.js" />"></script>
 
 </body>
 </html>
