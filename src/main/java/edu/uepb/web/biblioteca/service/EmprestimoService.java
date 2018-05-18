@@ -1,5 +1,7 @@
 package edu.uepb.web.biblioteca.service;
 
+import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
@@ -189,6 +191,16 @@ public class EmprestimoService {
 		emprestimoDAO.atualizar(emprestimo);
 
 		return true;
+	}
+
+	/**
+	 * Retornar a lista dos emprestimos que ainda nao entrega
+	 * 
+	 * @return List
+	 */
+	public List<Emprestimo> getListaEmprestimo() {
+		emprestimoDAO = new EmprestimoDAOImpl();
+		return emprestimoDAO.getLista();
 	}
 
 }

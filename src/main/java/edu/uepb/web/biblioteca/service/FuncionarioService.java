@@ -70,11 +70,30 @@ public class FuncionarioService {
 		funcionarioDAO.atualizar(funcionario);
 		return true;
 	}
-	
+
+	/**
+	 * Apagar os dados do funcionario no sistema
+	 * 
+	 * @param funcionario
+	 * @return boolean
+	 */
 	public boolean deletarFuncionario(Funcionario funcionario) {
 		logger.info("Executa o metodo 'deletarFuncionario' funcionarioService: " + funcionario);
 		funcionarioDAO = new FuncionarioDAOImpl();
+		funcionarioDAO.remover(funcionario);
 		return true;
+	}
+
+	/**
+	 * Pegar os dados do Funcionario
+	 * 
+	 * @param id
+	 * @return Funcionario
+	 */
+	public Funcionario getFuncionarioById(int id) {
+		logger.info("Executa o metodo 'getFuncionarioById' funcionarioService: " + id);
+		funcionarioDAO = new FuncionarioDAOImpl();
+		return funcionarioDAO.getById(id);
 	}
 
 }

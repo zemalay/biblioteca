@@ -1,4 +1,5 @@
 $(function() {
+	
 	$('#alunoForm').hide();
 
 	$('#linkAluno').click(function() {

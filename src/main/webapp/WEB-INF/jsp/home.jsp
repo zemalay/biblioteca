@@ -22,9 +22,8 @@
         <div id="sidebar-wrapper" style="background-color:darkcyan;">
             <ul class="sidebar-nav">
                 <li class="sidebar-brand">
-                    <a href="#" style="color: white;">
-                        Biblioteca-UFAB
-                    </a>
+                    <a href="<c:url value='/funcionario/home' />"
+					style="color: white;"> Biblioteca-UFAB </a>
                 </li>
 
                 <li>
@@ -34,8 +33,8 @@
                             Item da Biblioteca
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a class="dropdown-item" href="#">Listar</a>
-                            <a class="dropdown-item" href="#">Cadastrar</a>
+                            <a class="dropdown-item" href="<c:url value='/Item/lista' />">Listar</a>
+                            <a class="dropdown-item" href="<c:url value='/Item/form' />">Cadastrar</a>
 
                         </div>
                     </div>
@@ -46,8 +45,8 @@
                                 Aluno(a)
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a class="dropdown-item" href="#">Listar</a>
-                                <a class="dropdown-item" href="#">Cadastrar</a>
+                                <a class="dropdown-item" href="<c:url value='/aluno/lista' />">Listar</a>
+                                <a class="dropdown-item" href="<c:url value='/aluno/form' />">Cadastrar</a>
 
                             </div>
                         </div>
@@ -59,9 +58,8 @@
                                 Funcionário(a)
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a class="dropdown-item" href="#">Listar</a>
-                                <a class="dropdown-item" href="#">Cadastrar</a>
-                                <a class="dropdown-item" href="#"></a>
+                                <a class="dropdown-item" href="<c:url value='/funcionario/lista' />">Listar</a>
+                                <a class="dropdown-item" href="<c:url value='/funcionario/form' />">Cadastrar</a>
                             </div>
                         </div>
                     </li>
@@ -115,12 +113,6 @@
         </div>
 
         <div class="modal-content">
-            <div>
-                <form class="form-inline" style="margin-left:-97%; margin: 3%;">
-                    <input class="form-control mr-sm-2" type="search" placeholder="Procurar" aria-label="Search" style="margin-left:70%;">
-                    <button class="btn btn-dark my-2 my-sm-0" type="submit">Procurar</button>
-                </form>
-            </div>
      <h3 style="margin-left: 40%;">Lista de Empréstimos</h3>
      <c:if test="${!empty listaEmprestimo }">
      	<table class="table">
@@ -154,8 +146,9 @@
      
      
      </c:if>
-    	
+    	</div>
+    	</div>
 	<script type="text/javascript" src="<c:url value="/resources/izitoast/js/iziToast.min.js" />"></script>
-	<script type="text/javascript" src="/resources/javascript/action.js"></script>
+	<script type="text/javascript" src="<c:url value="/resources/javascript/action.js" />"></script>
 </body>
 </html>
