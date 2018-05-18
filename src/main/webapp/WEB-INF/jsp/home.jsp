@@ -122,7 +122,8 @@
                 </form>
             </div>
      <h3 style="margin-left: 40%;">Lista de Empréstimos</h3>
-    <table class="table">
+     <c:if test="${!empty listaEmprestimo }">
+     	<table class="table">
             <thead class="thead-dark">
                 <tr>
                     <th scope="col">Código do Item</th>
@@ -130,28 +131,30 @@
                     <th scope="col">Matrícula do aluno</th>
                     <th scope="col">Data da Entrega</th>
                     <th scope="col">Data da Devolução</th>
-                    <th scope="col">Qtd de dias para devolução</th>
                     <th scope="col">Devolução</th>
-
-
-                    
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <th scope="row">526</th>
-                    <td>Capitu</td>
-                    <td>142083526</td>
-                    <td>15/05/2018</td>
-                    <td>30/05/2018</td>
-                    <td>15 dias</td>
-                    <td>Não</td>
-                    
-                </tr>
-              
+            <c:forEach items="${listaEmprestimo}" var="emprestimo">
+            		<tr>
+            			<th scope="row">${emprestimo.id}</th>
+                    <td>${emprestimo.item.titulo}</td>
+                    <td>${emprestimo.aluno.matricula}</td>
+                    <td>${emprestimo.dataCadastrado}</td>
+                    <td>${emprestimo.dataDevolucao}</td>
+                    <c:if test="${emprestimo.entregou == true}">
+                    		<td>sim</td>
+                    </c:if>
+                    <td>nao</td>
+            		</tr>
+            </c:forEach>
             </tbody>
         </table>
-	
+     	
+     
+     
+     </c:if>
+    	
 	<script type="text/javascript" src="<c:url value="/resources/izitoast/js/iziToast.min.js" />"></script>
 	<script type="text/javascript" src="/resources/javascript/action.js"></script>
 </body>

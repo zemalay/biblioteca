@@ -80,6 +80,8 @@ public class EmprestimoDAOImpl implements DAO<Emprestimo> {
 	}
 
 	/**
+	 * Pegar todos os emprestimos que ainda nao entrega
+	 * 
 	 * @ @see {@link DAO#getLista()}
 	 */
 	@Override
@@ -87,7 +89,7 @@ public class EmprestimoDAOImpl implements DAO<Emprestimo> {
 		logger.info("Executa o metodo 'getLista' do emprestimo");
 
 		connection = new Conexao().getConexao();
-		String sql = "SELECT	 * FROM emprestimo";
+		String sql = "SELECT	 * FROM emprestimo WHERE entregou = false";
 
 		List<Emprestimo> listaEmprestimo = new ArrayList<>();
 
