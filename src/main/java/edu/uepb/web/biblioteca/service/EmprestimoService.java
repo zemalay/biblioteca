@@ -1,6 +1,7 @@
 package edu.uepb.web.biblioteca.service;
 
 import org.apache.log4j.Logger;
+import org.springframework.stereotype.Service;
 
 import edu.uepb.web.biblioteca.dao.AlunoDAOImpl;
 import edu.uepb.web.biblioteca.dao.DividaDAOImpl;
@@ -20,6 +21,7 @@ import edu.uepb.web.biblioteca.utils.Email;
 /**
  * @autor geovanniovinhas <vinhasgeovannio@gmail.com
  */
+@Service
 public class EmprestimoService {
 	private static Logger logger = Logger.getLogger(EmprestimoService.class);
 	private FuncionarioDAOImpl funcionarioDAO;
