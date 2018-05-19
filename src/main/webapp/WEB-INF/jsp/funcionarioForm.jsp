@@ -14,100 +14,27 @@
 	src="<c:url value="/resources/javascript/jquery/jquery-3.3.1.min.js" />"></script>
 <script src="<c:url value="/resources/javascript/popper.min.js" />"></script>
 <script src="<c:url value="/resources/bootstrap/js/bootstrap.min.js" />"></script>
-<title>Funcionario Form</title>
+<title>Funcionario Formulario</title>
 </head>
 <body>
 
 	<div id="wrapper" style="background-color: darkcyan;">
 
 		<!-- Sidebar -->
-		<div id="sidebar-wrapper" style="background-color: darkcyan;">
-			<ul class="sidebar-nav">
-				<li class="sidebar-brand"><a
-					href="<c:url value='/funcionario/home' />" style="color: white;">
-						Biblioteca-UFAB </a></li>
-
-				<li>
-					<div class="dropdown">
-						<button class="btn btn-dark dropdown-toggle" type="button"
-							id="dropdownMenuButton" data-toggle="dropdown"
-							aria-haspopup="true" aria-expanded="false">Item da
-							Biblioteca</button>
-						<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-							<a class="dropdown-item" href="<c:url value='/Item/lista' />">Listar</a>
-							<a class="dropdown-item" href="<c:url value='/Item/form' />">Cadastrar</a>
-
-						</div>
-					</div>
-				<li>
-					<div class="dropdown">
-						<button class="btn btn-dark dropdown-toggle" type="button"
-							id="dropdownMenuButton" data-toggle="dropdown"
-							aria-haspopup="true" aria-expanded="false">Aluno(a)</button>
-						<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-							<a class="dropdown-item" href="<c:url value='/aluno/lista' />">Listar</a>
-							<a class="dropdown-item" href="<c:url value='/aluno/form' />">Cadastrar</a>
-
-						</div>
-					</div>
-				</li>
-				<li>
-					<div class="dropdown">
-						<button class="btn btn-dark dropdown-toggle" type="button"
-							id="dropdownMenuButton" data-toggle="dropdown"
-							aria-haspopup="true" aria-expanded="false">
-							Funcionário(a)</button>
-						<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-							<a class="dropdown-item"
-								href="<c:url value='/funcionario/lista' />">Listar</a> <a
-								class="dropdown-item" href="<c:url value='/funcionario/form' />">Cadastrar</a>
-						</div>
-					</div>
-				</li>
-				<li>
-					<div class="dropdown">
-						<button class="btn btn-dark dropdown-toggle" type="button"
-							id="dropdownMenuButton" data-toggle="dropdown"
-							aria-haspopup="true" aria-expanded="false">Empréstimo</button>
-						<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-							<a class="dropdown-item" href="#">Listar</a> <a
-								class="dropdown-item" href="#">Cadastrar</a> <a
-								class="dropdown-item" href="#"></a>
-						</div>
-					</div>
-					<div class="dropdown">
-						<button class="btn btn-dark dropdown-toggle" type="button"
-							id="dropdownMenuButton" data-toggle="dropdown"
-							aria-haspopup="true" aria-expanded="false">Reservar</button>
-						<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-							<a class="dropdown-item" href="#">Listar</a> <a
-								class="dropdown-item" href="#">Cadastrar</a> <a
-								class="dropdown-item" href="#"></a>
-						</div>
-					</div>
-				</li>
-				<li><a href="#" style="color: white;">Dívida</a></li>
-				<li><a href="#" style="color: white;">Configuração</a></li>
-
-				<li><a href="#" style="color: white;">Sobre</a></li>
-
-			</ul>
-		</div>
-
+		<jsp:include page="menu.jsp"></jsp:include>
 
 
 		<!-- Page Content -->
 		<div id="page-content-wrapper">
 			<div class="container-fluid">
 				<nav class="navbar"> <a class="navbar-brand btn btn-dark"
-					href="#menu-toggle" id="menu-toggle"> Menu
-				</a> </nav>
+					href="#menu-toggle" id="menu-toggle"> Menu </a> </nav>
 			</div>
 		</div>
 		<div class="modal-content">
 			<h2 class="text-center">Cadastro de Funcionário(a)</h2>
-			<form:form id="func-form" onsubmit="return checkCampos();" cssClass="container"
-				modelAttribute="funcionario" method="POST"
+			<form:form id="func-form" onsubmit="return checkCampos();"
+				cssClass="container" modelAttribute="funcionario" method="POST"
 				action="/biblioteca/funcionario/add">
 				<div class="row" id="formulario">
 					<div class="col-md-4">
@@ -158,7 +85,7 @@
 	<script type="text/javascript"
 		src="<c:url value="/resources/izitoast/js/iziToast.min.js" />"></script>
 	<script type="text/javascript">
-		function checkCampos(){
+		function checkCampos() {
 			var nome = $("#nome").val();
 			var usuario = $("#usuario").val();
 			var endereco = $("#endereco").val();
@@ -169,18 +96,20 @@
 			var email = $("#email").val();
 			var senha = $("#senha").val();
 			var tipoFunc = $("#tipoFunc").val();
-			
-			if(nome === '' || usuario === '' || endereco === '' || cpf === '' || rg === '' || naturalidade === '' || telefone === '' || email === '' || senha === '' || tipoFunc === ''){
+
+			if (nome === '' || usuario === '' || endereco === '' || cpf === ''
+					|| rg === '' || naturalidade === '' || telefone === ''
+					|| email === '' || senha === '' || tipoFunc === '') {
 				iziToast.show({
-			        title: 'Erro',
-			        message: 'Devem preencher todos os campos',
-			        color: 'red',
-			        timeout: 5000,
-			        position: 'topCenter'
-			      });
+					title : 'Erro',
+					message : 'Devem preencher todos os campos',
+					color : 'red',
+					timeout : 5000,
+					position : 'topCenter'
+				});
 				return false;
 			}
-			
+
 			return true;
 		}
 	</script>

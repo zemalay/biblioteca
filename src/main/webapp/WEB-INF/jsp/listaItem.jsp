@@ -31,20 +31,24 @@
 		</div>
 
 		<div class="modal-content">
-			<h3 style="margin-left: 40%;">Lista de Funcionários</h3>
-			<c:if test="${!empty listaFuncionario }">
+			<h3 style="margin-left: 40%;">Lista de Itens da Biblioteca</h3>
+			<c:if test="${!empty listaItem }">
 				<table class="table text-center">
 					<thead class="thead-dark">
 						<tr>
 							<th scope="col">ID</th>
-							<th scope="col">Nome</th>
-							<th scope="col">Tipo de Funcionário</th>
-							<th scope="col">CPF</th>
-							<th scope="col">RG</th>
-							<th scope="col">Naturalidade</th>
-							<th scope="col">Endereco</th>
-							<th scope="col">Telefone</th>
-							<th scope="col">Email</th>
+							<th scope="col">Tipo</th>
+							<th scope="col">Titulo</th>
+							<th scope="col">ISBN</th>
+							<th scope="col">Editora</th>
+							<th scope="col">Tipo Anal de Congresso</th>
+							<th scope="col">Tipo Midia</th>
+							<th scope="col">Tipo TCC</th>
+							<th scope="col">Autor</th>
+							<th scope="col">Quantidade</th>
+							<th scope="col">Data</th>
+							<th scope="col">Data Gravacao</th>
+							<th scope="col">Orientador</th>
 							<c:if test="${funcionario.tipoFunc == 'ADMINISTRADOR' }">
 								<th scope="col">Actions</th>
 							</c:if>
@@ -52,45 +56,50 @@
 					</thead>
 					<tbody>
 						<c:if test="${funcionario.tipoFunc == 'ADMINISTRADOR' }">
-							<c:forEach items="${listaFuncionario}" var="funcionario">
+							<c:forEach items="${listaItem}" var="item">
 								<tr>
 									<th scope="row"><a
-										href="<c:url value='/funcionario/${funcionario.id}' />">${funcionario.id}</a></th>
-									<td>${funcionario.nome}</td>
-									<td>${funcionario.tipoFunc}</td>
-									<td>${funcionario.cpf}</td>
-									<td>${funcionario.rg}</td>
-									<td>${funcionario.naturalidade}</td>
-									<td>${funcionario.endereco}</td>
-									<td>${funcionario.telefone}</td>
-									<td>${funcionario.email}</td>
+										href="<c:url value='/item/${item.id}' />">${item.id}</a></th>
+									<td>${item.tipoItem}</td>
+									<td>${item.titulo}</td>
+									<td>${item.isbn}</td>
+									<td>${item.editora}</td>
+									<td>${item.tipoAnais}</td>
+									<td>${item.tipoMidia}</td>
+									<td>${item.tipoTrabalho}</td>
+									<td>${item.autor}</td>
+									<td>${item.quantidade}</td>
+									<td>${item.data}</td>
+									<td>${item.dataGravacao}</td>
+									<td>${item.orientador}</td>
 									<td><a style="color: red;"
-										href="<c:url value='/funcionario/delete/${funcionario.id}' />">
-											apagar </a></td>
+										href="<c:url value='/item/delete/${item.id}' />"> apagar </a>
+									</td>
 								</tr>
 							</c:forEach>
 						</c:if>
 						<c:if test="${funcionario.tipoFunc == 'OPERADOR' }">
-							<c:forEach items="${listaFuncionario}" var="funcionario">
+							<c:forEach items="${listaItem}" var="item">
 								<tr>
 									<th scope="row"><a
-										href="<c:url value='/funcionario/${funcionario.id}' />">${funcionario.id}</a></th>
-									<td>${funcionario.nome}</td>
-									<td>${funcionario.tipoFunc}</td>
-									<td>${funcionario.cpf}</td>
-									<td>${funcionario.rg}</td>
-									<td>${funcionario.naturalidade}</td>
-									<td>${funcionario.endereco}</td>
-									<td>${funcionario.telefone}</td>
-									<td>${funcionario.email}</td>
+										href="<c:url value='/funcionario/${item.id}' />">${item.id}</a></th>
+									<td>${item.tipoItem}</td>
+									<td>${item.titulo}</td>
+									<td>${item.isbn}</td>
+									<td>${item.editora}</td>
+									<td>${item.tipoAnais}</td>
+									<td>${item.tipoMidia}</td>
+									<td>${item.tipoTrabalho}</td>
+									<td>${item.autor}</td>
+									<td>${item.quantidade}</td>
+									<td>${item.data}</td>
+									<td>${item.dataGravacao}</td>
+									<td>${item.orientador}</td>
 								</tr>
 							</c:forEach>
 						</c:if>
 					</tbody>
 				</table>
-
-
-
 			</c:if>
 		</div>
 	</div>

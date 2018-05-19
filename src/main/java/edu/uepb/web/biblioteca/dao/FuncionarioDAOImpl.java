@@ -244,7 +244,7 @@ public class FuncionarioDAOImpl implements DAO<Funcionario> {
 
 		connection = new Conexao().getConexao();
 		Funcionario funcionario = null;
-		String sql = "SELECT id, usuario, senha FROM funcionario WHERE usuario = ?";
+		String sql = "SELECT id, usuario, senha, tipo_funcionario FROM funcionario WHERE usuario = ?";
 
 		try {
 			statement = (PreparedStatement) connection.prepareStatement(sql);
@@ -256,6 +256,7 @@ public class FuncionarioDAOImpl implements DAO<Funcionario> {
 					funcionario.setId(resultSet.getInt(1));
 					funcionario.setUsuario(resultSet.getString(2));
 					funcionario.setSenha(resultSet.getString(3));
+					funcionario.setTipoFunc(resultSet.getString(4));
 				} else {
 					throw new AutenticacaoException("Usuario ou Senha Invalida");
 				}
@@ -266,6 +267,7 @@ public class FuncionarioDAOImpl implements DAO<Funcionario> {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		logger.info("O funcionario foi autenticado: " + funcionario);
 		return funcionario;
 	}
 }
