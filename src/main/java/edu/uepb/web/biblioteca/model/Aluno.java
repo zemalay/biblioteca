@@ -18,23 +18,10 @@ public class Aluno {
 	private Curso curso;
 	private String ano;
 	private String periodoIngresso;
+	private String email;
 	private String senha;
 
-	public Aluno(String matricula, String rg, String cpf, String nome, String nomeMae, String naturalidade,
-			String endereco, String telefone, Curso curso, String ano, String periodoIngresso, String senha) {
-		this.matricula = matricula;
-		this.rg = rg;
-		this.cpf = cpf;
-		this.nome = nome;
-		this.nomeMae = nomeMae;
-		this.naturalidade = naturalidade;
-		this.endereco = endereco;
-		this.telefone = telefone;
-		this.curso = curso;
-		this.ano = ano;
-		this.periodoIngresso = periodoIngresso;
-		this.senha = senha;
-	}
+	
 
 	public Aluno() {
 	}
@@ -141,6 +128,33 @@ public class Aluno {
 
 	public void setSenha(String senha) {
 		this.senha = senha;
+	}
+
+	public Aluno(String matricula, String rg, String cpf, String nome, String nomeMae, String naturalidade,
+			String endereco, String telefone, Curso curso, String ano, String periodoIngresso, String email,
+			String senha) {
+		super();
+		this.matricula = matricula;
+		this.rg = rg;
+		this.cpf = cpf;
+		this.nome = nome;
+		this.nomeMae = nomeMae;
+		this.naturalidade = naturalidade;
+		this.endereco = endereco;
+		this.telefone = telefone;
+		this.curso = curso;
+		this.ano = ano;
+		this.periodoIngresso = periodoIngresso;
+		this.email = email;
+		this.senha = senha;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	@Override

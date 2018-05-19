@@ -58,6 +58,7 @@ public class AlunoDAOImpl implements DAO<Aluno> {
 				aluno.setAno(resultSet.getString(11));
 				aluno.setPeriodoIngresso(resultSet.getString(12));
 				aluno.setSenha(resultSet.getString(13));
+				aluno.setEmail(resultSet.getString(14));
 
 				statement.close();
 			}
@@ -99,6 +100,7 @@ public class AlunoDAOImpl implements DAO<Aluno> {
 				aluno.setAno(resultSet.getString(11));
 				aluno.setPeriodoIngresso(resultSet.getString(12));
 				aluno.setSenha(resultSet.getString(13));
+				aluno.setEmail(resultSet.getString(14));
 
 				listaAluno.add(aluno);
 			}
@@ -121,9 +123,7 @@ public class AlunoDAOImpl implements DAO<Aluno> {
 
 		if (obj != null) {
 			connection = new Conexao().getConexao();
-			String sql = "INSERT INTO aluno "
-					+ "(curso_id, matricula , rg, cpf, nome, mae,  naturalidade, endereco, telefone, ano, periodo, senha) "
-					+ "VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
+			String sql = "INSERT INTO aluno (curso_id, matricula , rg, cpf, nome, mae,  naturalidade, endereco, telefone, ano, periodo, senha, email) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
 			try {
 				statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 				statement.setInt(1, obj.getCurso().getId());
@@ -138,6 +138,7 @@ public class AlunoDAOImpl implements DAO<Aluno> {
 				statement.setString(10, obj.getAno());
 				statement.setString(11, obj.getPeriodoIngresso());
 				statement.setString(12, obj.getSenha());
+				statement.setString(13, obj.getEmail());
 				statement.execute();
 				resultSet = statement.getGeneratedKeys();
 				if (resultSet.next()) {
@@ -187,9 +188,7 @@ public class AlunoDAOImpl implements DAO<Aluno> {
 		logger.info("Executa o metodo 'atualizar' do aluno: " + obj);
 		if (obj != null) {
 			connection = new Conexao().getConexao();
-			String sql = "UPDATE aluno SET "
-					+ "matricula = ?, curso_id = ?, rg = ?, cpf = ?, nome = ?, mae = ?, naturalidade = ?, "
-					+ "endereco = ?, telefone = ?, ano = ?, periodo = ?, senha = ? WHERE id = ?";
+			String sql = "UPDATE aluno SET matricula = ?, curso_id = ?, rg = ?, cpf = ?, nome = ?, mae = ?, naturalidade = ?, endereco = ?, telefone = ?, ano = ?, periodo = ?, senha = ? email = ? WHERE id = ?";
 
 			try {
 				statement = connection.prepareStatement(sql);
@@ -205,8 +204,9 @@ public class AlunoDAOImpl implements DAO<Aluno> {
 				statement.setString(10, obj.getAno());
 				statement.setString(11, obj.getPeriodoIngresso());
 				statement.setString(12, obj.getSenha());
+				statement.setString(13, obj.getEmail());
 
-				statement.setInt(13, obj.getId());
+				statement.setInt(14, obj.getId());
 
 				statement.execute();
 
