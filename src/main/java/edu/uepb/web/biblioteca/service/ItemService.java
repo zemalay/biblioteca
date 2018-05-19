@@ -82,7 +82,7 @@ public class ItemService {
 	 * @throws AutenticacaoException
 	 * @throws ExistException
 	 */
-	public boolean atualizarItem(Funcionario funcionario, Item item) throws AutenticacaoException, ExistException {
+	public boolean atualizarItem(Funcionario funcionario, Item item) throws AutenticacaoException {
 		logger.info("Executa o metodo 'atualizarItem' com param fucionario : " + funcionario + " e item : " + item);
 		if (!funcionario.getTipoFunc().equals(TipoFuncionario.ADMINISTRADOR)) {
 			logger.error("Funcionario nao autorizado, idFuncionario: " + funcionario.getId());

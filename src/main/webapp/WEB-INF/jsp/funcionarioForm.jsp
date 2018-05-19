@@ -99,7 +99,7 @@
 
 			if (nome === '' || usuario === '' || endereco === '' || cpf === ''
 					|| rg === '' || naturalidade === '' || telefone === ''
-					|| email === '' || senha === '' || tipoFunc === '') {
+					|| email === '' || senha === '' || tipoFunc === 'NONE') {
 				iziToast.show({
 					title : 'Erro',
 					message : 'Devem preencher todos os campos',

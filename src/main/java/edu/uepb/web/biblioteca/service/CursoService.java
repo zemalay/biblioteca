@@ -3,6 +3,7 @@ package edu.uepb.web.biblioteca.service;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.springframework.stereotype.Service;
 
 import edu.uepb.web.biblioteca.dao.CursoDAOImpl;
 import edu.uepb.web.biblioteca.enums.TipoFuncionario;
@@ -16,6 +17,7 @@ import edu.uepb.web.biblioteca.model.Funcionario;
  * 
  * @autor geovanniovinhas <vinhasgeovannio@gmail.com
  */
+@Service
 public class CursoService {
 	private static Logger logger = Logger.getLogger(CursoService.class);
 	private CursoDAOImpl cursoDAO;
@@ -72,6 +74,18 @@ public class CursoService {
 			logger.info("O curso removido com sucesso: " + curso);
 			return true;
 		}
+	}
+	
+	/**
+	 * Pegar o curso pelo seu ID
+	 * 
+	 * @param idCurso
+	 * @return Curso
+	 */
+	public Curso getCursoById(int idCurso) {
+		logger.info("Executa o metodo 'getCursoById' do itemService, idItem: " + idCurso);
+		cursoDAO = new CursoDAOImpl();
+		return cursoDAO.getById(idCurso);
 	}
 
 }

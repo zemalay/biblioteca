@@ -137,6 +137,7 @@
 	<script type="text/javascript"
 		src="<c:url value="/resources/izitoast/js/iziToast.min.js" />"></script>
 	<script type="text/javascript">
+		
 		function checkCampos() {
 			var nome = $("#nome").val();
 			var usuario = $("#usuario").val();

@@ -70,4 +70,17 @@ public class ItemController {
 		}
 		return "redirect:/funcionarios";
 	}
+	
+	@RequestMapping(value = "/item/update", method = RequestMethod.POST)
+	public String atualizar(@SessionAttribute("funcionario") Funcionario funcionarioLogado,@ModelAttribute("item") Item item, Model model) {
+		try {
+			itemService.atualizarItem(funcionarioLogado, item);
+		} catch (AutenticacaoException e) {
+			model.addAttribute("item", new Item());
+			model.addAttribute("funcionario", funcionarioLogado);
+			model.addAttribute("mensagem", e.getMessage());
+			return "itemDetail";
+		}
+		return "redirect:/itens";
+	}
 }

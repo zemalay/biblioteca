@@ -35,7 +35,7 @@
 			<h2 class="text-center">Cadastro do Item</h2>
 			<form:form id="item-form" onsubmit="return checkCampos();"
 				cssClass="container" modelAttribute="item" method="POST"
-				action="/biblioteca/item/add">
+				action="/biblioteca/item/update">
 				<div class="row" id="formulario">
 					<div class="col-md-4">
 
@@ -137,6 +137,16 @@
 	<script type="text/javascript"
 		src="<c:url value="/resources/izitoast/js/iziToast.min.js" />"></script>
 	<script type="text/javascript">
+		var mensagem = '${mensagem}';
+		if (mensagem != "") {
+			iziToast.show({
+				title : 'Erro',
+				message : mensagem,
+				color : 'red',
+				timeout : false,
+				position : 'topRight'
+			});
+		}
 		function checkCampos() {
 			var nome = $("#nome").val();
 			var usuario = $("#usuario").val();

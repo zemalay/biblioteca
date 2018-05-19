@@ -31,24 +31,15 @@
 		</div>
 
 		<div class="modal-content">
-			<h3 style="margin-left: 40%;">Lista de Itens da Biblioteca</h3>
-			<c:if test="${!empty listaItem }">
+			<h3 style="margin-left: 40%;">Lista de Cursos</h3>
+			<c:if test="${!empty listaCurso }">
 				<table class="table text-center">
 					<thead class="thead-dark">
 						<tr>
 							<th scope="col">ID</th>
-							<th scope="col">Tipo</th>
-							<th scope="col">Titulo</th>
-							<th scope="col">ISBN</th>
-							<th scope="col">Editora</th>
-							<th scope="col">Tipo Anal de Congresso</th>
-							<th scope="col">Tipo Midia</th>
-							<th scope="col">Tipo TCC</th>
-							<th scope="col">Autor</th>
-							<th scope="col">Quantidade</th>
-							<th scope="col">Data</th>
-							<th scope="col">Data Gravacao</th>
-							<th scope="col">Orientador</th>
+							<th scope="col">Nome</th>
+							<th scope="col">Area</th>
+							<th scope="col">Nivel</th>
 							<c:if test="${funcionario.tipoFunc == 'ADMINISTRADOR' }">
 								<th scope="col">Actions</th>
 							</c:if>
@@ -56,68 +47,38 @@
 					</thead>
 					<tbody>
 						<c:if test="${funcionario.tipoFunc == 'ADMINISTRADOR' }">
-							<c:forEach items="${listaItem}" var="item">
+							<c:forEach items="${listaCurso}" var="curso">
 								<tr>
-									<th scope="row"><a
-										href="<c:url value='/item/${item.id}' />">${item.id}</a></th>
-									<td>${item.tipoItem}</td>
-									<td>${item.titulo}</td>
-									<td>${item.isbn}</td>
-									<td>${item.editora}</td>
-									<td>${item.tipoAnais}</td>
-									<td>${item.tipoMidia}</td>
-									<td>${item.tipoTrabalho}</td>
-									<td>${item.autor}</td>
-									<td>${item.quantidade}</td>
-									<td>${item.data}</td>
-									<td>${item.dataGravacao}</td>
-									<td>${item.orientador}</td>
+									<th scope="row">${curso.id}</th>
+									<td>${curso.nome}</td>
+									<td>${curso.area}</td>
+									<td>${curso.nivel}</td>
 									<td><a style="color: red;"
-										href="<c:url value='/item/delete/${item.id}' />"> apagar </a>
-									</td>
+										href="<c:url value='/funcionario/delete/${funcionario.id}' />">
+											apagar </a></td>
 								</tr>
 							</c:forEach>
 						</c:if>
 						<c:if test="${funcionario.tipoFunc == 'OPERADOR' }">
-							<c:forEach items="${listaItem}" var="item">
+							<c:forEach items="${listaFuncionario}" var="funcionario">
 								<tr>
-									<th scope="row"><a
-										href="<c:url value='/funcionario/${item.id}' />">${item.id}</a></th>
-									<td>${item.tipoItem}</td>
-									<td>${item.titulo}</td>
-									<td>${item.isbn}</td>
-									<td>${item.editora}</td>
-									<td>${item.tipoAnais}</td>
-									<td>${item.tipoMidia}</td>
-									<td>${item.tipoTrabalho}</td>
-									<td>${item.autor}</td>
-									<td>${item.quantidade}</td>
-									<td>${item.data}</td>
-									<td>${item.dataGravacao}</td>
-									<td>${item.orientador}</td>
+									<th scope="row">${curso.id}</th>
+									<td>${curso.nome}</td>
+									<td>${curso.area}</td>
+									<td>${curso.nivel}</td>
 								</tr>
 							</c:forEach>
 						</c:if>
 					</tbody>
 				</table>
+
+
+
 			</c:if>
 		</div>
 	</div>
 	<script type="text/javascript"
 		src="<c:url value="/resources/izitoast/js/iziToast.min.js" />"></script>
-	<script type="text/javascript">
-		var mensagem = '${mensagem}';
-		console.log("mensagem :" + mensagem);
-		if (mensagem != "") {
-			iziToast.show({
-				title : 'Erro',
-				message : mensagem,
-				color : 'red',
-				timeout : false,
-				position : 'topRight'
-			});
-		}
-	</script>
 	<script type="text/javascript"
 		src="<c:url value="/resources/javascript/action.js" />"></script>
 </body>
