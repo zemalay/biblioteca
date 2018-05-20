@@ -203,4 +203,14 @@ public class EmprestimoService {
 		return emprestimoDAO.getLista();
 	}
 
+	/**
+	 * Retornar todos Emprestimos
+	 * 
+	 * @return List
+	 */
+	public List<Emprestimo> getListaEmprestimoAll() {
+		emprestimoDAO = new EmprestimoDAOImpl();
+		return emprestimoDAO.getListaAll();
+	}
+
 }

@@ -39,7 +39,7 @@
 				<table class="table">
 					<thead class="thead-dark">
 						<tr>
-							<th scope="col">Código do Item</th>
+							<th scope="col">Código do Emprestimo</th>
 							<th scope="col">Título do Item</th>
 							<th scope="col">Matrícula do aluno</th>
 							<th scope="col">Data da Entrega</th>

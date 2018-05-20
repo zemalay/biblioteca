@@ -69,8 +69,8 @@
 					id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
 					aria-expanded="false">Empréstimo</button>
 				<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-					<a class="dropdown-item" href="#">Listar</a> <a
-						class="dropdown-item" href="#">Cadastrar</a> <a
+					<a class="dropdown-item" href="<c:url value='/emprestimos' />">Listar</a> <a
+						class="dropdown-item" href="<c:url value='/emprestimo/form' />">Cadastrar</a> <a
 						class="dropdown-item" href="#"></a>
 				</div>
 			</div>
@@ -80,14 +80,15 @@
 					aria-expanded="false">Reservar</button>
 				<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 					<a class="dropdown-item" href="#">Listar</a> <a
-						class="dropdown-item" href="#">Cadastrar</a> <a
-						class="dropdown-item" href="#"></a>
+						class="dropdown-item" href="#">Cadastrar</a>
+					<a class="dropdown-item" href="#"></a>
 				</div>
 			</div>
 		</li>
 		<li><a href="#" style="color: white;">Dívida</a></li>
 		<c:if test="${funcionario.tipoFunc == 'ADMINISTRADOR' }">
-			<li><a href="<c:url value='/universidade' />" style="color: white;">Configuração</a></li>
+			<li><a href="<c:url value='/universidade' />"
+				style="color: white;">Configuração</a></li>
 		</c:if>
 
 		<li><a href="#" style="color: white;">Sobre</a></li>

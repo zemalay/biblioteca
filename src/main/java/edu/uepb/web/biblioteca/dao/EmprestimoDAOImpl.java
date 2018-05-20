@@ -199,4 +199,50 @@ public class EmprestimoDAOImpl implements DAO<Emprestimo> {
 		return false;
 	}
 
+	/**
+	 * Pegar todos os emprestimos
+	 * 
+	 */
+	public List<Emprestimo> getListaAll() {
+		logger.info("Executa o metodo 'getLista' do emprestimo");
+
+		connection = new Conexao().getConexao();
+		String sql = "SELECT	 * FROM emprestimo";
+
+		List<Emprestimo> listaEmprestimo = new ArrayList<>();
+
+		try {
+			statement = connection.prepareStatement(sql);
+			resultSet = statement.executeQuery();
+			while (resultSet.next()) {
+				Emprestimo emprestimo = new Emprestimo();
+				funcionarioDAOImpl = new FuncionarioDAOImpl();
+				alunoDAOImpl = new AlunoDAOImpl();
+				itemDAOImpl = new ItemDAOImpl();
+
+				emprestimo.setId(resultSet.getInt(1));
+				emprestimo.setDataCadastrado(resultSet.getString(5));
+				emprestimo.setDataDevolucao(resultSet.getString(6));
+				emprestimo.setRenovacao(resultSet.getInt(7));
+				emprestimo.setEntregou(resultSet.getBoolean(8));
+
+				funcionario = funcionarioDAOImpl.getById(resultSet.getInt(2));
+				aluno = alunoDAOImpl.getById(resultSet.getInt(3));
+				item = itemDAOImpl.getById(resultSet.getInt(4));
+
+				emprestimo.setFuncionario(funcionario);
+				emprestimo.setAluno(aluno);
+				emprestimo.setItem(item);
+
+				listaEmprestimo.add(emprestimo);
+			}
+			statement.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		logger.info("Pegar os emprestimos: " + listaEmprestimo.toString());
+		return listaEmprestimo;
+	}
+
 }
