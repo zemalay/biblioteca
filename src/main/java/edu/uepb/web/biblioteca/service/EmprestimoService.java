@@ -178,7 +178,8 @@ public class EmprestimoService {
 			throw new EmprestimoException("Nao pode realizar a renovacao, o item ja foi reservado por alguem");
 		}
 
-		// Verifica se falta mais de 20 dias para terminar o periodo apartir da data de devolucao
+		// Verifica se falta mais de 20 dias para terminar o periodo apartir da data de
+		// devolucao
 		int dias = BibliotecaDateTime.diasParaFimPeriodo(emprestimo.getDataDevolucao());
 		if (dias < 20) {
 			logger.error(
@@ -229,6 +230,17 @@ public class EmprestimoService {
 		logger.info("Executa o metodo 'getEmprestimo' emprestimoService: " + id);
 		emprestimoDAO = new EmprestimoDAOImpl();
 		return emprestimoDAO.getById(id);
+	}
+
+	/**
+	 * Pegar o Emprestimor pelo ID do Aluno
+	 * 
+	 * @param idAluno
+	 * @return Emprestimo
+	 */
+	public List<Emprestimo> getEmprestimoByAluno(int idAluno) {
+		emprestimoDAO = new EmprestimoDAOImpl();
+		return emprestimoDAO.getByAlunoId(idAluno);
 	}
 
 }
