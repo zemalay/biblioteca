@@ -87,7 +87,7 @@
 		</li>
 		<li><a href="#" style="color: white;">Dívida</a></li>
 		<c:if test="${funcionario.tipoFunc == 'ADMINISTRADOR' }">
-			<li><a href="#" style="color: white;">Configuração</a></li>
+			<li><a href="<c:url value='/universidade' />" style="color: white;">Configuração</a></li>
 		</c:if>
 
 		<li><a href="#" style="color: white;">Sobre</a></li>

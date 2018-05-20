@@ -15,6 +15,8 @@ import edu.uepb.web.biblioteca.model.Funcionario;
 import edu.uepb.web.biblioteca.model.Universidade;
 
 /**
+ * Classe Service do Aluno
+ * 
  * @autor geovanniovinhas <vinhasgeovannio@gmail.com
  */
 @Service
