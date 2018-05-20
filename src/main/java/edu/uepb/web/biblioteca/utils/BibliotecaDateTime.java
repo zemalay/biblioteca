@@ -41,7 +41,7 @@ public class BibliotecaDateTime {
 	
 	public static int diasParaFimPeriodo(String dataDevolucao) {
 		universidadeDAO = new UniversidadeDAOImpl();
-		Universidade universidade = universidadeDAO.getById(1);
+		Universidade universidade = universidadeDAO.get();
 		DateTime dateDevolucao = BibliotecaDateTime.stringToDateTime(dataDevolucao);
 		DateTime dateFimPeriodo = BibliotecaDateTime.stringToDateTime(universidade.getFimPeriodo());
 

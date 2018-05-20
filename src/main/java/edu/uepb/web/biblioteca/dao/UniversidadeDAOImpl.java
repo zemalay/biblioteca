@@ -137,5 +137,36 @@ public class UniversidadeDAOImpl implements DAO<Universidade> {
 		// TODO Auto-generated method stub
 		return false;
 	}
+	
+	/**
+	 * Pegar o objeto universidade
+	 */
+	public Universidade get() {
+		logger.info("Executa o metodo 'get' da universidade");
+
+		String sql = "SELECT * FROM universidade";
+
+		Universidade universidade = null;
+
+		try {
+			statement = connection.prepareStatement(sql);
+			resultSet = statement.executeQuery();
+
+			if (resultSet.next()) {
+				universidade = new Universidade();
+				universidade.setId(resultSet.getInt(1));
+				universidade.setNome(resultSet.getString(2));
+				universidade.setEndereco(resultSet.getString(3));
+				universidade.setPeriodo(resultSet.getString(4));
+				universidade.setInicioPeriodo(resultSet.getString(5));
+				universidade.setFimPeriodo(resultSet.getString(6));
+			}
+			statement.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		logger.info("A universidade foi selecionada: " + universidade);
+		return universidade;
+	}
 
 }

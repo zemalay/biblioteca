@@ -55,11 +55,10 @@
 						<form:input class="form-control" path="rg" placeholder="rg" />
 					</div>
 					<div class="col-md-4">
-						<form:label path="senha">Senha</form:label>
 						<form:password class="form-control" path="senha"
 							placeholder="senha" />
 						<form:label path="id">ID</form:label>
-						<form:input class="form-control" path="id" placeholder="id" />
+						<form:input class="form-control" path="id" readonly="true"/>
 						<form:label path="naturalidade">Naturalidade</form:label>
 						<form:input class="form-control" path="naturalidade"
 							placeholder="naturalidade" />
@@ -88,6 +87,9 @@
 	</div>
 	<script type="text/javascript"
 		src="<c:url value="/resources/izitoast/js/iziToast.min.js" />"></script>
+	<script type="text/javascript">
+		$('#senha').hide()
+	</script>
 	<script type="text/javascript"
 		src="<c:url value="/resources/javascript/action.js" />"></script>
 </body>

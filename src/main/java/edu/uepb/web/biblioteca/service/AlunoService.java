@@ -51,14 +51,14 @@ public class AlunoService {
 		logger.info("Executa o metodo 'cadastrarAluno' do alunoService com param: " + funcionario + " e : " + aluno);
 
 		alunoDAO = new AlunoDAOImpl();
+		universidadeDAO = new UniversidadeDAOImpl();
+		Universidade universidade = universidadeDAO.get();
+		aluno.setPeriodoIngresso(universidade.getPeriodo());
 		aluno.setMatricula(this.gerarMatricula(aluno));
 		if (alunoDAO.isExiste(aluno)) {
 			logger.error("Ja existe aluno com esta matricula, matricula: " + aluno.getMatricula());
 			throw new ExistException("O aluno ja cadastrado no sistema");
 		}
-		universidadeDAO = new UniversidadeDAOImpl();
-		Universidade universidade = universidadeDAO.getById(1);
-		aluno.setPeriodoIngresso(universidade.getPeriodo());
 		logger.info("O Aluno cadastrado com sucesso: " + aluno);
 		return alunoDAO.inserir(aluno);
 	}
@@ -152,8 +152,8 @@ public class AlunoService {
 	 * @param aluno
 	 * @return boolean
 	 */
-	public boolean atualizarAluno(Funcionario funcionario, Aluno aluno) {
-		logger.info("Executa o metodo 'atualizarAluno' alunoBusiness: " + funcionario + " e aluno: " + aluno);
+	public boolean atualizarAluno(Aluno aluno) {
+		logger.info("Executa o metodo 'atualizarAluno' alunoBusiness: " + aluno);
 
 		alunoDAO = new AlunoDAOImpl();
 		alunoDAO.atualizar(aluno);
@@ -161,10 +161,27 @@ public class AlunoService {
 		return true;
 	}
 
+	/**
+	 * Pegar os alunos do sistema
+	 * 
+	 * @return List<Aluno>
+	 */
 	public List<Aluno> getListaAluno() {
 		logger.info("Executa o metodo 'getListaAluno' do AlunoService");
 		alunoDAO = new AlunoDAOImpl();
 		return alunoDAO.getLista();
+	}
+
+	/**
+	 * Pegar o Aluno pelo seu ID
+	 * 
+	 * @param idAluno
+	 * @return Aluno
+	 */
+	public Aluno getAlunoById(int idAluno) {
+		logger.info("Executa o metodo 'getAlunoById' do AlunoService :" + idAluno);
+		alunoDAO = new AlunoDAOImpl();
+		return alunoDAO.getById(idAluno);
 	}
 
 }

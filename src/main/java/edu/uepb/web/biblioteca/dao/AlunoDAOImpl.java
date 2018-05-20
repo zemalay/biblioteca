@@ -88,6 +88,7 @@ public class AlunoDAOImpl implements DAO<Aluno> {
 			while (resultSet.next()) {
 				aluno = new Aluno();
 				cursoDAO = new CursoDAOImpl();
+				aluno.setId(resultSet.getInt(1));
 				aluno.setMatricula(resultSet.getString(3));
 				aluno.setCurso(cursoDAO.getById(resultSet.getInt(2)));
 				aluno.setRg(resultSet.getString(4));
@@ -188,7 +189,7 @@ public class AlunoDAOImpl implements DAO<Aluno> {
 		logger.info("Executa o metodo 'atualizar' do aluno: " + obj);
 		if (obj != null) {
 			connection = new Conexao().getConexao();
-			String sql = "UPDATE aluno SET matricula = ?, curso_id = ?, rg = ?, cpf = ?, nome = ?, mae = ?, naturalidade = ?, endereco = ?, telefone = ?, ano = ?, periodo = ?, senha = ? email = ? WHERE id = ?";
+			String sql = "UPDATE aluno SET matricula = ?, curso_id = ?, rg = ?, cpf = ?, nome = ?, mae = ?, naturalidade = ?, endereco = ?, telefone = ?, ano = ?, periodo = ?, senha = ?, email = ? WHERE id = ?";
 
 			try {
 				statement = connection.prepareStatement(sql);
