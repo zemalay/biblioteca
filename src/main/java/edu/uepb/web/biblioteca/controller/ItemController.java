@@ -1,5 +1,8 @@
 package edu.uepb.web.biblioteca.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -7,6 +10,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
 import edu.uepb.web.biblioteca.exception.AutenticacaoException;
@@ -25,8 +30,8 @@ public class ItemController {
 	private ItemService itemService;
 
 	@RequestMapping(value = "/item/add", method = RequestMethod.POST)
-	public String cadastra(@SessionAttribute("funcionario") Funcionario funcionarioLogado, @ModelAttribute("item") Item item,
-			Model model) {
+	public String cadastra(@SessionAttribute("funcionario") Funcionario funcionarioLogado,
+			@ModelAttribute("item") Item item, Model model) {
 		try {
 			itemService.cadastraItem(funcionarioLogado, item);
 		} catch (AutenticacaoException | ExistException e) {
@@ -37,7 +42,7 @@ public class ItemController {
 		}
 		return "redirect:/itens";
 	}
-	
+
 	@RequestMapping(value = "/item/form", method = RequestMethod.GET)
 	public String getItemForm(@SessionAttribute("funcionario") Funcionario funcionarioLogado, Model model) {
 		model.addAttribute("funcionario", funcionarioLogado);
@@ -51,15 +56,18 @@ public class ItemController {
 		model.addAttribute("listaItem", itemService.getListaItem());
 		return "listaItem";
 	}
+
 	@RequestMapping(value = "/item/{id}", method = RequestMethod.GET)
-	public String getItem(@SessionAttribute("funcionario") Funcionario funcionarioLogado,@PathVariable("id") int idItem, Model model) {
+	public String getItem(@SessionAttribute("funcionario") Funcionario funcionarioLogado,
+			@PathVariable("id") int idItem, Model model) {
 		model.addAttribute("item", itemService.getItemById(idItem));
 		model.addAttribute("funcionario", funcionarioLogado);
 		return "itemDetail";
 	}
-	
+
 	@RequestMapping(value = "/item/delete/{id}", method = RequestMethod.GET)
-	public String removerFuncionario(@SessionAttribute("funcionario") Funcionario funcionarioLogado, @PathVariable("id") int idItem, Model model) {
+	public String removerFuncionario(@SessionAttribute("funcionario") Funcionario funcionarioLogado,
+			@PathVariable("id") int idItem, Model model) {
 		Item item = itemService.getItemById(idItem);
 		try {
 			itemService.removerItem(funcionarioLogado, item);
@@ -70,9 +78,10 @@ public class ItemController {
 		}
 		return "redirect:/funcionarios";
 	}
-	
+
 	@RequestMapping(value = "/item/update", method = RequestMethod.POST)
-	public String atualizar(@SessionAttribute("funcionario") Funcionario funcionarioLogado,@ModelAttribute("item") Item item, Model model) {
+	public String atualizar(@SessionAttribute("funcionario") Funcionario funcionarioLogado,
+			@ModelAttribute("item") Item item, Model model) {
 		try {
 			itemService.atualizarItem(funcionarioLogado, item);
 		} catch (AutenticacaoException e) {
@@ -82,5 +91,24 @@ public class ItemController {
 			return "itemDetail";
 		}
 		return "redirect:/itens";
+	}
+
+	/**
+	 * Retornar o item de acordo com usuario digita - Autocomplete Item
+	 * 
+	 * @param itemTitulo
+	 * @return List<Item>
+	 */
+	@RequestMapping(value = "/getItens", method = RequestMethod.GET)
+	public @ResponseBody List<Item> getItem(@RequestParam String itemTitulo) {
+		List<Item> resultado = new ArrayList<Item>();
+		List<Item> listaAluno = itemService.getListaItem();
+
+		for (Item obj : listaAluno) {
+			if (obj.getTitulo().toLowerCase().contains(itemTitulo)) {
+				resultado.add(obj);
+			}
+		}
+		return resultado;
 	}
 }
