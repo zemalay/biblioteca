@@ -240,7 +240,7 @@ public class EmprestimoService {
 	 */
 	public List<Emprestimo> getEmprestimoByAluno(int idAluno) {
 		emprestimoDAO = new EmprestimoDAOImpl();
-		return emprestimoDAO.getByAlunoId(idAluno);
+		return emprestimoDAO.getListByAlunoId(idAluno);
 	}
 
 }

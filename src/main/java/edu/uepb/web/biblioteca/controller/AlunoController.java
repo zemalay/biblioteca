@@ -15,11 +15,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
 import edu.uepb.web.biblioteca.exception.AutenticacaoException;
+import edu.uepb.web.biblioteca.exception.EmprestimoException;
 import edu.uepb.web.biblioteca.exception.ExistException;
 import edu.uepb.web.biblioteca.model.Aluno;
 import edu.uepb.web.biblioteca.model.Funcionario;
 import edu.uepb.web.biblioteca.service.AlunoService;
 import edu.uepb.web.biblioteca.service.CursoService;
+import edu.uepb.web.biblioteca.service.DividaService;
+import edu.uepb.web.biblioteca.service.EmprestimoService;
+import edu.uepb.web.biblioteca.service.ReservaService;
 
 /**
  * @autor geovanniovinhas <vinhasgeovannio@gmail.com
@@ -32,6 +36,15 @@ public class AlunoController {
 
 	@Autowired
 	private CursoService cursoService;
+
+	@Autowired
+	private EmprestimoService emprestimoService;
+	
+	@Autowired
+	private DividaService dividaService;
+	
+	@Autowired
+	private ReservaService reservaService;
 
 	@RequestMapping(value = "/aluno/auth", method = RequestMethod.POST)
 	public String autenticar(@ModelAttribute("aluno") Aluno aluno, Model model) {
@@ -81,6 +94,9 @@ public class AlunoController {
 	public String getAluno(@SessionAttribute("funcionario") Funcionario funcionarioLogado,
 			@PathVariable("id") int idAluno, Model model) {
 		model.addAttribute("aluno", alunoService.getAlunoById(idAluno));
+		model.addAttribute("listaEmprestimo", emprestimoService.getEmprestimoByAluno(idAluno));
+		model.addAttribute("listaDivida", dividaService.getListaDividaByAluno(idAluno));
+		model.addAttribute("listaReserva", reservaService.getListaReservaByAluno(idAluno));
 		model.addAttribute("funcionario", funcionarioLogado);
 		return "alunoDetail";
 	}
@@ -91,7 +107,7 @@ public class AlunoController {
 		Aluno aluno = alunoService.getAlunoById(idAluno);
 		try {
 			alunoService.removerAluno(funcionarioLogado, aluno);
-		} catch (AutenticacaoException e) {
+		} catch (AutenticacaoException | EmprestimoException e) {
 			model.addAttribute("listaAluno", alunoService.getListaAluno());
 			model.addAttribute("mensagem", e.getMessage());
 			return "listaAluno";

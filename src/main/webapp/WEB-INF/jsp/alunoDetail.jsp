@@ -34,7 +34,7 @@
 			</div>
 		</div>
 		<div class="modal-content">
-			<h2 class="text-center">Aluno(a)</h2>
+			<h2 class="text-center">${aluno.nome }</h2>
 			<form:form id="aluno-form" cssClass="container"
 				onsubmit="return checkCampos();" modelAttribute="aluno"
 				method="POST" action="/biblioteca/aluno/update">
@@ -58,8 +58,7 @@
 						<form:label path="nomeMae">Mae</form:label>
 						<form:input class="form-control" path="nomeMae"
 							placeholder="nome da mae" />
-						<form:input class="form-control" path="senha"
-							readonly="true"/>
+						<form:input class="form-control" path="senha" readonly="true" />
 					</div>
 					<div class="col-md-4">
 						<form:label path="matricula">Matricula</form:label>
@@ -87,6 +86,130 @@
 					</div>
 				</div>
 			</form:form>
+
+			<br>
+			<c:if test="${!empty listaEmprestimo }">
+				<h3 style="margin-left: 40%;">Historico dos Empréstimos de
+					${aluno.nome}</h3>
+				<table class="table text-center">
+					<thead class="thead-dark">
+						<tr>
+							<th scope="col">Código do Emprestimo</th>
+							<th scope="col">Título do Item</th>
+							<th scope="col">Matrícula do aluno</th>
+							<th scope="col">Nome do aluno</th>
+							<th scope="col">Data da Entrega</th>
+							<th scope="col">Data da Devolução</th>
+							<th scope="col">QTD de Renovacao</th>
+							<th scope="col">Devolução</th>
+							<th scope="col">Entregou</th>
+							<th scope="col">Renovacao</th>
+							<th scope="col">Entregar</th>
+						</tr>
+					</thead>
+					<tbody>
+						<c:forEach items="${listaEmprestimo}" var="emprestimo">
+							<tr>
+								<th scope="row"><a
+									href="<c:url value='/emprestimo/${emprestimo.id}' />">${emprestimo.id}</a></th>
+								<td>${emprestimo.item.titulo}</td>
+								<td>${emprestimo.item.titulo}</td>
+								<td>${emprestimo.aluno.matricula}</td>
+								<td>${emprestimo.aluno.nome}</td>
+								<td>${emprestimo.dataCadastrado}</td>
+								<td>${emprestimo.dataDevolucao}</td>
+								<td>${emprestimo.renovacao}</td>
+								<c:if test="${emprestimo.entregou == true}">
+									<td>sim</td>
+								</c:if>
+								<c:if test="${emprestimo.entregou == false}">
+									<td>nao</td>
+								</c:if>
+								<c:if test="${emprestimo.entregou == false}">
+									<td><a style="color: red;"
+										href="<c:url value='/emprestimo/renovar/${emprestimo.id}' />">
+											renovar </a></td>
+								</c:if>
+								<c:if test="${emprestimo.entregou == false}">
+									<td><a style="color: red;"
+										href="<c:url value='/emprestimo/entregar/${emprestimo.id}' />">
+											entrega </a></td>
+								</c:if>
+							</tr>
+						</c:forEach>
+					</tbody>
+				</table>
+			</c:if>
+
+			<br>
+			<c:if test="${!empty listaDivida }">
+				<h3 style="margin-left: 40%;">Historico das Dividas de
+					${aluno.nome}</h3>
+				<table class="table text-center">
+					<thead class="thead-dark">
+						<tr>
+							<th scope="col">Código de Divida</th>
+							<th scope="col">Título do Item</th>
+							<th scope="col">Matrícula do aluno</th>
+							<th scope="col">Nome do aluno</th>
+							<th scope="col">Valor</th>
+							<th scope="col">Pagou</th>
+							<th scope="col">Pagamento</th>
+						</tr>
+					</thead>
+					<tbody>
+						<c:forEach items="${listaDivida}" var="divida">
+							<tr>
+								<th scope="row">${divida.id}</th>
+								<td>${divida.emprestimo.item.titulo}</td>
+								<td>${divida.aluno.matricula}</td>
+								<td>${divida.aluno.nome}</td>
+								<td>${divida.saldo}</td>
+								<c:if test="${divida.pago == true}">
+									<td>sim</td>
+								</c:if>
+								<c:if test="${divida.pago == false}">
+									<td>nao</td>
+								</c:if>
+								<c:if test="${divida.pago == false}">
+									<td><a style="color: red;"
+										href="<c:url value='/divida/pagar/${divida.id}' />"> pagar
+									</a></td>
+								</c:if>
+							</tr>
+						</c:forEach>
+					</tbody>
+				</table>
+			</c:if>
+
+			<br>
+			<c:if test="${!empty listaReserva }">
+				<h3 style="margin-left: 40%;">Lista de Reservas de ${aluno.nome }</h3>
+				<table class="table">
+					<thead class="thead-dark">
+						<tr>
+							<th scope="col">Código da Reserva</th>
+							<th scope="col">Título do Item</th>
+							<th scope="col">Matrícula do aluno</th>
+							<th scope="col">Nome do aluno</th>
+							<th scope="col">Data da Reservado</th>
+							<th scope="col">Data a Pegar</th>
+						</tr>
+					</thead>
+					<tbody>
+						<c:forEach items="${listaReserva}" var="reserva">
+							<tr>
+								<th scope="row">${reserva.id}</th>
+								<td>${reserva.item.titulo}</td>
+								<td>${reserva.aluno.matricula}</td>
+								<td>${reserva.aluno.nome}</td>
+								<td>${reserva.dataReservado}</td>
+								<td>${reserva.dataPegar}</td>
+							</tr>
+						</c:forEach>
+					</tbody>
+				</table>
+			</c:if>
 		</div>
 
 	</div>
