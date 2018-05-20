@@ -38,7 +38,9 @@
 				action="/biblioteca/item/update">
 				<div class="row" id="formulario">
 					<div class="col-md-4">
-
+						<form:label path="id">ID Item</form:label>
+						<form:input id="idItem" class="form-control" path="id"
+							readonly="true" />
 						<div class="form-group">
 							<form:label path="tipoItem">Tipo Item</form:label>
 							<form:select class="form-control" path="tipoItem">

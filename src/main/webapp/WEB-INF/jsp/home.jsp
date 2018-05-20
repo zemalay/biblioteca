@@ -34,10 +34,9 @@
 		</div>
 
 		<div class="modal-content">
-			<h3 style="margin-left: 40%;">Lista de Empréstimos
-				${funcionarioLogado.tipoFunc}</h3>
 			<c:if test="${!empty listaEmprestimo }">
-				<table class="table">
+				<h3 style="margin-left: 40%;">Lista de Empréstimos</h3>
+				<table class="table text-center">
 					<thead class="thead-dark">
 						<tr>
 							<th scope="col">Código do Emprestimo</th>
@@ -46,6 +45,7 @@
 							<th scope="col">Nome do aluno</th>
 							<th scope="col">Data da Entrega</th>
 							<th scope="col">Data da Devolução</th>
+							<th scope="col">QTD de Renovacao</th>
 							<th scope="col">Devolução</th>
 							<th scope="col">Renovacao</th>
 							<th scope="col">Entregar</th>
@@ -60,6 +60,7 @@
 								<td>${emprestimo.aluno.nome}</td>
 								<td>${emprestimo.dataCadastrado}</td>
 								<td>${emprestimo.dataDevolucao}</td>
+								<td>${emprestimo.renovacao}</td>
 								<c:if test="${emprestimo.entregou == true}">
 									<td>sim</td>
 								</c:if>
@@ -74,6 +75,43 @@
 										href="<c:url value='/emprestimo/entregar/${emprestimo.id}' />">
 											entrega </a></td>
 								</c:if>
+							</tr>
+						</c:forEach>
+					</tbody>
+				</table>
+			</c:if>
+
+			<c:if test="${!empty listaDivida }">
+			<h3 style="margin-left: 40%;">Lista de Dividas</h3>
+				<table class="table text-center">
+					<thead class="thead-dark">
+						<tr>
+							<th scope="col">Código de Divida</th>
+							<th scope="col">Título do Item</th>
+							<th scope="col">Matrícula do aluno</th>
+							<th scope="col">Nome do aluno</th>
+							<th scope="col">Valor</th>
+							<th scope="col">Pagou</th>
+							<th scope="col">Pagamento</th>
+						</tr>
+					</thead>
+					<tbody>
+						<c:forEach items="${listaDivida}" var="divida">
+							<tr>
+								<th scope="row">${divida.id}</th>
+								<td>${divida.emprestimo.item.titulo}</td>
+								<td>${divida.aluno.matricula}</td>
+								<td>${divida.aluno.nome}</td>
+								<td>${divida.saldo}</td>
+								<c:if test="${divida.pago == true}">
+									<td>sim</td>
+								</c:if>
+								<c:if test="${divida.pago == false}">
+									<td>nao</td>
+								</c:if>
+								<td><a style="color: red;"
+									href="<c:url value='/divida/pagar/${divida.id}' />">
+										pagar </a></td>
 							</tr>
 						</c:forEach>
 					</tbody>
