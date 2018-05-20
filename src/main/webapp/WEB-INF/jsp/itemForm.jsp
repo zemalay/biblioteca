@@ -48,7 +48,7 @@
 								<form:option value="LIVRO">${item.tipoItem}</form:option>
 								<form:option value="MIDIA">${item.tipoItem}</form:option>
 								<form:option value="REVISTA">${item.tipoItem}</form:option>
-								<form:option value="TCC">${item.tipoItem}</form:option>
+								<form:option value="TRABALHOCONCLUSAO">${item.tipoItem}</form:option>
 							</form:select>
 						</div>
 

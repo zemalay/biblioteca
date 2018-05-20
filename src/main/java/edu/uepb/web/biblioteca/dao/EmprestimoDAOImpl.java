@@ -136,7 +136,7 @@ public class EmprestimoDAOImpl implements DAO<Emprestimo> {
 		int id = -1;
 		if (obj != null) {
 			connection = new Conexao().getConexao();
-			String sql = "INSERT INTO emprestimo (emprestimo.funcionario_id, emprestimo.aluno_id, emprestimo.item_id, emprestimo.data_cadastrado, emprestimo.data_devolucao) VALUES (?,?,?,?,?)";
+			String sql = "INSERT INTO emprestimo (emprestimo.funcionario_id, emprestimo.aluno_id, emprestimo.item_id, emprestimo.data_cadastrado, emprestimo.data_devolucao, entregou) VALUES (?,?,?,?,?,?)";
 
 			try {
 				statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -145,6 +145,7 @@ public class EmprestimoDAOImpl implements DAO<Emprestimo> {
 				statement.setInt(3, obj.getItem().getId());
 				statement.setString(4, obj.getDataCadastrado());
 				statement.setString(5, obj.getDataDevolucao());
+				statement.setBoolean(6, obj.isEntregou());
 				statement.execute();
 				resultSet = statement.getGeneratedKeys();
 				if (resultSet.next()) {

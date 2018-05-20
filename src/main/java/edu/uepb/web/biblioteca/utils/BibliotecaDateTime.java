@@ -38,7 +38,7 @@ public class BibliotecaDateTime {
 	public static DateTime stringToDateTime(String context) {
 		return dateTime = DateTime.parse(context, default_format);
 	}
-	
+
 	public static int diasParaFimPeriodo(String dataDevolucao) {
 		universidadeDAO = new UniversidadeDAOImpl();
 		Universidade universidade = universidadeDAO.get();
@@ -48,6 +48,14 @@ public class BibliotecaDateTime {
 		int dias = Days.daysBetween(dateDevolucao.toLocalDate(), dateFimPeriodo.toLocalDate()).getDays();
 
 		return dias;
+	}
+
+	public static String getDataRenovacao(String data, TipoNivel nivel) {
+		DateTime dateTime = stringToDateTime(data);
+		if (nivel == TipoNivel.GRADUACAO) {
+			return dateTime.plusDays(limiteDiaGraduacao).toString(default_format);
+		}
+		return dateTime.plusDays(limiteDiaPosGraduacao).toString(default_format);
 	}
 
 }

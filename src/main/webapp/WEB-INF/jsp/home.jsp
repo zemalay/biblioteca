@@ -34,7 +34,8 @@
 		</div>
 
 		<div class="modal-content">
-			<h3 style="margin-left: 40%;">Lista de Empréstimos ${funcionarioLogado.tipoFunc}</h3>
+			<h3 style="margin-left: 40%;">Lista de Empréstimos
+				${funcionarioLogado.tipoFunc}</h3>
 			<c:if test="${!empty listaEmprestimo }">
 				<table class="table">
 					<thead class="thead-dark">
@@ -42,9 +43,12 @@
 							<th scope="col">Código do Emprestimo</th>
 							<th scope="col">Título do Item</th>
 							<th scope="col">Matrícula do aluno</th>
+							<th scope="col">Nome do aluno</th>
 							<th scope="col">Data da Entrega</th>
 							<th scope="col">Data da Devolução</th>
 							<th scope="col">Devolução</th>
+							<th scope="col">Renovacao</th>
+							<th scope="col">Entregar</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -53,24 +57,44 @@
 								<th scope="row">${emprestimo.id}</th>
 								<td>${emprestimo.item.titulo}</td>
 								<td>${emprestimo.aluno.matricula}</td>
+								<td>${emprestimo.aluno.nome}</td>
 								<td>${emprestimo.dataCadastrado}</td>
 								<td>${emprestimo.dataDevolucao}</td>
 								<c:if test="${emprestimo.entregou == true}">
 									<td>sim</td>
 								</c:if>
-								<td>nao</td>
+								<c:if test="${emprestimo.entregou == false}">
+									<td>nao</td>
+								</c:if>
+								<td><a style="color: red;"
+									href="<c:url value='/emprestimo/renovar/${emprestimo.id}' />">
+										renovar </a></td>
+								<c:if test="${emprestimo.entregou == false}">
+									<td><a style="color: red;"
+										href="<c:url value='/emprestimo/entregar/${emprestimo.id}' />">
+											entrega </a></td>
+								</c:if>
 							</tr>
 						</c:forEach>
 					</tbody>
 				</table>
-
-
-
 			</c:if>
 		</div>
 	</div>
 	<script type="text/javascript"
 		src="<c:url value="/resources/izitoast/js/iziToast.min.js" />"></script>
+	<script type="text/javascript">
+		var mensagem = '${mensagem}';
+		if (mensagem != "") {
+			iziToast.show({
+				title : 'Erro',
+				message : mensagem,
+				color : 'red',
+				timeout : false,
+				position : 'topRight'
+			});
+		}
+	</script>
 	<script type="text/javascript"
 		src="<c:url value="/resources/javascript/action.js" />"></script>
 </body>

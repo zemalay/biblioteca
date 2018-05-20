@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttribute;
@@ -54,4 +55,31 @@ public class EmprestimoController {
 		model.addAttribute("listaEmprestimo", emprestimoService.getListaEmprestimoAll());
 		return "home";
 	}
+
+	@RequestMapping(value = "/emprestimo/renovar/{id}", method = RequestMethod.GET)
+	public String renovarEmprestimo(@SessionAttribute("funcionario") Funcionario funcionarioLogado,
+			@PathVariable("id") int idEmprestimo, Model model) {
+		Emprestimo emprestimo = emprestimoService.getEmprestimo(idEmprestimo);
+		try {
+			emprestimoService.renovarEmprestimo(emprestimo.getAluno().getId(), emprestimo.getId());
+		} catch (EmprestimoException e) {
+			model.addAttribute("funcionario", funcionarioLogado);
+			model.addAttribute("listaEmprestimo", emprestimoService.getListaEmprestimoAll());
+			model.addAttribute("mensagem", e.getMessage());
+			return "home";
+		}
+		model.addAttribute("funcionario", funcionarioLogado);
+		model.addAttribute("listaEmprestimo", emprestimoService.getListaEmprestimoAll());
+		return "redirect:/home";
+	}
+
+	@RequestMapping(value = "/emprestimo/entregar/{id}", method = RequestMethod.GET)
+	public String entregaEmprestimo(@SessionAttribute("funcionario") Funcionario funcionarioLogado,
+			@PathVariable("id") int idEmprestimo, Model model) {
+		emprestimoService.devolucaoEmprestimo(idEmprestimo);
+		model.addAttribute("funcionario", funcionarioLogado);
+		model.addAttribute("listaEmprestimo", emprestimoService.getListaEmprestimoAll());
+		return "home";
+	}
+
 }

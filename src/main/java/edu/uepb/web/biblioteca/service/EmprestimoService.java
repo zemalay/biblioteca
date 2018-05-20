@@ -111,7 +111,7 @@ public class EmprestimoService {
 	 * @param idEmprestimo
 	 * @return
 	 */
-	public boolean devolucaoEmprestimo(int idFuncionario, int idEmprestimo) {
+	public boolean devolucaoEmprestimo(int idEmprestimo) {
 		logger.info("Executa metodo 'devolucaoEmprestimo' do emprestimoService: idEmprestimo " + idEmprestimo);
 		emprestimoDAO = new EmprestimoDAOImpl();
 		itemDAO = new ItemDAOImpl();
@@ -175,9 +175,8 @@ public class EmprestimoService {
 			throw new EmprestimoException("Nao pode realizar a renovacao, o item ja foi reservado por alguem");
 		}
 
-		// Verifica se falta mais de 20 dias para terminar o periodo
-		String dataDevolucao = BibliotecaDateTime.getDataDevolucao(aluno.getCurso().getNivel());
-		int dias = BibliotecaDateTime.diasParaFimPeriodo(dataDevolucao);
+		// Verifica se falta mais de 20 dias para terminar o periodo apartir da data de devolucao
+		int dias = BibliotecaDateTime.diasParaFimPeriodo(emprestimo.getDataDevolucao());
 		if (dias < 20) {
 			logger.error(
 					"A renovacao nao podera realizada, tem menos 20 dias para fim do periodo. dias para fim periodo: "
@@ -185,7 +184,9 @@ public class EmprestimoService {
 			throw new EmprestimoException("A renovacao nao podera realizada, tem menos 20 dias para fim do periodo");
 		}
 
-		emprestimo.setDataDevolucao(BibliotecaDateTime.getDataDevolucao(aluno.getCurso().getNivel()));
+		// Renovar a data apartir da data devolucao
+		emprestimo.setDataDevolucao(
+				BibliotecaDateTime.getDataRenovacao(emprestimo.getDataDevolucao(), aluno.getCurso().getNivel()));
 		emprestimo.setRenovacao(emprestimo.getRenovacao() + 1);
 
 		emprestimoDAO.atualizar(emprestimo);
@@ -199,6 +200,7 @@ public class EmprestimoService {
 	 * @return List
 	 */
 	public List<Emprestimo> getListaEmprestimo() {
+		logger.info("Executa o metodo 'getListaEmprestimo' do emprestimoService");
 		emprestimoDAO = new EmprestimoDAOImpl();
 		return emprestimoDAO.getLista();
 	}
@@ -209,8 +211,21 @@ public class EmprestimoService {
 	 * @return List
 	 */
 	public List<Emprestimo> getListaEmprestimoAll() {
+		logger.info("Executa o metodo 'getListaEmprestimoAll' do emprestimoService");
 		emprestimoDAO = new EmprestimoDAOImpl();
 		return emprestimoDAO.getListaAll();
+	}
+
+	/**
+	 * Pegar o Emprestimo pelo seu ID
+	 * 
+	 * @param id
+	 * @return Emprestimo
+	 */
+	public Emprestimo getEmprestimo(int id) {
+		logger.info("Executa o metodo 'getEmprestimo' emprestimoService: " + id);
+		emprestimoDAO = new EmprestimoDAOImpl();
+		return emprestimoDAO.getById(id);
 	}
 
 }
