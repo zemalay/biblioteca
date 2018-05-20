@@ -38,9 +38,9 @@
 				action="/biblioteca/curso/add">
 				<div class="row" id="formulario">
 					<div class="col-md-6">
-						<form:label path="nome">Nome</form:label>
+						<form:label path="nome">Nome do Curso</form:label>
 						<form:input class="form-control" path="nome"
-							placeholder="nome completo" />
+							placeholder="nome do curso" />
 						<form:label path="area">Area</form:label>
 						<form:input class="form-control" path="area" placeholder="area" />
 						<div class="form-group">

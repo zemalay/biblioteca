@@ -14,7 +14,7 @@
 	src="<c:url value="/resources/javascript/jquery/jquery-3.3.1.min.js" />"></script>
 <script src="<c:url value="/resources/javascript/popper.min.js" />"></script>
 <script src="<c:url value="/resources/bootstrap/js/bootstrap.min.js" />"></script>
-<title>Funcionarios</title>
+<title>Cursos</title>
 </head>
 <body>
 
@@ -54,7 +54,7 @@
 									<td>${curso.area}</td>
 									<td>${curso.nivel}</td>
 									<td><a style="color: red;"
-										href="<c:url value='/funcionario/delete/${funcionario.id}' />">
+										href="<c:url value='/curso/delete/${curso.id}' />">
 											apagar </a></td>
 								</tr>
 							</c:forEach>
