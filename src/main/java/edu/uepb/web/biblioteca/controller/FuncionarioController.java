@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.context.request.WebRequest;
 
 import edu.uepb.web.biblioteca.exception.AutenticacaoException;
 import edu.uepb.web.biblioteca.model.Aluno;
@@ -40,6 +42,14 @@ public class FuncionarioController {
 		model.addAttribute("funcionario", new Funcionario());
 		model.addAttribute("aluno", new Aluno());
 		return "index";
+	}
+	
+	@RequestMapping(value = "/sair", method = RequestMethod.GET)
+	public String sair(WebRequest request, SessionStatus status) {
+	    status.setComplete();
+	    request.removeAttribute("funcionario", WebRequest.SCOPE_SESSION);
+	    request.removeAttribute("user", WebRequest.SCOPE_SESSION);
+	    return "redirect:/";
 	}
 
 	@RequestMapping(value = "/funcionario/auth", method = RequestMethod.POST)

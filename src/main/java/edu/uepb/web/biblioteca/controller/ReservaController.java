@@ -33,7 +33,6 @@ public class ReservaController {
 	@RequestMapping(value = "/reserva/add", method = RequestMethod.POST)
 	public String cadastraReserva(@ModelAttribute("reserva") Reserva reserva, Model model) {
 		try {
-			System.err.println(reserva);
 			reservaService.reservaItem(reserva.getAluno().getId(), reserva.getItem().getId(), reserva.isEmail());
 		} catch (EmprestimoException e) {
 			model.addAttribute("reserva", reserva);

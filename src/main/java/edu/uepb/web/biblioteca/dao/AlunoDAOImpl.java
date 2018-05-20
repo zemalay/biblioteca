@@ -296,7 +296,7 @@ public class AlunoDAOImpl implements DAO<Aluno> {
 		logger.info("Executar metodo 'login' do aluno: " + matricula + " : " + senha);
 
 		Aluno aluno = null;
-		String sql = "SELECT id, matricula, senha FROM aluno WHERE matricula = ?";
+		String sql = "SELECT id, matricula, senha, nome FROM aluno WHERE matricula = ?";
 
 		try {
 			statement = (PreparedStatement) connection.prepareStatement(sql);
@@ -308,6 +308,7 @@ public class AlunoDAOImpl implements DAO<Aluno> {
 					aluno.setId(resultSet.getInt(1));
 					aluno.setMatricula(resultSet.getString(2));
 					aluno.setSenha(resultSet.getString(3));
+					aluno.setNome(resultSet.getString(4));
 				} else {
 					throw new AutenticacaoException("Senha Invalida");
 				}

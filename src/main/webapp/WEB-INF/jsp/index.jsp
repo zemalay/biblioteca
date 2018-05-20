@@ -64,13 +64,6 @@
 				</div>
 			</div>
 		</div>
-		<div class="col-md-4">
-			<form class="form-inline" id="search">
-				<input class="form-control mr-sm-2" type="search"
-					placeholder="Itens do acervo" aria-label="Procurar">
-				<button class="btn btn-dark my-2 my-sm-0" type="submit">Procurar</button>
-			</form>
-		</div>
 	</div>
 	<script type="text/javascript" src="<c:url value="/resources/izitoast/js/iziToast.min.js" />"></script>
 	<script type="text/javascript">

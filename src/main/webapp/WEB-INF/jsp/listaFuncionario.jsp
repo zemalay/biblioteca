@@ -64,9 +64,11 @@
 									<td>${funcionario.endereco}</td>
 									<td>${funcionario.telefone}</td>
 									<td>${funcionario.email}</td>
-									<td><a style="color: red;"
-										href="<c:url value='/funcionario/delete/${funcionario.id}' />">
-											apagar </a></td>
+									<c:if test="${funcionario.tipoFunc == 'OPERADOR' }">
+										<td><a style="color: red;"
+											href="<c:url value='/funcionario/delete/${funcionario.id}' />">
+												apagar </a></td>
+									</c:if>
 								</tr>
 							</c:forEach>
 						</c:if>
