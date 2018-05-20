@@ -86,7 +86,7 @@ public class DividaDAOImpl implements DAO<Divida> {
 		List<Divida> listaDivida = new ArrayList<>();
 		try {
 			statement = connection.prepareStatement(sql);
-			statement.setBoolean(2, false);
+			statement.setBoolean(1, false);
 			resultSet = statement.executeQuery();
 
 			while (resultSet.next()) {
@@ -174,7 +174,7 @@ public class DividaDAOImpl implements DAO<Divida> {
 	public void atualizar(Divida obj) {
 		logger.info("Executa o metodo 'atualizar' da divida : " + obj);
 		if (obj != null) {
-			String sql = "UPDATE divida SET aluno_id = ?, emprestimo_id, saldo = ?, pago = ? WHERE divida.id = ?";
+			String sql = "UPDATE divida SET aluno_id = ?, emprestimo_id = ?, saldo = ?, pago = ? WHERE divida.id = ?";
 			try {
 				statement = connection.prepareStatement(sql);
 				statement.setInt(1, obj.getAluno().getId());

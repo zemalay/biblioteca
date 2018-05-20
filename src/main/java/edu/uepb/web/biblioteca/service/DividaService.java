@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
+import org.springframework.stereotype.Service;
 
 import edu.uepb.web.biblioteca.dao.DividaDAOImpl;
 import edu.uepb.web.biblioteca.model.Aluno;
@@ -17,6 +18,7 @@ import edu.uepb.web.biblioteca.utils.BibliotecaDateTime;
  * 
  * @autor geovanniovinhas <vinhasgeovannio@gmail.com
  */
+@Service
 public class DividaService {
 	private static Logger logger = Logger.getLogger(DividaService.class);
 	private DividaDAOImpl dividaDAO;
@@ -94,7 +96,7 @@ public class DividaService {
 		// Pegar os dias atrasos usando biblioteca JodaDateTime
 		int diasAtraso = Days.daysBetween(dataInicio.toLocalDate(), dataFim.toLocalDate()).getDays();
 
-		if (diasAtraso > 0) {
+		if (diasAtraso < 0) {
 			logger.info("O item esta com atraso: dias de atraso: " + diasAtraso);
 			float saldo = (float) (diasAtraso * 0.5);
 
