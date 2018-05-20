@@ -3,9 +3,11 @@ package edu.uepb.web.biblioteca.service;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.springframework.stereotype.Service;
 
 import edu.uepb.web.biblioteca.dao.AlunoDAOImpl;
 import edu.uepb.web.biblioteca.dao.DividaDAOImpl;
+import edu.uepb.web.biblioteca.dao.EmprestimoDAOImpl;
 import edu.uepb.web.biblioteca.dao.ItemDAOImpl;
 import edu.uepb.web.biblioteca.dao.ReservaDAOImpl;
 import edu.uepb.web.biblioteca.exception.EmprestimoException;
@@ -18,12 +20,14 @@ import edu.uepb.web.biblioteca.utils.Email;
 /**
  * @autor geovanniovinhas <vinhasgeovannio@gmail.com
  */
+@Service
 public class ReservaService {
 	private static Logger logger = Logger.getLogger(Reserva.class);
 	private ReservaDAOImpl reservaDAO;
 	private AlunoDAOImpl alunoDAO;
 	private ItemDAOImpl itemDAO;
 	private DividaDAOImpl dividaDAO;
+	private EmprestimoDAOImpl emprestimoDAO;
 
 	/**
 	 * Pegar a lista de todas as reservas cadastradas no sistema
@@ -45,11 +49,14 @@ public class ReservaService {
 	 * @return
 	 * @throws EmprestimoException
 	 */
-	public boolean reservaItem(int idAluno, int idItem, int enviarEmail) throws EmprestimoException {
-		logger.info("Executa o metodo 'reservaItem' do reservaService com param: " + idAluno + " e " + idItem);
+	public boolean reservaItem(int idAluno, int idItem, boolean enviarEmail) throws EmprestimoException {
+		logger.info("Executa o metodo 'reservaItem' do reservaService com param: " + idAluno + " e " + idItem + " e "
+				+ enviarEmail);
 		reservaDAO = new ReservaDAOImpl();
 		alunoDAO = new AlunoDAOImpl();
 		dividaDAO = new DividaDAOImpl();
+		itemDAO = new ItemDAOImpl();
+		emprestimoDAO = new EmprestimoDAOImpl();
 
 		Item item = itemDAO.getById(idItem);
 		Aluno aluno = alunoDAO.getById(idAluno);
@@ -58,6 +65,12 @@ public class ReservaService {
 		if (dividaDAO.isAlunoTemDivida(idAluno)) {
 			logger.error("O aluno ainda tem divida ainda nao pago: " + idAluno + " e " + idItem);
 			throw new EmprestimoException("O aluno ainda tem divida ainda nao pago");
+		}
+
+		// Verifica se o item ainda tem no estoque
+		if (item.getQuantidade() > 0) {
+			logger.error("O aluno ainda tem divida ainda nao pago: " + idAluno + " e " + idItem);
+			throw new EmprestimoException("O item ainda tem no etoque, para que fazer a reserva!");
 		}
 
 		// Verifica se falta mais de 20 dias para terminar o periodo
@@ -74,6 +87,7 @@ public class ReservaService {
 		reserva.setAluno(aluno);
 		reserva.setItem(item);
 		reserva.setDataReservado(BibliotecaDateTime.getDataCadastrado());
+		reserva.setDataPegar(emprestimoDAO.getByItemId(idItem).getDataDevolucao());
 
 		if (reservaDAO.isExiste(reserva)) {
 			logger.error("A reserva para este item ja existe: " + idAluno + " e " + idItem);
@@ -81,9 +95,11 @@ public class ReservaService {
 		}
 		reservaDAO.inserir(reserva);
 
-		if (enviarEmail != 0) {
+		if (enviarEmail) {
+			logger.info("Enviar email no metodo 'reservaItem' " + aluno.getEmail());
 			Email email = new Email();
-			email.sendNotificacaoReserva(aluno, item);
+			email.setEmailDestino(aluno.getEmail());
+			email.sendNotificacaoReserva(reserva);
 		}
 		return true;
 	}

@@ -11,6 +11,7 @@ public class Reserva {
 	private Item item;
 	private String dataReservado;
 	private String dataPegar;
+	private boolean email;
 
 	public int getId() {
 		return id;
@@ -52,10 +53,18 @@ public class Reserva {
 		this.dataPegar = dataPegar;
 	}
 
+	public boolean isEmail() {
+		return email;
+	}
+
+	public void setEmail(boolean email) {
+		this.email = email;
+	}
+
 	@Override
 	public String toString() {
 		return "Reserva [id=" + id + ", aluno=" + aluno + ", item=" + item + ", dataReservado=" + dataReservado
-				+ ", dataPegar=" + dataPegar + "]";
+				+ ", dataPegar=" + dataPegar + ", email=" + email + "]";
 	}
 
 }

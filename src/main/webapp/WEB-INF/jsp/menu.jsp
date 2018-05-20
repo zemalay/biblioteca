@@ -79,13 +79,12 @@
 					id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
 					aria-expanded="false">Reservar</button>
 				<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-					<a class="dropdown-item" href="#">Listar</a> <a
-						class="dropdown-item" href="#">Cadastrar</a>
+					<a class="dropdown-item" href="<c:url value='/reservas' />">Listar</a> <a
+						class="dropdown-item" href="<c:url value='/reserva/form' />">Cadastrar</a>
 					<a class="dropdown-item" href="#"></a>
 				</div>
 			</div>
 		</li>
-		<li><a href="#" style="color: white;">Dívida</a></li>
 		<c:if test="${funcionario.tipoFunc == 'ADMINISTRADOR' }">
 			<li><a href="<c:url value='/universidade' />"
 				style="color: white;">Configuração</a></li>

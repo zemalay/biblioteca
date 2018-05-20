@@ -59,6 +59,7 @@ public class ReservaDAOImpl implements DAO<Reserva> {
 				reserva.setItem(item);
 				reserva.setDataReservado(resultSet.getString(4));
 				reserva.setDataPegar(resultSet.getString(5));
+				reserva.setEmail(resultSet.getBoolean(6));
 			}
 			statement.close();
 		} catch (SQLException e) {
@@ -87,7 +88,7 @@ public class ReservaDAOImpl implements DAO<Reserva> {
 				Reserva reserva = new Reserva();
 				alunoDAO = new AlunoDAOImpl();
 				itemDAO = new ItemDAOImpl();
-
+				reserva.setId(resultSet.getInt(1));
 				aluno = alunoDAO.getById(resultSet.getInt(2));
 				item = itemDAO.getById(resultSet.getInt(3));
 
@@ -95,6 +96,7 @@ public class ReservaDAOImpl implements DAO<Reserva> {
 				reserva.setItem(item);
 				reserva.setDataReservado(resultSet.getString(4));
 				reserva.setDataPegar(resultSet.getString(5));
+				reserva.setEmail(resultSet.getBoolean(6));
 
 				listaReserva.add(reserva);
 			}
@@ -116,7 +118,7 @@ public class ReservaDAOImpl implements DAO<Reserva> {
 		if (obj != null) {
 			connection = new Conexao().getConexao();
 
-			String sql = "INSERT INTO reserva (reserva.aluno_idaluno, reserva.item_iditem, reserva.data_reservado, reserva.data_pegar) VALUES (?,?,?,?)";
+			String sql = "INSERT INTO reserva (reserva.aluno_idaluno, reserva.item_iditem, reserva.data_reservado, reserva.data_pegar, reserva.email) VALUES (?,?,?,?,?)";
 
 			try {
 				statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -125,7 +127,7 @@ public class ReservaDAOImpl implements DAO<Reserva> {
 				statement.setInt(2, obj.getItem().getId());
 				statement.setString(3, obj.getDataReservado());
 				statement.setString(4, obj.getDataPegar());
-				statement.setString(5, obj.getDataPegar());
+				statement.setBoolean(5, obj.isEmail());
 				statement.execute();
 				resultSet = statement.getGeneratedKeys();
 				if (resultSet.next()) {
@@ -236,6 +238,7 @@ public class ReservaDAOImpl implements DAO<Reserva> {
 				reserva.setItem(item);
 				reserva.setDataReservado(resultSet.getString(4));
 				reserva.setDataPegar(resultSet.getString(5));
+				reserva.setEmail(resultSet.getBoolean(6));
 			}
 			statement.close();
 		} catch (SQLException e) {
@@ -277,6 +280,7 @@ public class ReservaDAOImpl implements DAO<Reserva> {
 				reserva.setItem(item);
 				reserva.setDataReservado(resultSet.getString(4));
 				reserva.setDataPegar(resultSet.getString(5));
+				reserva.setEmail(resultSet.getBoolean(6));
 			}
 			statement.close();
 		} catch (SQLException e) {
