@@ -246,4 +246,48 @@ public class EmprestimoDAOImpl implements DAO<Emprestimo> {
 		return listaEmprestimo;
 	}
 
+	/**
+	 * Pegar o emprestimo pelo ID do Item
+	 */
+	public Emprestimo getByItemId(int id) {
+		logger.info("Executa o metodo 'get' do emprestimo : " + id);
+
+		connection = new Conexao().getConexao();
+		String sql = "SELECT	 * FROM emprestimo WHERE emprestimo.item_id = ?";
+
+		Emprestimo emprestimo = null;
+
+		try {
+			statement = connection.prepareStatement(sql);
+			statement.setInt(1, id);
+			resultSet = statement.executeQuery();
+
+			if (resultSet.next()) {
+				emprestimo = new Emprestimo();
+				funcionarioDAOImpl = new FuncionarioDAOImpl();
+				alunoDAOImpl = new AlunoDAOImpl();
+				itemDAOImpl = new ItemDAOImpl();
+
+				emprestimo.setId(resultSet.getInt(1));
+				emprestimo.setDataCadastrado(resultSet.getString(5));
+				emprestimo.setDataDevolucao(resultSet.getString(6));
+				emprestimo.setRenovacao(resultSet.getInt(7));
+				emprestimo.setEntregou(resultSet.getBoolean(8));
+
+				funcionario = funcionarioDAOImpl.getById(resultSet.getInt(2));
+				aluno = alunoDAOImpl.getById(resultSet.getInt(3));
+				item = itemDAOImpl.getById(resultSet.getInt(4));
+
+				emprestimo.setFuncionario(funcionario);
+				emprestimo.setAluno(aluno);
+				emprestimo.setItem(item);
+			}
+			statement.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		logger.info("O emprestimo foi selecionado: " + emprestimo);
+		return emprestimo;
+	}
+
 }

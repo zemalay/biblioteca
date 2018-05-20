@@ -93,6 +93,7 @@ public class EmprestimoService {
 		emprestimo.setItem(item);
 		emprestimo.setDataCadastrado(BibliotecaDateTime.getDataCadastrado());
 		emprestimo.setDataDevolucao(BibliotecaDateTime.getDataDevolucao(aluno.getCurso().getNivel()));
+		emprestimo.setRenovacao(0);
 		emprestimo.setEntregou(false);
 
 		int idEmprestimo = emprestimoDAO.inserir(emprestimo);
@@ -129,8 +130,10 @@ public class EmprestimoService {
 		// Verifica se o item devolvido foi reservado, se for envia email para o aluno
 		Reserva reserva = reservaDAO.getByItemId(item.getId());
 		if (reserva != null) {
+			logger.info("Enviar email no metodo 'devolucaoEmprestimo' " + aluno.getEmail());
 			Email email = new Email();
-			email.sendNotificacaoDevolucao(aluno, item);
+			email.setEmailDestino(aluno.getEmail());
+			email.sendNotificacaoDevolucao(item);
 		}
 
 		// aumentar a quantidade do item no estoque
@@ -163,7 +166,7 @@ public class EmprestimoService {
 		Aluno aluno = alunoDAO.getById(idAluno);
 
 		// aluno graduacao nao pode renovar mais de uma vez.
-		if (aluno.getCurso().getNivel() == TipoNivel.GRADUACAO && emprestimo.getRenovacao() != 1) {
+		if (aluno.getCurso().getNivel() == TipoNivel.GRADUACAO && emprestimo.getRenovacao() == 1) {
 			logger.warn("O aluno de graduacao nao pode renovar mais e uma vez: idAluno" + aluno.getId());
 			throw new EmprestimoException("Ja estourou o limite da renovacao!");
 		}
