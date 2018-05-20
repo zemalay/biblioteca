@@ -1,5 +1,8 @@
 package edu.uepb.web.biblioteca.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -7,6 +10,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import edu.uepb.web.biblioteca.exception.AutenticacaoException;
@@ -86,5 +91,25 @@ public class FuncionarioController {
 		Funcionario funcionario = funcionarioService.getFuncionarioById(idFuncionario);
 		funcionarioService.deletarFuncionario(funcionario);
 		return "redirect:/funcionarios";
+	}
+
+	
+	/**
+	 * Retornar o funcionario de acordo com o usuario digita Autocompleto do Curso
+	 * 
+	 * @param funcionarioNome
+	 * @return List<Funcionario>
+	 */
+	@RequestMapping(value = "/getFuncionarios", method = RequestMethod.GET)
+	public @ResponseBody List<Funcionario> getFuncionario(@RequestParam String funcionarioNome) {
+		List<Funcionario> resultado = new ArrayList<Funcionario>();
+		List<Funcionario> listaFuncionario = funcionarioService.getListaFuncionario();
+
+		for (Funcionario obj : listaFuncionario) {
+			if (obj.getNome().toLowerCase().contains(funcionarioNome.toLowerCase())) {
+				resultado.add(obj);
+			}
+		}
+		return resultado;
 	}
 }
