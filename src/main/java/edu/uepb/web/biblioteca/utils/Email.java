@@ -11,7 +11,6 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-import edu.uepb.web.biblioteca.model.Aluno;
 import edu.uepb.web.biblioteca.model.Divida;
 import edu.uepb.web.biblioteca.model.Item;
 import edu.uepb.web.biblioteca.model.Reserva;
@@ -45,13 +44,16 @@ public class Email {
 		return session;
 	}
 
-	public boolean sendNotificacaoReserva(Aluno aluno, Item item) {
+	public boolean sendNotificacaoReserva(Reserva reserva) {
 		Session session = emailConfig();
 
 		String subject = "Reserva do Item";
-		String body = "";
-		
-		
+		String alunoText = "Aluno: " + reserva.getAluno().getNome() + "\n" + "Matricula: "
+				+ reserva.getAluno().getMatricula();
+		String itemText = "\nReservou o item: " + reserva.getItem().getTitulo() + "\n" + "Codigo: "
+				+ reserva.getItem().getId();
+		String dataPegar = "\n Data previsao para pegar: " + reserva.getDataPegar();
+		String body = alunoText + itemText + dataPegar;
 
 		try {
 			MimeMessage msg = new MimeMessage(session);
@@ -79,14 +81,12 @@ public class Email {
 		return true;
 
 	}
-	
-	public boolean sendNotificacaoDevolucao(Aluno aluno, Item item) {
+
+	public boolean sendNotificacaoDevolucao(Item item) {
 		Session session = emailConfig();
 
 		String subject = "O item reservado esta disponivel";
-		String body = "";
-		
-		
+		String body = "O item com titulo: " + item.getTitulo();
 
 		try {
 			MimeMessage msg = new MimeMessage(session);
