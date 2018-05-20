@@ -6,9 +6,13 @@ import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import edu.uepb.web.biblioteca.dao.AlunoDAOImpl;
+import edu.uepb.web.biblioteca.dao.DividaDAOImpl;
+import edu.uepb.web.biblioteca.dao.EmprestimoDAOImpl;
+import edu.uepb.web.biblioteca.dao.ReservaDAOImpl;
 import edu.uepb.web.biblioteca.dao.UniversidadeDAOImpl;
 import edu.uepb.web.biblioteca.enums.TipoFuncionario;
 import edu.uepb.web.biblioteca.exception.AutenticacaoException;
+import edu.uepb.web.biblioteca.exception.EmprestimoException;
 import edu.uepb.web.biblioteca.exception.ExistException;
 import edu.uepb.web.biblioteca.model.Aluno;
 import edu.uepb.web.biblioteca.model.Funcionario;
@@ -23,6 +27,9 @@ import edu.uepb.web.biblioteca.model.Universidade;
 public class AlunoService {
 	private static Logger logger = Logger.getLogger(AlunoService.class);
 	private AlunoDAOImpl alunoDAO;
+	private DividaDAOImpl dividaDAO;
+	private EmprestimoDAOImpl emprestimoDAO;
+	private ReservaDAOImpl reservaDAO;
 	private UniversidadeDAOImpl universidadeDAO;
 
 	/**
@@ -133,17 +140,40 @@ public class AlunoService {
 	 * @param aluno
 	 * @return true se foi removido
 	 * @throws AutenticacaoException
+	 * @throws EmprestimoException
 	 */
-	public boolean removerAluno(Funcionario funcionario, Aluno aluno) throws AutenticacaoException {
+	public void removerAluno(Funcionario funcionario, Aluno aluno) throws AutenticacaoException, EmprestimoException {
 		logger.info("Executa o metodo 'removerAluno' do alunoBusiness: " + funcionario + " e aluno: " + aluno);
 		if (!funcionario.getTipoFunc().equals(TipoFuncionario.ADMINISTRADOR)) {
 			logger.error("Funcionario nao autorizado, idFuncionario: " + funcionario.getId());
 			throw new AutenticacaoException("Este funcionario nao esta autorizado");
 		} else {
 			alunoDAO = new AlunoDAOImpl();
+			dividaDAO = new DividaDAOImpl();
+			reservaDAO = new ReservaDAOImpl();
+
+			if (dividaDAO.isAlunoTemDivida(aluno.getId())) {
+				logger.error("O aluno ainda tem divida " + aluno.getId());
+				throw new EmprestimoException("Nao pode remover o aluno, ele ainda tem divida");
+			}
+			emprestimoDAO = new EmprestimoDAOImpl();
+
+			if (emprestimoDAO.getEmprestimoAtivoDoAluno(aluno.getId()) != null) {
+				logger.error("O aluno ainda tem item emprestado " + aluno.getId());
+				throw new EmprestimoException("Nao pode remover o aluno, ele tem emprestimo registrado");
+			}
+
+			// remover as suas dividas registradas
+			dividaDAO.removerDividasAluno(aluno.getId());
+			
+			// remover os seus remprestimos registrados
+			emprestimoDAO.removerEmprestimoAluno(aluno.getId());
+
+			// remover as suas reservas registradas
+			reservaDAO.removerReservasAluno(aluno.getId());
+
 			alunoDAO.remover(aluno);
 			logger.info("O Aluno removido com sucesso: " + aluno);
-			return true;
 		}
 	}
 

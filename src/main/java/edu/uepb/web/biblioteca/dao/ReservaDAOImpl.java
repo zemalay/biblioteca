@@ -29,13 +29,16 @@ public class ReservaDAOImpl implements DAO<Reserva> {
 	private Aluno aluno;
 	private Item item;
 
+	public ReservaDAOImpl() {
+		this.connection = new Conexao().getConexao();
+	}
+
 	/**
 	 * @see {@link DAO#getById(int)}
 	 */
 	@Override
 	public Reserva getById(int id) {
 		logger.info("Executa o metodo 'get' do reserva : " + id);
-		connection = new Conexao().getConexao();
 
 		String sql = "SELECT * FROM reserva WHERE reserva.id = ?";
 
@@ -75,7 +78,6 @@ public class ReservaDAOImpl implements DAO<Reserva> {
 	@Override
 	public List<Reserva> getLista() {
 		logger.info("Executa o metodo 'getLista' do reserva");
-		connection = new Conexao().getConexao();
 		String sql = "SELECT	 * FROM reserva";
 
 		List<Reserva> listaReserva = new ArrayList<>();
@@ -116,7 +118,6 @@ public class ReservaDAOImpl implements DAO<Reserva> {
 		logger.info("Executa o metodo 'inserir' do emprestimo: " + obj);
 		int id = -1;
 		if (obj != null) {
-			connection = new Conexao().getConexao();
 
 			String sql = "INSERT INTO reserva (reserva.aluno_idaluno, reserva.item_iditem, reserva.data_reservado, reserva.data_pegar, reserva.email) VALUES (?,?,?,?,?)";
 
@@ -151,7 +152,6 @@ public class ReservaDAOImpl implements DAO<Reserva> {
 	public void remover(Reserva obj) {
 		logger.info("Executa o metodo 'remover' reserva : " + obj);
 		if (obj != null) {
-			connection = new Conexao().getConexao();
 			String sql = "DELETE FROM reserva WHERE reserva.id = ?";
 
 			try {
@@ -165,6 +165,27 @@ public class ReservaDAOImpl implements DAO<Reserva> {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	/**
+	 * Remover todos os registros da reserva de um Aluno
+	 * 
+	 * @param idAluno
+	 */
+	public void removerReservasAluno(int idAluno) {
+		logger.info("Executa o metodo 'removerReservasAluno' reservaDAO : " + idAluno);
+		String sql = "DELETE FROM reserva WHERE reserva.aluno_idaluno = ?";
+
+		try {
+			statement = connection.prepareStatement(sql);
+			statement.setInt(1, idAluno);
+			statement.execute();
+			statement.close();
+			logger.info("A reserva foi removida" + idAluno);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	@Override
@@ -181,7 +202,6 @@ public class ReservaDAOImpl implements DAO<Reserva> {
 	public boolean isExiste(Reserva obj) {
 		logger.info("Executar metodo 'isExiste' da reserva: " + obj);
 		if (obj != null) {
-			connection = new Conexao().getConexao();
 			String sql = "SELECT * FROM reserva WHERE item_iditem = ?";
 
 			try {
@@ -213,7 +233,6 @@ public class ReservaDAOImpl implements DAO<Reserva> {
 	 */
 	public Reserva getByAlunoItemId(int idAluno, int idItem) {
 		logger.info("Executa o metodo 'get' do reserva : " + idAluno + " " + idItem);
-		connection = new Conexao().getConexao();
 
 		String sql = "SELECT * FROM reserva WHERE aluno_idaluno = ? and item_iditem = ?";
 
@@ -256,7 +275,6 @@ public class ReservaDAOImpl implements DAO<Reserva> {
 	 */
 	public Reserva getByItemId(int idItem) {
 		logger.info("Executa o metodo 'get' do reserva : " + idItem);
-		connection = new Conexao().getConexao();
 
 		String sql = "SELECT * FROM reserva WHERE item_iditem = ?";
 
@@ -289,6 +307,88 @@ public class ReservaDAOImpl implements DAO<Reserva> {
 		logger.info("O reserva foi selecionado: " + reserva);
 		return reserva;
 
+	}
+
+	/**
+	 * Pegar objeto Reserva com parametro ID do Aluno
+	 * 
+	 * @param idAluno
+	 * @return Reserva
+	 */
+	public Reserva getByAlunoId(int idAluno) {
+		logger.info("Executa o metodo 'get' do reserva : " + idAluno);
+
+		String sql = "SELECT * FROM reserva WHERE aluno_idaluno = ?";
+
+		Reserva reserva = null;
+
+		try {
+			statement = connection.prepareStatement(sql);
+			statement.setInt(1, idAluno);
+			resultSet = statement.executeQuery();
+
+			if (resultSet.next()) {
+				reserva = new Reserva();
+				alunoDAO = new AlunoDAOImpl();
+				itemDAO = new ItemDAOImpl();
+
+				reserva.setId(resultSet.getInt(1));
+				aluno = alunoDAO.getById(resultSet.getInt(2));
+				item = itemDAO.getById(resultSet.getInt(3));
+
+				reserva.setAluno(aluno);
+				reserva.setItem(item);
+				reserva.setDataReservado(resultSet.getString(4));
+				reserva.setDataPegar(resultSet.getString(5));
+				reserva.setEmail(resultSet.getBoolean(6));
+			}
+			statement.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		logger.info("O reserva foi selecionado: " + reserva);
+		return reserva;
+
+	}
+
+	/**
+	 * Pegar todas as Reservas cadastrados do Aluno List<Reserva>
+	 * 
+	 * @return
+	 */
+	public List<Reserva> getReservasByAlunoId(int idAluno) {
+		logger.info("Executa o metodo 'getReservasByAlunoId' do reserva " + idAluno);
+		String sql = "SELECT	 * FROM reserva WHERE aluno_idaluno = ?";
+
+		List<Reserva> listaReserva = new ArrayList<>();
+		alunoDAO = new AlunoDAOImpl();
+		itemDAO = new ItemDAOImpl();
+
+		try {
+			statement = connection.prepareStatement(sql);
+			statement.setInt(1, idAluno);
+			resultSet = statement.executeQuery();
+
+			while (resultSet.next()) {
+				Reserva reserva = new Reserva();
+				reserva.setId(resultSet.getInt(1));
+				aluno = alunoDAO.getById(resultSet.getInt(2));
+				item = itemDAO.getById(resultSet.getInt(3));
+
+				reserva.setAluno(aluno);
+				reserva.setItem(item);
+				reserva.setDataReservado(resultSet.getString(4));
+				reserva.setDataPegar(resultSet.getString(5));
+				reserva.setEmail(resultSet.getBoolean(6));
+
+				listaReserva.add(reserva);
+			}
+			statement.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		logger.info("Pegar as reservas: " + listaReserva.toString());
+		return listaReserva;
 	}
 
 }

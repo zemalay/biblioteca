@@ -27,13 +27,17 @@ public class ItemDAOImpl implements DAO<Item> {
 
 	private static Logger logger = Logger.getLogger(ItemDAOImpl.class);
 
+	public ItemDAOImpl() {
+		this.connection = new Conexao().getConexao();
+	}
+
 	/**
 	 * @ @see {@link DAO#getById(int)}
 	 */
 	@Override
 	public Item getById(int id) {
 		logger.info("Executar o metodo 'get' do item" + id);
-		connection = new Conexao().getConexao();
+
 		String sql = "SELECT * FROM item WHERE item.id = ?";
 
 		try {
@@ -78,7 +82,7 @@ public class ItemDAOImpl implements DAO<Item> {
 	@Override
 	public List<Item> getLista() {
 		logger.info("Executar o metodo 'getLista' do item");
-		connection = new Conexao().getConexao();
+
 		List<Item> listaAcervo = new ArrayList<>();
 		String sql = "SELECT * FROM item";
 		try {
@@ -125,7 +129,7 @@ public class ItemDAOImpl implements DAO<Item> {
 		logger.info("Executar o metodo 'inserir' do item" + obj);
 		int id = ItemDAOImpl.FAKE_ID;
 		if (obj != null) {
-			connection = new Conexao().getConexao();
+
 			String sql = "INSERT INTO item (tipo_item, isbn, titulo, tipo_anais, tipo_midia, tipo_trabalho_conclusao, autor, congresso, ano_publicacao, local, editora, edicao, numero_pagina, area, tema, data_gravacao, orientador, data, quantidade) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
 			try {
@@ -173,7 +177,7 @@ public class ItemDAOImpl implements DAO<Item> {
 	public void remover(Item obj) {
 		logger.info("Executar o metodo 'remover' do item" + obj);
 		if (obj != null) {
-			connection = new Conexao().getConexao();
+
 			String sql = "DELETE FROM item WHERE item.id = ?";
 
 			try {
@@ -196,7 +200,7 @@ public class ItemDAOImpl implements DAO<Item> {
 	public void atualizar(Item obj) {
 		logger.info("Executar metodo 'atualizar' do Item: " + obj);
 		if (obj != null) {
-			connection = new Conexao().getConexao();
+
 			String sql = "UPDATE item SET tipo_item = ?, isbn = ?, titulo = ?, tipo_anais = ?, tipo_midia = ?, tipo_trabalho_conclusao = ?, autor = ?, congresso = ?, ano_publicacao = ?, local = ?, editora = ?, edicao = ?, numero_pagina = ?, area = ?, tema = ?, data_gravacao = ?, orientador = ? , data = ?, quantidade = ? WHERE id = ?";
 
 			try {
@@ -240,7 +244,7 @@ public class ItemDAOImpl implements DAO<Item> {
 	public boolean isExiste(Item obj) {
 		logger.info("Executar metodo 'isExiste' do Item: " + obj);
 		if (obj != null) {
-			connection = new Conexao().getConexao();
+
 			String sql = "SELECT * FROM item WHERE titulo = ?";
 
 			try {

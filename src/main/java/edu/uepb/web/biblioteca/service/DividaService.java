@@ -51,6 +51,18 @@ public class DividaService {
 
 		return true;
 	}
+	
+	/**
+	 * Pegar as dividas pelo ID do Aluno
+	 * 
+	 * @param idAluno
+	 * @return List<Divida>
+	 */
+	public List<Divida> getListaDividaByAluno(int idAluno){
+		logger.info("Executa o metodo 'getListaDividaByAluno' do dividaService :" + idAluno);
+		dividaDAO = new DividaDAOImpl();
+		return dividaDAO.getByAlunoId(idAluno);
+	}
 
 	/**
 	 * Pegar divida pelo ID do Aluno

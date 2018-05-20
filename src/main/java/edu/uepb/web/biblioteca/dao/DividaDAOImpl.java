@@ -44,6 +44,8 @@ public class DividaDAOImpl implements DAO<Divida> {
 
 		String sql = "SELECT * FROM divida WHERE id = ?";
 		Divida divida = null;
+		alunoDAO = new AlunoDAOImpl();
+		emprestimoDAO = new EmprestimoDAOImpl();
 
 		try {
 			statement = connection.prepareStatement(sql);
@@ -52,8 +54,6 @@ public class DividaDAOImpl implements DAO<Divida> {
 
 			if (resultSet.next()) {
 				divida = new Divida();
-				alunoDAO = new AlunoDAOImpl();
-				emprestimoDAO = new EmprestimoDAOImpl();
 
 				divida.setId(resultSet.getInt(1));
 				aluno = alunoDAO.getById(resultSet.getInt(2));
@@ -84,6 +84,8 @@ public class DividaDAOImpl implements DAO<Divida> {
 
 		String sql = "SELECT * FROM divida WHERE pago = ?";
 		List<Divida> listaDivida = new ArrayList<>();
+		alunoDAO = new AlunoDAOImpl();
+		emprestimoDAO = new EmprestimoDAOImpl();
 		try {
 			statement = connection.prepareStatement(sql);
 			statement.setBoolean(1, false);
@@ -92,8 +94,6 @@ public class DividaDAOImpl implements DAO<Divida> {
 			while (resultSet.next()) {
 				Divida divida = new Divida();
 				divida = new Divida();
-				alunoDAO = new AlunoDAOImpl();
-				emprestimoDAO = new EmprestimoDAOImpl();
 
 				divida.setId(resultSet.getInt(1));
 				aluno = alunoDAO.getById(resultSet.getInt(2));
@@ -134,8 +134,10 @@ public class DividaDAOImpl implements DAO<Divida> {
 				if (resultSet.next()) {
 					id = resultSet.getInt(1);
 					obj.setId(id);
+
 					logger.info("A divida foi inserida: " + obj);
 				}
+				statement.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -144,20 +146,19 @@ public class DividaDAOImpl implements DAO<Divida> {
 	}
 
 	/**
-	 * Remover a divida de acordo com id do aluno Nao com id da divida
-	 * 
 	 * @see DAO#remover(Object)
 	 */
 	@Override
 	public void remover(Divida obj) {
 		logger.info("Executa o metodo 'remover' divida : " + obj);
 		if (obj != null) {
-			String sql = "DELETE FROM divida WHERE aluno_id = ?";
+			String sql = "DELETE FROM divida WHERE divida.id = ?";
 
 			try {
 				statement = connection.prepareStatement(sql);
-				statement.setInt(1, obj.getAluno().getId());
+				statement.setInt(1, obj.getId());
 				statement.execute();
+				statement.close();
 				logger.info("A divida foi removida" + obj);
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
@@ -165,6 +166,27 @@ public class DividaDAOImpl implements DAO<Divida> {
 			}
 
 		}
+	}
+
+	/**
+	 * Remover todos os registros da divida de um Aluno void
+	 * 
+	 * @param idAluno
+	 */
+	public void removerDividasAluno(int idAluno) {
+		logger.info("Executa o metodo 'removerDividasAluno' divida : " + idAluno);
+		String sql = "DELETE FROM divida WHERE divida.aluno_id = ?";
+
+		try {
+			statement = connection.prepareStatement(sql);
+			statement.setInt(1, idAluno);
+			statement.execute();
+			statement.close();
+			logger.info("A divida foi removida" + idAluno);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	/**
@@ -208,7 +230,7 @@ public class DividaDAOImpl implements DAO<Divida> {
 				resultSet = statement.executeQuery();
 
 				while (resultSet.next()) {
-					if (resultSet.getBoolean(5)) {
+					if (!resultSet.getBoolean(5)) {
 						statement.close();
 						logger.info("O aluno tem divida registrado");
 						return true;
@@ -268,6 +290,46 @@ public class DividaDAOImpl implements DAO<Divida> {
 	public boolean isExiste(Divida obj) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	/**
+	 * Pegar todas as dividas registradas do Aluno
+	 * 
+	 * @return List<Divida>
+	 */
+	public List<Divida> getByAlunoId(int idAluno) {
+		logger.info("Executa o metodo 'getLista' da divida");
+
+		String sql = "SELECT * FROM divida WHERE aluno_id = ?";
+		List<Divida> listaDivida = new ArrayList<>();
+		alunoDAO = new AlunoDAOImpl();
+		emprestimoDAO = new EmprestimoDAOImpl();
+		try {
+			statement = connection.prepareStatement(sql);
+			statement.setInt(1, idAluno);
+			resultSet = statement.executeQuery();
+
+			while (resultSet.next()) {
+				Divida divida = new Divida();
+				divida = new Divida();
+
+				divida.setId(resultSet.getInt(1));
+				aluno = alunoDAO.getById(resultSet.getInt(2));
+				emprestimo = emprestimoDAO.getById(resultSet.getInt(3));
+
+				divida.setAluno(aluno);
+				divida.setEmprestimo(emprestimo);
+				divida.setSaldo(resultSet.getFloat(4));
+				divida.setPago(resultSet.getBoolean(5));
+
+				listaDivida.add(divida);
+			}
+			statement.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		logger.info("Pegar as dividas: " + listaDivida.toString());
+		return listaDivida;
 	}
 
 }

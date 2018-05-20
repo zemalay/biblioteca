@@ -74,7 +74,7 @@ public class EmprestimoDAOImpl implements DAO<Emprestimo> {
 				emprestimo.setAluno(aluno);
 				emprestimo.setItem(item);
 			}
-			connection.close();
+			statement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -120,7 +120,7 @@ public class EmprestimoDAOImpl implements DAO<Emprestimo> {
 
 				listaEmprestimo.add(emprestimo);
 			}
-			connection.close();
+			statement.close();
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -153,7 +153,7 @@ public class EmprestimoDAOImpl implements DAO<Emprestimo> {
 					id = resultSet.getInt(1);
 					obj.setId(id);
 				}
-				connection.close();
+				statement.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -162,9 +162,47 @@ public class EmprestimoDAOImpl implements DAO<Emprestimo> {
 		return id;
 	}
 
+	/**
+	 * @see DAO#remover(Object)
+	 */
 	@Override
 	public void remover(Emprestimo obj) {
-		// TODO Auto-generated method stub
+		logger.info("Executa o metodo 'remover' emprestimo : " + obj);
+		if (obj != null) {
+			String sql = "DELETE FROM emprestimo WHERE emprestimo.id = ?";
+
+			try {
+				statement = connection.prepareStatement(sql);
+				statement.setInt(1, obj.getId());
+				statement.execute();
+				statement.close();
+				logger.info("O emprestimo foi removido" + obj);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		}
+	}
+
+	/**
+	 * Remover todos os registros do emprestimo de um Aluno
+	 * 
+	 * @param idAluno
+	 */
+	public void removerEmprestimoAluno(int idAluno) {
+		logger.info("Executa o metodo 'removerEmprestimoAluno' emprestimoDAO : " + idAluno);
+		String sql = "DELETE FROM emprestimo WHERE emprestimo.aluno_id = ?";
+
+		try {
+			statement = connection.prepareStatement(sql);
+			statement.setInt(1, idAluno);
+			statement.execute();
+			statement.close();
+			logger.info("O emprestimo foi removido" + idAluno);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 
 	}
 
@@ -186,7 +224,7 @@ public class EmprestimoDAOImpl implements DAO<Emprestimo> {
 				statement.setInt(5, obj.getId());
 
 				statement.execute();
-				connection.close();
+				statement.close();
 				logger.info("O emprestimo foi atualizado: " + obj);
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -236,7 +274,7 @@ public class EmprestimoDAOImpl implements DAO<Emprestimo> {
 
 				listaEmprestimo.add(emprestimo);
 			}
-			connection.close();
+			statement.close();
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -280,7 +318,7 @@ public class EmprestimoDAOImpl implements DAO<Emprestimo> {
 				emprestimo.setAluno(aluno);
 				emprestimo.setItem(item);
 			}
-			connection.close();
+			statement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -289,12 +327,56 @@ public class EmprestimoDAOImpl implements DAO<Emprestimo> {
 	}
 
 	/**
-	 * Pegar os emprestimor pelo ID do Aluno
+	 * Pegar o emprestimo ativo pelo ID do Aluno, para verificar se o aluno ainda
+	 * tem emprestimo ativo
+	 */
+	public Emprestimo getEmprestimoAtivoDoAluno(int id) {
+		logger.info("Executa o metodo 'getByItemId' do emprestimo : " + id);
+
+		String sql = "SELECT	 * FROM emprestimo WHERE emprestimo.aluno_id = ? and emprestimo.entregou = false";
+
+		Emprestimo emprestimo = null;
+
+		try {
+			statement = connection.prepareStatement(sql);
+			statement.setInt(1, id);
+			resultSet = statement.executeQuery();
+
+			if (resultSet.next()) {
+				emprestimo = new Emprestimo();
+				funcionarioDAOImpl = new FuncionarioDAOImpl();
+				alunoDAOImpl = new AlunoDAOImpl();
+				itemDAOImpl = new ItemDAOImpl();
+
+				emprestimo.setId(resultSet.getInt(1));
+				emprestimo.setDataCadastrado(resultSet.getString(5));
+				emprestimo.setDataDevolucao(resultSet.getString(6));
+				emprestimo.setRenovacao(resultSet.getInt(7));
+				emprestimo.setEntregou(resultSet.getBoolean(8));
+
+				funcionario = funcionarioDAOImpl.getById(resultSet.getInt(2));
+				aluno = alunoDAOImpl.getById(resultSet.getInt(3));
+				item = itemDAOImpl.getById(resultSet.getInt(4));
+
+				emprestimo.setFuncionario(funcionario);
+				emprestimo.setAluno(aluno);
+				emprestimo.setItem(item);
+			}
+			statement.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		logger.info("O emprestimo foi selecionado: " + emprestimo);
+		return emprestimo;
+	}
+
+	/**
+	 * Pegar os emprestimos pelo ID do Aluno
 	 * 
 	 * @param id
 	 * @return Emprestimor
 	 */
-	public List<Emprestimo> getByAlunoId(int id) {
+	public List<Emprestimo> getListByAlunoId(int id) {
 		logger.info("Executa o metodo 'getByAlunoId' do emprestimo : " + id);
 
 		String sql = "SELECT	 * FROM emprestimo WHERE emprestimo.aluno_id = ?";
@@ -328,7 +410,7 @@ public class EmprestimoDAOImpl implements DAO<Emprestimo> {
 
 				listaEmprestimo.add(emprestimo);
 			}
-			connection.close();
+			statement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
