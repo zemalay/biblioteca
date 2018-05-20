@@ -1,5 +1,8 @@
 package edu.uepb.web.biblioteca.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -7,6 +10,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
 import edu.uepb.web.biblioteca.exception.AutenticacaoException;
@@ -25,7 +30,7 @@ public class CursoController {
 	private CursoService cursoService;
 
 	@RequestMapping(value = "/curso/add", method = RequestMethod.POST)
-	public String cadastra(@SessionAttribute("funcionario") Funcionario funcionarioLogado,
+	public String cadastraCurso(@SessionAttribute("funcionario") Funcionario funcionarioLogado,
 			@ModelAttribute("curso") Curso curso, Model model) {
 		try {
 			cursoService.cadastraCurso(funcionarioLogado, curso);
@@ -45,22 +50,33 @@ public class CursoController {
 	}
 
 	@RequestMapping(value = "/cursos", method = RequestMethod.GET)
-	public String getListaItem(@SessionAttribute("funcionario") Funcionario funcionarioLogado, Model model) {
+	public String getListaCurso(@SessionAttribute("funcionario") Funcionario funcionarioLogado, Model model) {
 		model.addAttribute("funcionario", funcionarioLogado);
 		model.addAttribute("listaCurso", cursoService.getListaCurso());
 		return "listaCurso";
 	}
 
-//	@RequestMapping(value = "/curso/{id}", method = RequestMethod.GET)
-//	public String getItem(@SessionAttribute("funcionario") Funcionario funcionarioLogado,
-//			@PathVariable("id") int idCurso, Model model) {
-//		model.addAttribute("curso", cursoService.getCursoById(idCurso));
-//		model.addAttribute("funcionario", funcionarioLogado);
-//		return "cursoDetail";
-//	}
+	/**
+	 * Retornar o curso de acordo com o usuario digita Autocompleto do Curso
+	 * 
+	 * @param nome
+	 * @return List<Curso>
+	 */
+	@RequestMapping(value = "/getCursos", method = RequestMethod.GET)
+	public @ResponseBody List<Curso> getCurso(@RequestParam String cursoNome) {
+		List<Curso> resultado = new ArrayList<Curso>();
+		List<Curso> listaCurso = cursoService.getListaCurso();
+
+		for (Curso obj : listaCurso) {
+			if (obj.getNome().toLowerCase().contains(cursoNome.toLowerCase())) {
+				resultado.add(obj);
+			}
+		}
+		return resultado;
+	}
 
 	@RequestMapping(value = "/curso/delete/{id}", method = RequestMethod.GET)
-	public String removerFuncionario(@SessionAttribute("funcionario") Funcionario funcionarioLogado,
+	public String removerCurso(@SessionAttribute("funcionario") Funcionario funcionarioLogado,
 			@PathVariable("id") int idCurso, Model model) {
 		Curso curso = cursoService.getCursoById(idCurso);
 		try {
