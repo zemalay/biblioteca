@@ -24,6 +24,9 @@ public class CursoDAOImpl implements DAO<Curso> {
 	private ResultSet resultSet;
 	private static Logger logger = Logger.getLogger(CursoDAOImpl.class);
 
+	public CursoDAOImpl() {
+		this.connection = new Conexao().getConexao();
+	}
 	/**
 	 * @ @see {@link DAO#getById(int)}
 	 */
@@ -31,7 +34,7 @@ public class CursoDAOImpl implements DAO<Curso> {
 	public Curso getById(int id) {
 		logger.info("Executa o metodo 'get' do curso: " + id);
 
-		connection = new Conexao().getConexao();
+		
 
 		String sql = "SELECT * FROM curso WHERE curso.id = ?";
 
@@ -64,7 +67,7 @@ public class CursoDAOImpl implements DAO<Curso> {
 	@Override
 	public List<Curso> getLista() {
 		logger.info("Executa o metodo 'getLista' do curso");
-		connection = new Conexao().getConexao();
+		
 
 		String sql = "SELECT * FROM curso";
 		List<Curso> listaCurso = new ArrayList<Curso>();
@@ -97,7 +100,7 @@ public class CursoDAOImpl implements DAO<Curso> {
 	public int inserir(Curso obj) {
 		logger.info("Executa o metodo 'inserir' do curso : " + obj);
 		int id = -1;
-		connection = new Conexao().getConexao();
+		
 		String sql = "INSERT INTO curso (nome, tipoNivel, area) VALUES (?,?,?)";
 		if (obj != null) {
 			try {
@@ -129,7 +132,7 @@ public class CursoDAOImpl implements DAO<Curso> {
 		logger.info("Executa o metodo 'remover' do curso : " + obj);
 
 		if (obj != null) {
-			connection = new Conexao().getConexao();
+			
 			String sql = "DELETE FROM curso WHERE id = ?";
 
 			try {
@@ -154,7 +157,7 @@ public class CursoDAOImpl implements DAO<Curso> {
 	public void atualizar(Curso obj) {
 		logger.info("Executa o metodo 'atualizar' do curso : " + obj);
 		if (obj != null) {
-			connection = new Conexao().getConexao();
+			
 			String sql = "UPDATE curso SET nome = ?, tipoNivel = ? , area = ? WHERE curso.id = ?";
 
 			try {
@@ -182,7 +185,7 @@ public class CursoDAOImpl implements DAO<Curso> {
 	public boolean isExiste(Curso obj) {
 		logger.info("Executar metodo 'isExiste' do curso: " + obj);
 		if (obj != null) {
-			connection = new Conexao().getConexao();
+			
 			String sql = "SELECT * FROM curso WHERE nome = ?";
 
 			try {

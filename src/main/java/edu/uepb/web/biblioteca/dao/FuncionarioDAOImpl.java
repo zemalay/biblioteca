@@ -26,13 +26,17 @@ public class FuncionarioDAOImpl implements DAO<Funcionario> {
 	private static final int ID_FAKE = -1;
 	private static Logger logger = Logger.getLogger(FuncionarioDAOImpl.class);
 
+	public FuncionarioDAOImpl() {
+		this.connection = new Conexao().getConexao();
+	}
+
 	/**
 	 * @see {@link DAO#getById(int)}
 	 */
 	@Override
 	public Funcionario getById(int id) {
 		logger.info("Executa o metodo 'get' do funcionario : " + id);
-		connection = new Conexao().getConexao();
+		
 
 		String sql = "SELECT * FROM funcionario WHERE funcionario.id = ?";
 
@@ -72,7 +76,7 @@ public class FuncionarioDAOImpl implements DAO<Funcionario> {
 	@Override
 	public List<Funcionario> getLista() {
 		logger.info("Executa o metodo 'getLista' do funcionario");
-		connection = new Conexao().getConexao();
+		
 
 		String sql = "SELECT * FROM funcionario";
 
@@ -113,7 +117,7 @@ public class FuncionarioDAOImpl implements DAO<Funcionario> {
 		logger.info("Executa o metodo 'inserir' do funcionario : " + obj);
 		int id = FuncionarioDAOImpl.ID_FAKE;
 		if (obj != null) {
-			connection = new Conexao().getConexao();
+			
 			String sql = "INSERT INTO funcionario (nome, tipo_funcionario, cpf, rg, naturalidade, endereco, telefone, email, usuario, senha) VALUES (?,?,?,?,?,?,?,?,?,?)";
 
 			try {
@@ -151,7 +155,7 @@ public class FuncionarioDAOImpl implements DAO<Funcionario> {
 	public void remover(Funcionario obj) {
 		logger.info("Executa o metodo 'remover' funcionario : " + obj);
 		if (obj != null) {
-			connection = new Conexao().getConexao();
+			
 			String sql = "DELETE FROM funcionario WHERE funcionario.id = ?";
 
 			try {
@@ -174,7 +178,7 @@ public class FuncionarioDAOImpl implements DAO<Funcionario> {
 	public void atualizar(Funcionario obj) {
 		logger.info("Executa o metodo 'atualizar' do funcionario : " + obj);
 		if (obj != null) {
-			connection = new Conexao().getConexao();
+			
 			String sql = "UPDATE funcionario SET nome = ?, tipo_funcionario = ? , cpf = ?, rg = ?, naturalidade = ?, endereco = ?, telefone = ?, email = ?, usuario = ?, senha = ? WHERE funcionario.id = ?";
 
 			try {
@@ -207,7 +211,7 @@ public class FuncionarioDAOImpl implements DAO<Funcionario> {
 	public boolean isExiste(Funcionario obj) {
 		logger.info("Executar metodo 'isExiste' do funcionario: " + obj);
 		if (obj != null) {
-			connection = new Conexao().getConexao();
+			
 			String sql = "SELECT * FROM funcionario WHERE cpf = ?";
 
 			try {
@@ -242,7 +246,7 @@ public class FuncionarioDAOImpl implements DAO<Funcionario> {
 	public Funcionario login(String usuario, String senha) throws AutenticacaoException {
 		logger.info("Executar metodo 'login' do funcionario: " + usuario + " : " + senha);
 
-		connection = new Conexao().getConexao();
+		
 		Funcionario funcionario = null;
 		String sql = "SELECT id, usuario, senha, tipo_funcionario FROM funcionario WHERE usuario = ?";
 

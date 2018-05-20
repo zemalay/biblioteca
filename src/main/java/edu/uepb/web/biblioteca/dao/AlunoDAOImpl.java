@@ -26,14 +26,16 @@ public class AlunoDAOImpl implements DAO<Aluno> {
 	private CursoDAOImpl cursoDAO;
 	private static Logger logger = Logger.getLogger(AlunoDAOImpl.class);
 
+	public AlunoDAOImpl() {
+		this.connection = new Conexao().getConexao();
+	}
+
 	/**
 	 * @ @see {@link DAO#getById(int)}
 	 */
 	@Override
 	public Aluno getById(int id) {
 		logger.info("Executa o metodo 'get' do aluno: " + id);
-
-		connection = new Conexao().getConexao();
 
 		String sql = "SELECT * FROM aluno WHERE aluno.id = ?";
 		Aluno aluno = null;
@@ -76,7 +78,7 @@ public class AlunoDAOImpl implements DAO<Aluno> {
 	@Override
 	public List<Aluno> getLista() {
 		logger.info("Executa o metodo 'getLista' do aluno");
-		connection = new Conexao().getConexao();
+
 		List<Aluno> listaAluno = new ArrayList<Aluno>();
 		Aluno aluno = null;
 		String sql = "SELECT * FROM aluno";
@@ -123,7 +125,7 @@ public class AlunoDAOImpl implements DAO<Aluno> {
 		int id = AlunoDAOImpl.ID_FAKE;
 
 		if (obj != null) {
-			connection = new Conexao().getConexao();
+
 			String sql = "INSERT INTO aluno (curso_id, matricula , rg, cpf, nome, mae,  naturalidade, endereco, telefone, ano, periodo, senha, email) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
 			try {
 				statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -163,7 +165,7 @@ public class AlunoDAOImpl implements DAO<Aluno> {
 	public void remover(Aluno obj) {
 		logger.info("Executa o metodo 'remover' do aluno : " + obj);
 		if (obj != null) {
-			connection = new Conexao().getConexao();
+
 			String sql = "DELETE FROM aluno WHERE aluno.id = ?";
 
 			try {
@@ -188,7 +190,7 @@ public class AlunoDAOImpl implements DAO<Aluno> {
 	public void atualizar(Aluno obj) {
 		logger.info("Executa o metodo 'atualizar' do aluno: " + obj);
 		if (obj != null) {
-			connection = new Conexao().getConexao();
+
 			String sql = "UPDATE aluno SET matricula = ?, curso_id = ?, rg = ?, cpf = ?, nome = ?, mae = ?, naturalidade = ?, endereco = ?, telefone = ?, ano = ?, periodo = ?, senha = ?, email = ? WHERE id = ?";
 
 			try {
@@ -230,8 +232,6 @@ public class AlunoDAOImpl implements DAO<Aluno> {
 	public int getUltimoId() {
 		logger.info("Executa o metodo 'getUltimoId' do aluno");
 
-		connection = new Conexao().getConexao();
-
 		String sql = "SELECT max(aluno.id) FROM aluno";
 
 		int ultimoId = AlunoDAOImpl.ID_FAKE;
@@ -259,7 +259,7 @@ public class AlunoDAOImpl implements DAO<Aluno> {
 	public boolean isExiste(Aluno obj) {
 		logger.info("Executar metodo 'isExiste' do aluno: " + obj);
 		if (obj != null) {
-			connection = new Conexao().getConexao();
+
 			String sql = "SELECT * FROM aluno WHERE matricula = ?";
 
 			try {
@@ -295,7 +295,6 @@ public class AlunoDAOImpl implements DAO<Aluno> {
 	public Aluno login(String matricula, String senha) throws AutenticacaoException {
 		logger.info("Executar metodo 'login' do aluno: " + matricula + " : " + senha);
 
-		connection = new Conexao().getConexao();
 		Aluno aluno = null;
 		String sql = "SELECT id, matricula, senha FROM aluno WHERE matricula = ?";
 
