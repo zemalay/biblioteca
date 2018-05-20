@@ -87,4 +87,14 @@ public class EmprestimoController {
 		return "home";
 	}
 
+	@RequestMapping(value = "/emprestimo/{id}", method = RequestMethod.GET)
+	public String getEmprestimo(@SessionAttribute("funcionario") Funcionario funcionarioLogado,
+			@PathVariable("id") int idEmprestimo, Model model) {
+
+		model.addAttribute("emprestimo", emprestimoService.getEmprestimo(idEmprestimo));
+		model.addAttribute("funcionario", funcionarioLogado);
+		return "emprestimoDetail";
+
+	}
+
 }

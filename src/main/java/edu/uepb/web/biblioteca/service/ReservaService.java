@@ -39,6 +39,12 @@ public class ReservaService {
 		reservaDAO = new ReservaDAOImpl();
 		return reservaDAO.getLista();
 	}
+	
+	public List<Reserva> getListaReservaByAluno(int idAluno){
+		logger.info("Executa o metodo 'getListaReservaByAluno' do reservaService " + idAluno);
+		reservaDAO = new ReservaDAOImpl();
+		return reservaDAO.getReservasByAlunoId(idAluno);
+	}
 
 	/**
 	 * Aluno realiza a reserva de um item
@@ -102,6 +108,17 @@ public class ReservaService {
 			email.sendNotificacaoReserva(reserva);
 		}
 		return true;
+	}
+	
+	/**
+	 * Cancelar a reserva do item
+	 * 
+	 * @param id
+	 */
+	public void cancelarReserva(int id) {
+		logger.info("Executa o metodo 'cancelarReserva' do reservaService " + id);
+		reservaDAO = new ReservaDAOImpl();
+		reservaDAO.remover(reservaDAO.getById(id));
 	}
 
 }

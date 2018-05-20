@@ -34,8 +34,8 @@
 		</div>
 
 		<div class="modal-content">
-			<h3 style="margin-left: 40%;">Lista de Reservas</h3>
 			<c:if test="${!empty listaReserva }">
+			<h3 style="margin-left: 40%;">Lista de Reservas</h3>
 				<table class="table">
 					<thead class="thead-dark">
 						<tr>
@@ -45,6 +45,7 @@
 							<th scope="col">Nome do aluno</th>
 							<th scope="col">Data da Reservado</th>
 							<th scope="col">Data a Pegar</th>
+							<th scope="col">Actions</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -56,6 +57,9 @@
 								<td>${reserva.aluno.nome}</td>
 								<td>${reserva.dataReservado}</td>
 								<td>${reserva.dataPegar}</td>
+								<td><a style="color: red;"
+										href="<c:url value='/reserva/cancelar/${reserva.id}' />"> cancelar
+									</a></td>
 							</tr>
 						</c:forEach>
 					</tbody>

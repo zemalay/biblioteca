@@ -54,7 +54,8 @@
 					<tbody>
 						<c:forEach items="${listaEmprestimo}" var="emprestimo">
 							<tr>
-								<th scope="row">${emprestimo.id}</th>
+								<th scope="row"><a
+									href="<c:url value='/emprestimo/${emprestimo.id}' />">${emprestimo.id}</a></th>
 								<td>${emprestimo.item.titulo}</td>
 								<td>${emprestimo.aluno.matricula}</td>
 								<td>${emprestimo.aluno.nome}</td>
@@ -66,9 +67,11 @@
 								<c:if test="${emprestimo.entregou == false}">
 									<td>nao</td>
 								</c:if>
-								<td><a style="color: red;"
-									href="<c:url value='/emprestimo/renovar/${emprestimo.id}' />">
-										renovar </a></td>
+								<c:if test="${emprestimo.entregou == false}">
+									<td><a style="color: red;"
+										href="<c:url value='/emprestimo/renovar/${emprestimo.id}' />">
+											renovar </a></td>
+								</c:if>
 								<c:if test="${emprestimo.entregou == false}">
 									<td><a style="color: red;"
 										href="<c:url value='/emprestimo/entregar/${emprestimo.id}' />">
