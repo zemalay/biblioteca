@@ -135,9 +135,9 @@ public class EmprestimoService {
 		// Verifica se o item devolvido foi reservado, se for envia email para o aluno
 		Reserva reserva = reservaDAO.getByItemId(item.getId());
 		if (reserva != null) {
-			logger.info("Enviar email no metodo 'devolucaoEmprestimo' " + aluno.getEmail());
+			logger.info("Enviar email no metodo 'devolucaoEmprestimo' " + reserva.getAluno().getEmail());
 			Email email = new Email();
-			email.setEmailDestino(aluno.getEmail());
+			email.setEmailDestino(reserva.getAluno().getEmail());
 			email.sendNotificacaoDevolucao(item);
 		}
 

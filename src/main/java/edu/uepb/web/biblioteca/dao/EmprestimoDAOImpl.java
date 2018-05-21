@@ -236,7 +236,7 @@ public class EmprestimoDAOImpl implements DAO<Emprestimo> {
 	public boolean isExiste(Emprestimo obj) {
 		logger.info("Executar metodo 'isExiste' da reserva: " + obj);
 		if (obj != null) {
-			String sql = "SELECT * FROM emprestimo WHERE aluno_id = ? and item_id = ?";
+			String sql = "SELECT * FROM emprestimo WHERE aluno_id = ? and item_id = ? and entregou = false";
 
 			try {
 				statement = (PreparedStatement) connection.prepareStatement(sql);
