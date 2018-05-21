@@ -37,7 +37,7 @@
 			<h2 class="text-center">Detalhes do Emprestimo</h2>
 			<form:form id="emprestimo-form" cssClass="container"
 				onsubmit="return checkCampos();" modelAttribute="emprestimo"
-				method="POST" action="/biblioteca/emprestimo/add">
+				method="POST" action="/biblioteca/emprestimo/update">
 				<div class="row" id="formulario">
 					<div class="col-md-6">
 						<form:label path="funcionario.id">ID Funcionario</form:label>

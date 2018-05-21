@@ -54,8 +54,7 @@
 					<tbody>
 						<c:forEach items="${listaEmprestimo}" var="emprestimo">
 							<tr>
-								<th scope="row"><a
-									href="<c:url value='/emprestimo/${emprestimo.id}' />">${emprestimo.id}</a></th>
+								<th scope="row">${emprestimo.id}</th>
 								<td>${emprestimo.item.titulo}</td>
 								<td>${emprestimo.aluno.matricula}</td>
 								<td>${emprestimo.aluno.nome}</td>
