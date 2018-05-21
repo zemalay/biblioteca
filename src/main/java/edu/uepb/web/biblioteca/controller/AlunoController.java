@@ -77,6 +77,7 @@ public class AlunoController {
 			model.addAttribute("aluno", alunoLogado);
 		} catch (AutenticacaoException e) {
 			model.addAttribute("aluno", new Aluno());
+			model.addAttribute("funcionario", new Funcionario());
 			model.addAttribute("mensagem", e.getMessage());
 			return "index";
 		}
@@ -110,7 +111,7 @@ public class AlunoController {
 		model.addAttribute("listaItem", itemService.getListaItem());
 		return "listaItemAluno";
 	}
-	
+
 	@RequestMapping(value = "/aluno/reserva/add", method = RequestMethod.POST)
 	public String alunoCadastraReserva(@ModelAttribute("reserva") Reserva reserva, Model model) {
 		try {
@@ -133,7 +134,6 @@ public class AlunoController {
 		return "alunoReservaForm";
 	}
 
-
 	@RequestMapping(value = "/aluno/emprestimo/renovar/{id}", method = RequestMethod.GET)
 	public String renovarEmprestimo(@SessionAttribute("aluno") Aluno alunoLogado, @PathVariable("id") int idEmprestimo,
 			Model model) {
@@ -152,7 +152,7 @@ public class AlunoController {
 
 	@RequestMapping(value = "/aluno/perfil", method = RequestMethod.GET)
 	public String perfilAluno(@SessionAttribute("aluno") Aluno alunoLogado, Model model) {
-		model.addAttribute("aluno", alunoLogado);
+		model.addAttribute("aluno", alunoService.getAlunoById(alunoLogado.getId()));
 		return "alunoPerfil";
 	}
 
