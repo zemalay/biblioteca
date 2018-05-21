@@ -29,12 +29,12 @@ public class UniversidadeController {
 	 * @return
 	 */
 	@RequestMapping(value = "/universidade/add", method = RequestMethod.POST)
-	public String cadastra(@ModelAttribute("universidade") Universidade universidade, Model model) {
+	public String cadastra(@SessionAttribute("funcionarioLogado") Funcionario funcionarioLogado, @ModelAttribute("universidade") Universidade universidade, Model model) {
 		if (universidade.getId() == 0) {
 			universidadeService.cadastrarUniversidade(universidade);
 			return "redirect:/universidade";
 		}
-		universidadeService.atualizarUniversidade(universidade);
+		universidadeService.atualizarUniversidade(universidade, funcionarioLogado);
 		return "redirect:/universidade";
 
 	}
