@@ -45,17 +45,29 @@
 							<th scope="col">Endereco</th>
 							<th scope="col">Telefone</th>
 							<th scope="col">Email</th>
-							<c:if test="${funcionario.tipoFunc == 'ADMINISTRADOR' }">
+							<c:if test="${funcionarioLogado.tipoFunc == 'ADMINISTRADOR' }">
 								<th scope="col">Actions</th>
 							</c:if>
 						</tr>
 					</thead>
 					<tbody>
-						<c:if test="${funcionario.tipoFunc == 'ADMINISTRADOR' }">
+						<c:if test="${funcionarioLogado.tipoFunc == 'ADMINISTRADOR' }">
 							<c:forEach items="${listaFuncionario}" var="funcionario">
 								<tr>
-									<th scope="row"><a
-										href="<c:url value='/funcionario/${funcionario.id}' />">${funcionario.id}</a></th>
+									<c:if test="${funcionario.tipoFunc == 'OPERADOR' }">
+										<th scope="row"><a
+											href="<c:url value='/funcionario/${funcionario.id}' />">${funcionario.id}</a>
+										</th>
+									</c:if>
+									<c:if test="${funcionarioLogado.id == funcionario.id }">
+										<th scope="row"><a
+											href="<c:url value='/funcionario/${funcionario.id}' />">${funcionario.id}</a>
+										</th>
+									</c:if>
+									<c:if
+										test="${funcionario.tipoFunc == 'ADMINISTRADOR' && funcionarioLogado.id != funcionario.id }">
+										<th scope="row">${funcionario.id}</th>
+									</c:if>
 									<td>${funcionario.nome}</td>
 									<td>${funcionario.tipoFunc}</td>
 									<td>${funcionario.cpf}</td>
@@ -72,11 +84,18 @@
 								</tr>
 							</c:forEach>
 						</c:if>
-						<c:if test="${funcionario.tipoFunc == 'OPERADOR' }">
+						<c:if test="${funcionarioLogado.tipoFunc == 'OPERADOR' }">
 							<c:forEach items="${listaFuncionario}" var="funcionario">
 								<tr>
-									<th scope="row"><a
-										href="<c:url value='/funcionario/${funcionario.id}' />">${funcionario.id}</a></th>
+									<c:if test="${funcionarioLogado.id == funcionario.id }">
+										<th scope="row"><a
+											href="<c:url value='/funcionario/${funcionario.id}' />">${funcionario.id}</a>
+										</th>
+									</c:if>
+									<c:if
+										test="${funcionarioLogado.id != funcionario.id }">
+										<th scope="row">${funcionario.id}</th>
+									</c:if>
 									<td>${funcionario.nome}</td>
 									<td>${funcionario.tipoFunc}</td>
 									<td>${funcionario.cpf}</td>

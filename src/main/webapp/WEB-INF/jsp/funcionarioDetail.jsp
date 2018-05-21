@@ -53,12 +53,19 @@
 						<form:input class="form-control" path="cpf" placeholder="cpf" />
 						<form:label path="rg">RG</form:label>
 						<form:input class="form-control" path="rg" placeholder="rg" />
+
 					</div>
 					<div class="col-md-4">
-						<form:password class="form-control" path="senha"
-							placeholder="senha" />
+						<c:if test="${funcionarioLogado.id == funcionario.id }">
+							<form:label path="senha">Senha</form:label>
+							<form:input class="form-control" path="senha" readonly="false" />
+						</c:if>
+						
+						<c:if test="${funcionarioLogado.id != funcionario.id }">
+							<form:hidden class="form-control" path="senha" readonly="true" />
+						</c:if>
 						<form:label path="id">ID</form:label>
-						<form:input class="form-control" path="id" readonly="true"/>
+						<form:input class="form-control" path="id" readonly="true" />
 						<form:label path="naturalidade">Naturalidade</form:label>
 						<form:input class="form-control" path="naturalidade"
 							placeholder="naturalidade" />
@@ -88,7 +95,6 @@
 	<script type="text/javascript"
 		src="<c:url value="/resources/izitoast/js/iziToast.min.js" />"></script>
 	<script type="text/javascript">
-		$('#senha').hide()
 	</script>
 	<script type="text/javascript"
 		src="<c:url value="/resources/javascript/action.js" />"></script>

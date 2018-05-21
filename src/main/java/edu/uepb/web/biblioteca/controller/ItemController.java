@@ -30,13 +30,13 @@ public class ItemController {
 	private ItemService itemService;
 
 	@RequestMapping(value = "/item/add", method = RequestMethod.POST)
-	public String cadastra(@SessionAttribute("funcionario") Funcionario funcionarioLogado,
+	public String cadastra(@SessionAttribute("funcionarioLogado") Funcionario funcionarioLogado,
 			@ModelAttribute("item") Item item, Model model) {
 		try {
 			itemService.cadastraItem(funcionarioLogado, item);
 		} catch (AutenticacaoException | ExistException e) {
 			model.addAttribute("item", new Item());
-			model.addAttribute("funcionario", funcionarioLogado);
+			model.addAttribute("funcionarioLogado", funcionarioLogado);
 			model.addAttribute("mensagem", e.getMessage());
 			return "itemForm";
 		}
@@ -44,29 +44,29 @@ public class ItemController {
 	}
 
 	@RequestMapping(value = "/item/form", method = RequestMethod.GET)
-	public String getItemForm(@SessionAttribute("funcionario") Funcionario funcionarioLogado, Model model) {
-		model.addAttribute("funcionario", funcionarioLogado);
+	public String getItemForm(@SessionAttribute("funcionarioLogado") Funcionario funcionarioLogado, Model model) {
+		model.addAttribute("funcionarioLogado", funcionarioLogado);
 		model.addAttribute("item", new Item());
 		return "itemForm";
 	}
 
 	@RequestMapping(value = "/itens", method = RequestMethod.GET)
-	public String getListaItem(@SessionAttribute("funcionario") Funcionario funcionarioLogado, Model model) {
-		model.addAttribute("funcionario", funcionarioLogado);
+	public String getListaItem(@SessionAttribute("funcionarioLogado") Funcionario funcionarioLogado, Model model) {
+		model.addAttribute("funcionarioLogado", funcionarioLogado);
 		model.addAttribute("listaItem", itemService.getListaItem());
 		return "listaItem";
 	}
 
 	@RequestMapping(value = "/item/{id}", method = RequestMethod.GET)
-	public String getItem(@SessionAttribute("funcionario") Funcionario funcionarioLogado,
+	public String getItem(@SessionAttribute("funcionarioLogado") Funcionario funcionarioLogado,
 			@PathVariable("id") int idItem, Model model) {
 		model.addAttribute("item", itemService.getItemById(idItem));
-		model.addAttribute("funcionario", funcionarioLogado);
+		model.addAttribute("funcionarioLogado", funcionarioLogado);
 		return "itemDetail";
 	}
 
 	@RequestMapping(value = "/item/delete/{id}", method = RequestMethod.GET)
-	public String removerFuncionario(@SessionAttribute("funcionario") Funcionario funcionarioLogado,
+	public String removerFuncionario(@SessionAttribute("funcionarioLogado") Funcionario funcionarioLogado,
 			@PathVariable("id") int idItem, Model model) {
 		Item item = itemService.getItemById(idItem);
 		try {
@@ -80,13 +80,13 @@ public class ItemController {
 	}
 
 	@RequestMapping(value = "/item/update", method = RequestMethod.POST)
-	public String atualizar(@SessionAttribute("funcionario") Funcionario funcionarioLogado,
+	public String atualizar(@SessionAttribute("funcionarioLogado") Funcionario funcionarioLogado,
 			@ModelAttribute("item") Item item, Model model) {
 		try {
 			itemService.atualizarItem(funcionarioLogado, item);
 		} catch (AutenticacaoException e) {
 			model.addAttribute("item", new Item());
-			model.addAttribute("funcionario", funcionarioLogado);
+			model.addAttribute("funcionarioLogado", funcionarioLogado);
 			model.addAttribute("mensagem", e.getMessage());
 			return "itemDetail";
 		}

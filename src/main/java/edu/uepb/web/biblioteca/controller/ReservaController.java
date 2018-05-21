@@ -24,17 +24,20 @@ public class ReservaController {
 	private ReservaService reservaService;
 
 	@RequestMapping(value = "/reservas", method = RequestMethod.GET)
-	public String getListaEmprestimo(@SessionAttribute("funcionario") Funcionario funcionarioLogado, Model model) {
-		model.addAttribute("funcionario", funcionarioLogado);
+	public String getListaEmprestimo(@SessionAttribute("funcionarioLogado") Funcionario funcionarioLogado,
+			Model model) {
+		model.addAttribute("funcionarioLogado", funcionarioLogado);
 		model.addAttribute("listaReserva", reservaService.getListaReserva());
 		return "listaReserva";
 	}
 
 	@RequestMapping(value = "/reserva/add", method = RequestMethod.POST)
-	public String cadastraReserva(@ModelAttribute("reserva") Reserva reserva, Model model) {
+	public String cadastraReserva(@SessionAttribute("funcionarioLogado") Funcionario funcionarioLogado,
+			@ModelAttribute("reserva") Reserva reserva, Model model) {
 		try {
 			reservaService.reservaItem(reserva.getAluno().getId(), reserva.getItem().getId(), reserva.isEmail());
 		} catch (EmprestimoException e) {
+			model.addAttribute("funcionarioLogado", funcionarioLogado);
 			model.addAttribute("reserva", reserva);
 			model.addAttribute("mensagem", e.getMessage());
 			return "reservaForm";
@@ -43,11 +46,12 @@ public class ReservaController {
 	}
 
 	@RequestMapping(value = "/reserva/form", method = RequestMethod.GET)
-	public String getReservaForm(Model model) {
+	public String getReservaForm(@SessionAttribute("funcionarioLogado") Funcionario funcionarioLogado, Model model) {
+		model.addAttribute("funcionarioLogado", funcionarioLogado);
 		model.addAttribute("reserva", new Reserva());
 		return "reservaForm";
 	}
-	
+
 	@RequestMapping(value = "/reserva/cancelar/{id}", method = RequestMethod.GET)
 	public String removerCurso(@SessionAttribute("funcionario") Funcionario funcionarioLogado,
 			@PathVariable("id") int id, Model model) {

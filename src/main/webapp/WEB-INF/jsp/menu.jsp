@@ -12,7 +12,7 @@
 					aria-expanded="false">Item da Biblioteca</button>
 				<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 					<a class="dropdown-item" href="<c:url value='/itens' />">Listar</a>
-					<c:if test="${funcionario.tipoFunc == 'ADMINISTRADOR' }">
+					<c:if test="${funcionarioLogado.tipoFunc == 'ADMINISTRADOR' }">
 						<a class="dropdown-item" href="<c:url value='/item/form' />">Cadastrar</a>
 					</c:if>
 
@@ -40,7 +40,7 @@
 					aria-expanded="false">Curso</button>
 				<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 					<a class="dropdown-item" href="<c:url value='/cursos' />">Listar</a>
-					<c:if test="${funcionario.tipoFunc == 'ADMINISTRADOR' }">
+					<c:if test="${funcionarioLogado.tipoFunc == 'ADMINISTRADOR' }">
 						<a class="dropdown-item" href="<c:url value='/curso/form' />">Cadastrar</a>
 					</c:if>
 
@@ -55,7 +55,7 @@
 					aria-expanded="false">Funcionário(a)</button>
 				<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 					<a class="dropdown-item" href="<c:url value='/funcionarios' />">Listar</a>
-					<c:if test="${funcionario.tipoFunc == 'ADMINISTRADOR' }">
+					<c:if test="${funcionarioLogado.tipoFunc == 'ADMINISTRADOR' }">
 						<a class="dropdown-item"
 							href="<c:url value='/funcionario/form' />">Cadastrar</a>
 					</c:if>
@@ -84,7 +84,7 @@
 				</div>
 			</div>
 		</li>
-		<c:if test="${funcionario.tipoFunc == 'ADMINISTRADOR' }">
+		<c:if test="${funcionarioLogado.tipoFunc == 'ADMINISTRADOR' }">
 			<li><a href="<c:url value='/universidade' />"
 				style="color: white;">Configuração</a></li>
 		</c:if>

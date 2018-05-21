@@ -157,14 +157,14 @@ public class AlunoController {
 	}
 
 	@RequestMapping(value = "/aluno/add", method = RequestMethod.POST)
-	public String cadastraAluno(@SessionAttribute("funcionario") Funcionario funcionarioLogado,
+	public String cadastraAluno(@SessionAttribute("funcionarioLogado") Funcionario funcionarioLogado,
 			@ModelAttribute("aluno") Aluno aluno, Model model) {
 		aluno.setCurso(cursoService.getCursoById(aluno.getCurso().getId()));
 		try {
 			alunoService.cadastrarAluno(funcionarioLogado, aluno);
 		} catch (AutenticacaoException | ExistException e) {
 			model.addAttribute("aluno", new Aluno());
-			model.addAttribute("funcionario", funcionarioLogado);
+			model.addAttribute("funcionarioLogado", funcionarioLogado);
 			model.addAttribute("mensagem", e.getMessage());
 			return "alunoForm";
 		}
@@ -172,37 +172,38 @@ public class AlunoController {
 	}
 
 	@RequestMapping(value = "/aluno/form", method = RequestMethod.GET)
-	public String getAlunoForm(@SessionAttribute("funcionario") Funcionario funcionarioLogado, Model model) {
-		model.addAttribute("funcionario", funcionarioLogado);
+	public String getAlunoForm(@SessionAttribute("funcionarioLogado") Funcionario funcionarioLogado, Model model) {
+		model.addAttribute("funcionarioLogado", funcionarioLogado);
 		model.addAttribute("aluno", new Aluno());
 		return "alunoForm";
 	}
 
 	@RequestMapping(value = "/alunos", method = RequestMethod.GET)
-	public String getListaAluno(@SessionAttribute("funcionario") Funcionario funcionarioLogado, Model model) {
-		model.addAttribute("funcionario", funcionarioLogado);
+	public String getListaAluno(@SessionAttribute("funcionarioLogado") Funcionario funcionarioLogado, Model model) {
+		model.addAttribute("funcionarioLogado", funcionarioLogado);
 		model.addAttribute("listaAluno", alunoService.getListaAluno());
 		return "listaAluno";
 	}
 
 	@RequestMapping(value = "/aluno/{id}", method = RequestMethod.GET)
-	public String getAluno(@SessionAttribute("funcionario") Funcionario funcionarioLogado,
+	public String getAluno(@SessionAttribute("funcionarioLogado") Funcionario funcionarioLogado,
 			@PathVariable("id") int idAluno, Model model) {
 		model.addAttribute("aluno", alunoService.getAlunoById(idAluno));
 		model.addAttribute("listaEmprestimo", emprestimoService.getEmprestimoByAluno(idAluno));
 		model.addAttribute("listaDivida", dividaService.getListaDividaByAluno(idAluno));
 		model.addAttribute("listaReserva", reservaService.getListaReservaByAluno(idAluno));
-		model.addAttribute("funcionario", funcionarioLogado);
+		model.addAttribute("funcionarioLogado", funcionarioLogado);
 		return "alunoDetail";
 	}
 
 	@RequestMapping(value = "/aluno/delete/{id}", method = RequestMethod.GET)
-	public String removerAlunos(@SessionAttribute("funcionario") Funcionario funcionarioLogado,
+	public String removerAlunos(@SessionAttribute("funcionarioLogado") Funcionario funcionarioLogado,
 			@PathVariable("id") int idAluno, Model model) {
 		Aluno aluno = alunoService.getAlunoById(idAluno);
 		try {
 			alunoService.removerAluno(funcionarioLogado, aluno);
 		} catch (AutenticacaoException | EmprestimoException e) {
+			model.addAttribute("funcionarioLogado", funcionarioLogado);
 			model.addAttribute("listaAluno", alunoService.getListaAluno());
 			model.addAttribute("mensagem", e.getMessage());
 			return "listaAluno";

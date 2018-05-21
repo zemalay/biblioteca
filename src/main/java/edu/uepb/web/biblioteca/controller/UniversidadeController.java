@@ -22,8 +22,7 @@ public class UniversidadeController {
 	private UniversidadeService universidadeService;
 
 	@RequestMapping(value = "/universidade/add", method = RequestMethod.POST)
-	public String cadastra(@SessionAttribute("funcionario") Funcionario funcionarioLogado,
-			@ModelAttribute("universidade") Universidade universidade, Model model) {
+	public String cadastra(@ModelAttribute("universidade") Universidade universidade, Model model) {
 		if (universidade.getId() == 0) {
 			universidadeService.cadastrarUniversidade(universidade);
 			return "redirect:/universidade";
@@ -34,8 +33,8 @@ public class UniversidadeController {
 	}
 
 	@RequestMapping(value = "/universidade", method = RequestMethod.GET)
-	public String getAlunoForm(@SessionAttribute("funcionario") Funcionario funcionarioLogado, Model model) {
-		model.addAttribute("funcionario", funcionarioLogado);
+	public String getAlunoForm(@SessionAttribute("funcionarioLogado") Funcionario funcionarioLogado, Model model) {
+		model.addAttribute("funcionarioLogado", funcionarioLogado);
 		if (universidadeService.getUniversidade() != null) {
 			model.addAttribute("universidade", universidadeService.getUniversidade());
 			return "universidadeForm";
@@ -43,5 +42,5 @@ public class UniversidadeController {
 		model.addAttribute("universidade", new Universidade());
 		return "universidadeForm";
 	}
-	
+
 }

@@ -40,13 +40,13 @@
 							<th scope="col">Nome</th>
 							<th scope="col">Area</th>
 							<th scope="col">Nivel</th>
-							<c:if test="${funcionario.tipoFunc == 'ADMINISTRADOR' }">
+							<c:if test="${funcionarioLogado.tipoFunc == 'ADMINISTRADOR' }">
 								<th scope="col">Actions</th>
 							</c:if>
 						</tr>
 					</thead>
 					<tbody>
-						<c:if test="${funcionario.tipoFunc == 'ADMINISTRADOR' }">
+						<c:if test="${funcionarioLogado.tipoFunc == 'ADMINISTRADOR' }">
 							<c:forEach items="${listaCurso}" var="curso">
 								<tr>
 									<th scope="row">${curso.id}</th>
@@ -54,13 +54,13 @@
 									<td>${curso.area}</td>
 									<td>${curso.nivel}</td>
 									<td><a style="color: red;"
-										href="<c:url value='/curso/delete/${curso.id}' />">
-											apagar </a></td>
+										href="<c:url value='/curso/delete/${curso.id}' />"> apagar
+									</a></td>
 								</tr>
 							</c:forEach>
 						</c:if>
-						<c:if test="${funcionario.tipoFunc == 'OPERADOR' }">
-							<c:forEach items="${listaFuncionario}" var="funcionario">
+						<c:if test="${funcionarioLogado.tipoFunc == 'OPERADOR' }">
+							<c:forEach items="${listaCurso}" var="curso">
 								<tr>
 									<th scope="row">${curso.id}</th>
 									<td>${curso.nome}</td>

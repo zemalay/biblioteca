@@ -30,28 +30,28 @@ public class CursoController {
 	private CursoService cursoService;
 
 	@RequestMapping(value = "/curso/add", method = RequestMethod.POST)
-	public String cadastraCurso(@SessionAttribute("funcionario") Funcionario funcionarioLogado,
+	public String cadastraCurso(@SessionAttribute("funcionarioLogado") Funcionario funcionarioLogado,
 			@ModelAttribute("curso") Curso curso, Model model) {
 		try {
 			cursoService.cadastraCurso(funcionarioLogado, curso);
 		} catch (AutenticacaoException | ExistException e) {
 			model.addAttribute("curso", new Curso());
-			model.addAttribute("funcionario", funcionarioLogado);
+			model.addAttribute("funcionarioLogado", funcionarioLogado);
 			model.addAttribute("mensagem", e.getMessage());
 		}
 		return "redirect:/cursos";
 	}
 
 	@RequestMapping(value = "/curso/form", method = RequestMethod.GET)
-	public String getCursoForm(@SessionAttribute("funcionario") Funcionario funcionarioLogado, Model model) {
-		model.addAttribute("funcionario", funcionarioLogado);
+	public String getCursoForm(@SessionAttribute("funcionarioLogado") Funcionario funcionarioLogado, Model model) {
+		model.addAttribute("funcionarioLogado", funcionarioLogado);
 		model.addAttribute("curso", new Curso());
 		return "cursoForm";
 	}
 
 	@RequestMapping(value = "/cursos", method = RequestMethod.GET)
-	public String getListaCurso(@SessionAttribute("funcionario") Funcionario funcionarioLogado, Model model) {
-		model.addAttribute("funcionario", funcionarioLogado);
+	public String getListaCurso(@SessionAttribute("funcionarioLogado") Funcionario funcionarioLogado, Model model) {
+		model.addAttribute("funcionarioLogado", funcionarioLogado);
 		model.addAttribute("listaCurso", cursoService.getListaCurso());
 		return "listaCurso";
 	}
@@ -76,12 +76,13 @@ public class CursoController {
 	}
 
 	@RequestMapping(value = "/curso/delete/{id}", method = RequestMethod.GET)
-	public String removerCurso(@SessionAttribute("funcionario") Funcionario funcionarioLogado,
+	public String removerCurso(@SessionAttribute("funcionarioLogado") Funcionario funcionarioLogado,
 			@PathVariable("id") int idCurso, Model model) {
 		Curso curso = cursoService.getCursoById(idCurso);
 		try {
 			cursoService.removerCurso(funcionarioLogado, curso);
 		} catch (AutenticacaoException e) {
+			model.addAttribute("funcionarioLogado", funcionarioLogado);
 			model.addAttribute("listaCurso", cursoService.getListaCurso());
 			model.addAttribute("mensagem", e.getMessage());
 			return "listaCurso";

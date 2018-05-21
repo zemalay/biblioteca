@@ -48,13 +48,13 @@
 							<th scope="col">Periodo de Ingresso</th>
 							<th scope="col">Email</th>
 							<th scope="col">Curso</th>
-							<c:if test="${funcionario.tipoFunc == 'ADMINISTRADOR' }">
+							<c:if test="${funcionarioLogado.tipoFunc == 'ADMINISTRADOR' }">
 								<th scope="col">Actions</th>
 							</c:if>
 						</tr>
 					</thead>
 					<tbody>
-						<c:if test="${funcionario.tipoFunc == 'ADMINISTRADOR' }">
+						<c:if test="${funcionarioLogado.tipoFunc == 'ADMINISTRADOR' }">
 							<c:forEach items="${listaAluno}" var="aluno">
 								<tr>
 									<th scope="row"><a
@@ -76,7 +76,7 @@
 								</tr>
 							</c:forEach>
 						</c:if>
-						<c:if test="${funcionario.tipoFunc == 'OPERADOR' }">
+						<c:if test="${funcionarioLogado.tipoFunc == 'OPERADOR' }">
 							<c:forEach items="${listaAluno}" var="aluno">
 								<tr>
 									<th scope="row"><a

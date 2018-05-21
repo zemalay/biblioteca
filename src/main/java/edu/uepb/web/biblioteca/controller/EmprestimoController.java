@@ -28,8 +28,8 @@ public class EmprestimoController {
 	private DividaService dividaService;
 
 	@RequestMapping(value = "/home", method = RequestMethod.GET)
-	public String home(@SessionAttribute("funcionario") Funcionario funcionarioLogado, Model model) {
-		model.addAttribute("funcionario", funcionarioLogado);
+	public String home(@SessionAttribute("funcionarioLogado") Funcionario funcionarioLogado, Model model) {
+		model.addAttribute("funcionarioLogado", funcionarioLogado);
 		model.addAttribute("listaEmprestimo", emprestimoService.getListaEmprestimo());
 		model.addAttribute("listaDivida", dividaService.getListaDivida());
 		return "home";
@@ -55,20 +55,20 @@ public class EmprestimoController {
 	}
 
 	@RequestMapping(value = "/emprestimos", method = RequestMethod.GET)
-	public String getListaEmprestimo(@SessionAttribute("funcionario") Funcionario funcionarioLogado, Model model) {
-		model.addAttribute("funcionario", funcionarioLogado);
+	public String getListaEmprestimo(@SessionAttribute("funcionarioLogado") Funcionario funcionarioLogado, Model model) {
+		model.addAttribute("funcionarioLogado", funcionarioLogado);
 		model.addAttribute("listaEmprestimo", emprestimoService.getListaEmprestimoAll());
 		return "listaEmprestimos";
 	}
 
 	@RequestMapping(value = "/emprestimo/renovar/{id}", method = RequestMethod.GET)
-	public String renovarEmprestimo(@SessionAttribute("funcionario") Funcionario funcionarioLogado,
+	public String renovarEmprestimo(@SessionAttribute("funcionarioLogado") Funcionario funcionarioLogado,
 			@PathVariable("id") int idEmprestimo, Model model) {
 		Emprestimo emprestimo = emprestimoService.getEmprestimo(idEmprestimo);
 		try {
 			emprestimoService.renovarEmprestimo(emprestimo.getAluno().getId(), emprestimo.getId());
 		} catch (EmprestimoException e) {
-			model.addAttribute("funcionario", funcionarioLogado);
+			model.addAttribute("funcionarioLogado", funcionarioLogado);
 			model.addAttribute("listaEmprestimo", emprestimoService.getListaEmprestimo());
 			model.addAttribute("listaDivida", dividaService.getListaDivida());
 			model.addAttribute("mensagem", e.getMessage());
@@ -78,21 +78,21 @@ public class EmprestimoController {
 	}
 
 	@RequestMapping(value = "/emprestimo/entregar/{id}", method = RequestMethod.GET)
-	public String entregaEmprestimo(@SessionAttribute("funcionario") Funcionario funcionarioLogado,
+	public String entregaEmprestimo(@SessionAttribute("funcionarioLogado") Funcionario funcionarioLogado,
 			@PathVariable("id") int idEmprestimo, Model model) {
 		emprestimoService.devolucaoEmprestimo(idEmprestimo);
-		model.addAttribute("funcionario", funcionarioLogado);
+		model.addAttribute("funcionarioLogado", funcionarioLogado);
 		model.addAttribute("listaEmprestimo", emprestimoService.getListaEmprestimo());
 		model.addAttribute("listaDivida", dividaService.getListaDivida());
 		return "home";
 	}
 
 	@RequestMapping(value = "/emprestimo/{id}", method = RequestMethod.GET)
-	public String getEmprestimo(@SessionAttribute("funcionario") Funcionario funcionarioLogado,
+	public String getEmprestimo(@SessionAttribute("funcionarioLogado") Funcionario funcionarioLogado,
 			@PathVariable("id") int idEmprestimo, Model model) {
 
 		model.addAttribute("emprestimo", emprestimoService.getEmprestimo(idEmprestimo));
-		model.addAttribute("funcionario", funcionarioLogado);
+		model.addAttribute("funcionarioLogado", funcionarioLogado);
 		return "emprestimoDetail";
 
 	}

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.context.request.WebRequest;
@@ -25,14 +26,14 @@ import edu.uepb.web.biblioteca.service.FuncionarioService;
  * @autor geovanniovinhas <vinhasgeovannio@gmail.com
  */
 @Controller
-@SessionAttributes("funcionario")
+@SessionAttributes("funcionarioLogado")
 @RequestMapping("/")
 public class FuncionarioController {
 
 	@Autowired
 	private FuncionarioService funcionarioService;
 
-	@ModelAttribute("funcionario")
+	@ModelAttribute("funcionarioLogado")
 	public Funcionario setUpUserForm() {
 		return new Funcionario();
 	}
@@ -47,7 +48,7 @@ public class FuncionarioController {
 	@RequestMapping(value = "/sair", method = RequestMethod.GET)
 	public String sair(WebRequest request, SessionStatus status) {
 	    status.setComplete();
-	    request.removeAttribute("funcionario", WebRequest.SCOPE_SESSION);
+	    request.removeAttribute("funcionarioLogado", WebRequest.SCOPE_SESSION);
 	    request.removeAttribute("user", WebRequest.SCOPE_SESSION);
 	    return "redirect:/";
 	}
@@ -57,9 +58,10 @@ public class FuncionarioController {
 		Funcionario funcionarioLogado;
 		try {
 			funcionarioLogado = funcionarioService.autenticar(funcionario.getUsuario(), funcionario.getSenha());
-			model.addAttribute("funcionario", funcionarioLogado);
+			model.addAttribute("funcionarioLogado", funcionarioLogado);
 		} catch (AutenticacaoException e) {
 			model.addAttribute("aluno", new Aluno());
+			model.addAttribute("funcionario", new Funcionario());
 			model.addAttribute("mensagem", e.getMessage());
 			return "index";
 		}
@@ -79,8 +81,9 @@ public class FuncionarioController {
 	}
 
 	@RequestMapping(value = "/funcionarios", method = RequestMethod.GET)
-	public String getListaFuncionario(Model model) {
+	public String getListaFuncionario(@SessionAttribute("funcionarioLogado") Funcionario funcionarioLogado, Model model) {
 		model.addAttribute("listaFuncionario", funcionarioService.getListaFuncionario());
+		model.addAttribute("funcionarioLogado", funcionarioLogado);
 		return "listaFuncionario";
 	}
 

@@ -49,13 +49,13 @@
 							<th scope="col">Data</th>
 							<th scope="col">Data Gravacao</th>
 							<th scope="col">Orientador</th>
-							<c:if test="${funcionario.tipoFunc == 'ADMINISTRADOR' }">
+							<c:if test="${funcionarioLogado.tipoFunc == 'ADMINISTRADOR' }">
 								<th scope="col">Actions</th>
 							</c:if>
 						</tr>
 					</thead>
 					<tbody>
-						<c:if test="${funcionario.tipoFunc == 'ADMINISTRADOR' }">
+						<c:if test="${funcionarioLogado.tipoFunc == 'ADMINISTRADOR' }">
 							<c:forEach items="${listaItem}" var="item">
 								<tr>
 									<th scope="row"><a
@@ -78,11 +78,11 @@
 								</tr>
 							</c:forEach>
 						</c:if>
-						<c:if test="${funcionario.tipoFunc == 'OPERADOR' }">
+						<c:if test="${funcionarioLogado.tipoFunc == 'OPERADOR' }">
 							<c:forEach items="${listaItem}" var="item">
 								<tr>
 									<th scope="row"><a
-										href="<c:url value='/funcionario/${item.id}' />">${item.id}</a></th>
+										href="<c:url value='/item/${item.id}' />">${item.id}</a></th>
 									<td>${item.tipoItem}</td>
 									<td>${item.titulo}</td>
 									<td>${item.isbn}</td>
