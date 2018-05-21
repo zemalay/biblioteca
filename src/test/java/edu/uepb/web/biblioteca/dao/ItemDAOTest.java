@@ -13,7 +13,6 @@ import org.junit.Test;
 import edu.uepb.web.biblioteca.enums.TipoAnais;
 import edu.uepb.web.biblioteca.enums.TipoItem;
 import edu.uepb.web.biblioteca.enums.TipoMidia;
-import edu.uepb.web.biblioteca.exception.DAOException;
 import edu.uepb.web.biblioteca.exception.ExistException;
 import edu.uepb.web.biblioteca.model.Item;
 
@@ -42,11 +41,13 @@ public class ItemDAOTest {
 		midia.setTitulo("Titulo Midia123");
 		midia.setTipoMidia(TipoMidia.CD);
 		midia.setDataGravacao("12/02/2009");
+		midia.setQuantidade(10);
 
 		jornal = new Item();
 		jornal.setTipoItem(TipoItem.JORNAL);
 		jornal.setTitulo("Titulo Jornal");
 		jornal.setData("02/04/2003");
+		jornal.setQuantidade(2);
 
 		livro = new Item();
 		livro.setTipoItem(TipoItem.LIVRO);
@@ -58,6 +59,7 @@ public class ItemDAOTest {
 		livro.setNumeroPagina(300);
 		livro.setArea("Saude");
 		livro.setTema("HHH");
+		livro.setQuantidade(4);
 
 		revista = new Item();
 		revista.setTipoItem(TipoItem.REVISTA);
@@ -66,6 +68,7 @@ public class ItemDAOTest {
 		revista.setEdicao("4");
 		revista.setData("03/02/2013");
 		revista.setNumeroPagina(23);
+		revista.setQuantidade(6);
 		
 		anais = new Item();
 		anais.setTipoItem(TipoItem.ANAIS);
@@ -75,29 +78,31 @@ public class ItemDAOTest {
 		anais.setAnoPublicacao("2009");
 		anais.setLocal("LOSK");
 		anais.setAutor("SASA");
+		anais.setQuantidade(4);
 
 	}
 
 	@Test
-	public void inserir() throws DAOException {
+	public void inserir()  {
 		assertNotEquals(manager.inserir(midia), -1);
 	}
 
 	@Test
-	public void get() throws DAOException {
+	public void get()  {
 		Item jornal1 = new Item();
 		jornal1 = new Item();
 		jornal1.setTipoItem(TipoItem.JORNAL);
 		jornal1.setTitulo("Titulo Jornal1");
 		jornal1.setData("01/02/2013");
+		jornal.setQuantidade(2);
 		
 		int id = manager.inserir(jornal1);
 		
-		assertNotEquals(null, manager.get(id));
+		assertNotEquals(null, manager.getById(id));
 	}
 
 	@Test
-	public void getList() throws DAOException {
+	public void getList()  {
 		listaItem = manager.getLista();
 		 if (listaItem.size() <= 0) {
 			Assert.fail();
@@ -105,24 +110,24 @@ public class ItemDAOTest {
 	}
 
 	@Test
-	public void atualizar() throws DAOException {
+	public void atualizar()  {
 		revista.setId(manager.inserir(revista));
 		revista.setNumeroPagina(27);
 
 		manager.atualizar(revista);
-		assertEquals(27, manager.get(revista.getId()).getNumeroPagina());
+		assertEquals(27, manager.getById(revista.getId()).getNumeroPagina());
 	}
 	
 	@Test
-	public void remover() throws DAOException {
+	public void remover()  {
 		int id = manager.inserir(anais);
 		anais.setId(id);
 		manager.remover(anais);
-		assertEquals(null, manager.get(id));
+		assertEquals(null, manager.getById(id));
 	}
 	
 	@Test
-	public void isExiste() throws DAOException, ExistException {
+	public void isExiste() throws ExistException {
 		Item item = new Item();
 		item.setTipoItem(TipoItem.JORNAL);
 		item.setTitulo("Titulo Item");

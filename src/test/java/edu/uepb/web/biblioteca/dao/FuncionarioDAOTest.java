@@ -11,7 +11,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import edu.uepb.web.biblioteca.enums.TipoFuncionario;
-import edu.uepb.web.biblioteca.exception.DAOException;
 import edu.uepb.web.biblioteca.model.Curso;
 import edu.uepb.web.biblioteca.model.Funcionario;
 
@@ -84,7 +83,7 @@ public class FuncionarioDAOTest {
 	}
 
 	@Test
-	public void inserirFuncionario() throws DAOException {
+	public void inserirFuncionario() {
 		int id_fun = manager.inserir(admin);
 		if (id_fun < 0) {
 			Assert.fail();
@@ -92,13 +91,13 @@ public class FuncionarioDAOTest {
 	}
 
 	@Test
-	public void get() throws DAOException {
+	public void get() {
 		int id = manager.inserir(operador1);
-		assertNotEquals(null, manager.get(id));
+		assertNotEquals(null, manager.getById(id));
 	}
 
 	@Test
-	public void getLista() throws DAOException {
+	public void getLista() {
 		listaFuncionario = manager.getLista();
 		if (listaFuncionario.size() <= 0) {
 			Assert.fail();
@@ -106,25 +105,25 @@ public class FuncionarioDAOTest {
 	}
 
 	@Test
-	public void remover() throws DAOException {
+	public void remover() {
 		int id = manager.inserir(operador2);
 		operador2.setId(id);
 		manager.remover(operador2);
-		assertEquals(null, manager.get(id));
+		assertEquals(null, manager.getById(id));
 	}
 
 	@Test
-	public void atualizar() throws DAOException {
+	public void atualizar() {
 		int id = manager.inserir(operador3);
 		operador3.setId(id);
 		operador3.setEmail("jj@email.com");
 
 		manager.atualizar(operador3);
-		assertEquals("jj@email.com", manager.get(operador3.getId()).getEmail());
+		assertEquals("jj@email.com", manager.getById(operador3.getId()).getEmail());
 	}
 
 	@Test
-	public void isExiste() throws DAOException {
+	public void isExiste() {
 		assertEquals(true, manager.isExiste(admin));
 		Funcionario admin1 = new Funcionario();
 		admin1.setNome("Hjas");
@@ -137,8 +136,8 @@ public class FuncionarioDAOTest {
 		admin1.setTelefone("12345677");
 		admin1.setUsuario("nar");
 		admin1.setSenha("qwerty");
-		
+
 		assertEquals(false, manager.isExiste(admin1));
-		
+
 	}
 }

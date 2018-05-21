@@ -10,10 +10,12 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import edu.uepb.web.biblioteca.exception.DAOException;
+import edu.uepb.web.biblioteca.exception.AutenticacaoException;
 import edu.uepb.web.biblioteca.model.Aluno;
 
 /**
+ * A classe para acessar os dados no banco associando ao objeto {@link Aluno}
+ * 
  * @autor geovanniovinhas <vinhasgeovannio@gmail.com
  */
 public class AlunoDAOImpl implements DAO<Aluno> {
@@ -24,15 +26,16 @@ public class AlunoDAOImpl implements DAO<Aluno> {
 	private CursoDAOImpl cursoDAO;
 	private static Logger logger = Logger.getLogger(AlunoDAOImpl.class);
 
+	public AlunoDAOImpl() {
+		this.connection = new Conexao().getConexao();
+	}
+
 	/**
-	 * @throws DAOException
-	 * @see {@link DAO#get(int)}
+	 * @ @see {@link DAO#getById(int)}
 	 */
 	@Override
-	public Aluno get(int id) throws DAOException {
+	public Aluno getById(int id) {
 		logger.info("Executa o metodo 'get' do aluno: " + id);
-
-		connection = new Conexao().getConexao();
 
 		String sql = "SELECT * FROM aluno WHERE aluno.id = ?";
 		Aluno aluno = null;
@@ -46,7 +49,7 @@ public class AlunoDAOImpl implements DAO<Aluno> {
 				cursoDAO = new CursoDAOImpl();
 				aluno.setId(resultSet.getInt(1));
 				aluno.setMatricula(resultSet.getString(3));
-				aluno.setCurso(cursoDAO.get(resultSet.getInt(2)));
+				aluno.setCurso(cursoDAO.getById(resultSet.getInt(2)));
 				aluno.setRg(resultSet.getString(4));
 				aluno.setCpf(resultSet.getString(5));
 				aluno.setNome(resultSet.getString(6));
@@ -57,25 +60,25 @@ public class AlunoDAOImpl implements DAO<Aluno> {
 				aluno.setAno(resultSet.getString(11));
 				aluno.setPeriodoIngresso(resultSet.getString(12));
 				aluno.setSenha(resultSet.getString(13));
+				aluno.setEmail(resultSet.getString(14));
 
 				statement.close();
 			}
 		} catch (SQLException e) {
 			logger.error("Erro selecao o dado no base de dados", e);
-			throw new DAOException(e.getMessage());
+			e.printStackTrace();
 		}
 		logger.info("O aluno foi selecionado: " + aluno);
 		return aluno;
 	}
 
 	/**
-	 * @throws DAOException
-	 * @see {@link DAO#getLista()}
+	 * @ @see {@link DAO#getLista()}
 	 */
 	@Override
-	public List<Aluno> getLista() throws DAOException {
+	public List<Aluno> getLista() {
 		logger.info("Executa o metodo 'getLista' do aluno");
-		connection = new Conexao().getConexao();
+
 		List<Aluno> listaAluno = new ArrayList<Aluno>();
 		Aluno aluno = null;
 		String sql = "SELECT * FROM aluno";
@@ -87,8 +90,9 @@ public class AlunoDAOImpl implements DAO<Aluno> {
 			while (resultSet.next()) {
 				aluno = new Aluno();
 				cursoDAO = new CursoDAOImpl();
+				aluno.setId(resultSet.getInt(1));
 				aluno.setMatricula(resultSet.getString(3));
-				aluno.setCurso(cursoDAO.get(resultSet.getInt(2)));
+				aluno.setCurso(cursoDAO.getById(resultSet.getInt(2)));
 				aluno.setRg(resultSet.getString(4));
 				aluno.setCpf(resultSet.getString(5));
 				aluno.setNome(resultSet.getString(6));
@@ -99,32 +103,30 @@ public class AlunoDAOImpl implements DAO<Aluno> {
 				aluno.setAno(resultSet.getString(11));
 				aluno.setPeriodoIngresso(resultSet.getString(12));
 				aluno.setSenha(resultSet.getString(13));
+				aluno.setEmail(resultSet.getString(14));
 
 				listaAluno.add(aluno);
 			}
 			statement.close();
 		} catch (SQLException e) {
 			logger.error("Erro selecao no banco", e);
-			throw new DAOException(e.getMessage());
+			e.printStackTrace();
 		}
 		logger.info("Pegar os aluno: " + listaAluno.toString());
 		return listaAluno;
 	}
 
 	/**
-	 * @throws DAOException
-	 * @see {@link DAO#inserir(Object)}
+	 * @ @see {@link DAO#inserir(Object)}
 	 */
 	@Override
-	public int inserir(Aluno obj) throws DAOException {
+	public int inserir(Aluno obj) {
 		logger.info("Executa o metodo 'inserir' do aluno: " + obj);
 		int id = AlunoDAOImpl.ID_FAKE;
 
 		if (obj != null) {
-			connection = new Conexao().getConexao();
-			String sql = "INSERT INTO aluno "
-					+ "(curso_id, matricula , rg, cpf, nome, mae,  naturalidade, endereco, telefone, ano, periodo, senha) "
-					+ "VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
+
+			String sql = "INSERT INTO aluno (curso_id, matricula , rg, cpf, nome, mae,  naturalidade, endereco, telefone, ano, periodo, senha, email) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
 			try {
 				statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 				statement.setInt(1, obj.getCurso().getId());
@@ -139,6 +141,7 @@ public class AlunoDAOImpl implements DAO<Aluno> {
 				statement.setString(10, obj.getAno());
 				statement.setString(11, obj.getPeriodoIngresso());
 				statement.setString(12, obj.getSenha());
+				statement.setString(13, obj.getEmail());
 				statement.execute();
 				resultSet = statement.getGeneratedKeys();
 				if (resultSet.next()) {
@@ -148,7 +151,7 @@ public class AlunoDAOImpl implements DAO<Aluno> {
 				statement.close();
 			} catch (SQLException e) {
 				logger.error("Erro insercao no banco", e);
-				throw new DAOException(e.getMessage());
+				e.printStackTrace();
 			}
 		}
 		logger.info("O aluno foi inserido: " + obj);
@@ -156,14 +159,13 @@ public class AlunoDAOImpl implements DAO<Aluno> {
 	}
 
 	/**
-	 * @throws DAOException
-	 * @see {@link DAO#remover(Object)}
+	 * @ @see {@link DAO#remover(Object)}
 	 */
 	@Override
-	public void remover(Aluno obj) throws DAOException {
+	public void remover(Aluno obj) {
 		logger.info("Executa o metodo 'remover' do aluno : " + obj);
 		if (obj != null) {
-			connection = new Conexao().getConexao();
+
 			String sql = "DELETE FROM aluno WHERE aluno.id = ?";
 
 			try {
@@ -175,24 +177,21 @@ public class AlunoDAOImpl implements DAO<Aluno> {
 				logger.info("O aluno foi removido" + obj);
 			} catch (SQLException e) {
 				logger.error("Erro remocao o dado no base de dados", e);
-				throw new DAOException(e.getMessage());
+				e.printStackTrace();
 			}
 		}
 
 	}
 
 	/**
-	 * @throws DAOException
-	 * @see {@link DAO#atualizar(Object)}
+	 * @ @see {@link DAO#atualizar(Object)}
 	 */
 	@Override
-	public void atualizar(Aluno obj) throws DAOException {
+	public void atualizar(Aluno obj) {
 		logger.info("Executa o metodo 'atualizar' do aluno: " + obj);
 		if (obj != null) {
-			connection = new Conexao().getConexao();
-			String sql = "UPDATE aluno SET "
-					+ "matricula = ?, curso_id = ?, rg = ?, cpf = ?, nome = ?, mae = ?, naturalidade = ?, "
-					+ "endereco = ?, telefone = ?, ano = ?, periodo = ?, senha = ? WHERE id = ?";
+
+			String sql = "UPDATE aluno SET matricula = ?, curso_id = ?, rg = ?, cpf = ?, nome = ?, mae = ?, naturalidade = ?, endereco = ?, telefone = ?, ano = ?, periodo = ?, senha = ?, email = ? WHERE id = ?";
 
 			try {
 				statement = connection.prepareStatement(sql);
@@ -208,8 +207,9 @@ public class AlunoDAOImpl implements DAO<Aluno> {
 				statement.setString(10, obj.getAno());
 				statement.setString(11, obj.getPeriodoIngresso());
 				statement.setString(12, obj.getSenha());
-				
-				statement.setInt(13, obj.getId());
+				statement.setString(13, obj.getEmail());
+
+				statement.setInt(14, obj.getId());
 
 				statement.execute();
 
@@ -217,23 +217,20 @@ public class AlunoDAOImpl implements DAO<Aluno> {
 				logger.info("O aluno foi atualizado: " + obj);
 			} catch (SQLException e) {
 				logger.error("Erro atualizacao no banco", e);
-				throw new DAOException(e.getMessage());
+				e.printStackTrace();
 			}
 		}
 
 	}
 
 	/**
-	 * Pegar o ultimo id do aluno cadastrado no base de dados
-	 * Esse metodo eh especifico para criacao da matricula do aluno
+	 * Pegar o ultimo id do aluno cadastrado no base de dados Esse metodo eh
+	 * especifico para criacao da matricula do aluno
 	 * 
-	 * @return int ultimo id cadastrado
-	 * @throws DAOException
+	 * @return int ultimo id cadastrado @
 	 */
-	public int getUltimoId() throws DAOException {
+	public int getUltimoId() {
 		logger.info("Executa o metodo 'getUltimoId' do aluno");
-
-		connection = new Conexao().getConexao();
 
 		String sql = "SELECT max(aluno.id) FROM aluno";
 
@@ -249,21 +246,20 @@ public class AlunoDAOImpl implements DAO<Aluno> {
 			statement.close();
 		} catch (SQLException e) {
 			logger.error("Erro selecao o dado no banco", e);
-			throw new DAOException(e.getMessage());
+			e.printStackTrace();
 		}
 		logger.info("O ultmo id do aluno foi selecionado: " + ultimoId);
 		return ultimoId;
 	}
 
 	/**
-	 * @throws DAOException
-	 * @see {@link DAO#isExiste(Object)}
+	 * @ @see {@link DAO#isExiste(Object)}
 	 */
 	@Override
-	public boolean isExiste(Aluno obj) throws DAOException {
+	public boolean isExiste(Aluno obj) {
 		logger.info("Executar metodo 'isExiste' do aluno: " + obj);
 		if (obj != null) {
-			connection = new Conexao().getConexao();
+
 			String sql = "SELECT * FROM aluno WHERE matricula = ?";
 
 			try {
@@ -281,10 +277,49 @@ public class AlunoDAOImpl implements DAO<Aluno> {
 				return false;
 			} catch (SQLException e) {
 				logger.error("Erro selecao no banco", e);
-				throw new DAOException(e.getMessage());
+				e.printStackTrace();
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * Autenticar o aluno de acordo com parametros dados
+	 * 
+	 * @param matricula
+	 * @param senha
+	 * @return Aluno
+	 * @throws AutenticacaoException
+	 * @
+	 */
+	public Aluno login(String matricula, String senha) throws AutenticacaoException {
+		logger.info("Executar metodo 'login' do aluno: " + matricula + " : " + senha);
+
+		Aluno aluno = null;
+		String sql = "SELECT id, matricula, senha, nome FROM aluno WHERE matricula = ?";
+
+		try {
+			statement = (PreparedStatement) connection.prepareStatement(sql);
+			statement.setString(1, matricula);
+			resultSet = statement.executeQuery();
+			if (resultSet.next()) {
+				if (resultSet.getString(3).equals(senha)) {
+					aluno = new Aluno();
+					aluno.setId(resultSet.getInt(1));
+					aluno.setMatricula(resultSet.getString(2));
+					aluno.setSenha(resultSet.getString(3));
+					aluno.setNome(resultSet.getString(4));
+				} else {
+					throw new AutenticacaoException("Senha Invalida");
+				}
+			} else {
+				throw new AutenticacaoException("Matricula Invalida");
+			}
+			statement.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return aluno;
 	}
 
 }

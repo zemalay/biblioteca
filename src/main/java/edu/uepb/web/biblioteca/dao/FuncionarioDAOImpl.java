@@ -10,7 +10,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import edu.uepb.web.biblioteca.exception.DAOException;
+import edu.uepb.web.biblioteca.exception.AutenticacaoException;
 import edu.uepb.web.biblioteca.model.Funcionario;
 
 /**
@@ -26,14 +26,17 @@ public class FuncionarioDAOImpl implements DAO<Funcionario> {
 	private static final int ID_FAKE = -1;
 	private static Logger logger = Logger.getLogger(FuncionarioDAOImpl.class);
 
+	public FuncionarioDAOImpl() {
+		this.connection = new Conexao().getConexao();
+	}
+
 	/**
-	 * @throws DAOException
-	 * @see {@link DAO#get(int)}
+	 * @see {@link DAO#getById(int)}
 	 */
 	@Override
-	public Funcionario get(int id) throws DAOException {
+	public Funcionario getById(int id) {
 		logger.info("Executa o metodo 'get' do funcionario : " + id);
-		connection = new Conexao().getConexao();
+		
 
 		String sql = "SELECT * FROM funcionario WHERE funcionario.id = ?";
 
@@ -61,20 +64,19 @@ public class FuncionarioDAOImpl implements DAO<Funcionario> {
 			}
 			statement.close();
 		} catch (SQLException e) {
-			throw new DAOException(e.getMessage());
+			e.printStackTrace();
 		}
 		logger.info("O funcionario foi selecionado: " + funcionario);
 		return funcionario;
 	}
 
 	/**
-	 * @throws DAOException
 	 * @see {@link DAO#getLista()}
 	 */
 	@Override
-	public List<Funcionario> getLista() throws DAOException {
+	public List<Funcionario> getLista() {
 		logger.info("Executa o metodo 'getLista' do funcionario");
-		connection = new Conexao().getConexao();
+		
 
 		String sql = "SELECT * FROM funcionario";
 
@@ -101,22 +103,21 @@ public class FuncionarioDAOImpl implements DAO<Funcionario> {
 
 			statement.close();
 		} catch (SQLException e) {
-			throw new DAOException(e.getMessage());
+			e.printStackTrace();
 		}
 		logger.info("Pegar os funcionarios: " + listaFuncionario.toString());
 		return listaFuncionario;
 	}
 
 	/**
-	 * @throws DAOException
 	 * @see {@link DAO#inserir(Object)}
 	 */
 	@Override
-	public int inserir(Funcionario obj) throws DAOException {
+	public int inserir(Funcionario obj) {
 		logger.info("Executa o metodo 'inserir' do funcionario : " + obj);
 		int id = FuncionarioDAOImpl.ID_FAKE;
 		if (obj != null) {
-			connection = new Conexao().getConexao();
+			
 			String sql = "INSERT INTO funcionario (nome, tipo_funcionario, cpf, rg, naturalidade, endereco, telefone, email, usuario, senha) VALUES (?,?,?,?,?,?,?,?,?,?)";
 
 			try {
@@ -140,7 +141,7 @@ public class FuncionarioDAOImpl implements DAO<Funcionario> {
 				}
 				statement.close();
 			} catch (SQLException e) {
-				throw new DAOException(e.getMessage());
+				e.printStackTrace();
 			}
 		}
 		logger.info("O funcionario foi inserido: " + obj);
@@ -148,14 +149,13 @@ public class FuncionarioDAOImpl implements DAO<Funcionario> {
 	}
 
 	/**
-	 * @throws DAOException
 	 * @see {@link DAO#remover(Object)}
 	 */
 	@Override
-	public void remover(Funcionario obj) throws DAOException {
+	public void remover(Funcionario obj) {
 		logger.info("Executa o metodo 'remover' funcionario : " + obj);
 		if (obj != null) {
-			connection = new Conexao().getConexao();
+			
 			String sql = "DELETE FROM funcionario WHERE funcionario.id = ?";
 
 			try {
@@ -166,23 +166,20 @@ public class FuncionarioDAOImpl implements DAO<Funcionario> {
 				statement.close();
 				logger.info("O funcionario foi removido" + obj);
 			} catch (SQLException e) {
-				throw new DAOException(e.getMessage());
+				e.printStackTrace();
 			}
 		}
 	}
 
 	/**
-	 * @throws DAOException
 	 * @see {@link DAO#atualizar(Object)}
 	 */
 	@Override
-	public void atualizar(Funcionario obj) throws DAOException {
+	public void atualizar(Funcionario obj) {
 		logger.info("Executa o metodo 'atualizar' do funcionario : " + obj);
 		if (obj != null) {
-			connection = new Conexao().getConexao();
-			String sql = "UPDATE funcionario SET "
-					+ "nome = ?, tipo_funcionario = ? , cpf = ?, rg = ?, naturalidade = ?, endereco = ?, telefone = ?, email = ?, usuario = ?, senha = ?"
-					+ "WHERE funcionario.id = ?";
+			
+			String sql = "UPDATE funcionario SET nome = ?, tipo_funcionario = ? , cpf = ?, rg = ?, naturalidade = ?, endereco = ?, telefone = ?, email = ?, usuario = ?, senha = ? WHERE funcionario.id = ?";
 
 			try {
 				statement = connection.prepareStatement(sql);
@@ -202,20 +199,19 @@ public class FuncionarioDAOImpl implements DAO<Funcionario> {
 				statement.close();
 				logger.info("O funcionario foi atualizado" + obj);
 			} catch (SQLException e) {
-				throw new DAOException(e.getMessage());
+				e.printStackTrace();
 			}
 		}
 	}
 
 	/**
-	 * @throws DAOException
 	 * @see {@link DAO#isExiste(Object)}
 	 */
 	@Override
-	public boolean isExiste(Funcionario obj) throws DAOException {
+	public boolean isExiste(Funcionario obj) {
 		logger.info("Executar metodo 'isExiste' do funcionario: " + obj);
 		if (obj != null) {
-			connection = new Conexao().getConexao();
+			
 			String sql = "SELECT * FROM funcionario WHERE cpf = ?";
 
 			try {
@@ -232,9 +228,50 @@ public class FuncionarioDAOImpl implements DAO<Funcionario> {
 				logger.info("Esse funcionario nao existe no banco: " + obj);
 				return false;
 			} catch (SQLException e) {
-				throw new DAOException(e.getMessage());
+				e.printStackTrace();
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * Autenticar o funcionario de acordo com parametros dados
+	 * 
+	 * @param matricula
+	 * @param senha
+	 * @return Aluno
+	 * @throws AutenticacaoException
+	 * @
+	 */
+	public Funcionario login(String usuario, String senha) throws AutenticacaoException {
+		logger.info("Executar metodo 'login' do funcionario: " + usuario + " : " + senha);
+
+		
+		Funcionario funcionario = null;
+		String sql = "SELECT id, usuario, senha, tipo_funcionario FROM funcionario WHERE usuario = ?";
+
+		try {
+			statement = (PreparedStatement) connection.prepareStatement(sql);
+			statement.setString(1, usuario);
+			resultSet = statement.executeQuery();
+			if (resultSet.next()) {
+				if (resultSet.getString(3).equals(senha)) {
+					funcionario = new Funcionario();
+					funcionario.setId(resultSet.getInt(1));
+					funcionario.setUsuario(resultSet.getString(2));
+					funcionario.setSenha(resultSet.getString(3));
+					funcionario.setTipoFunc(resultSet.getString(4));
+				} else {
+					throw new AutenticacaoException("Usuario ou Senha Invalida");
+				}
+			} else {
+				throw new AutenticacaoException("Usuario ou Senha Invalida");
+			}
+			statement.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		logger.info("O funcionario foi autenticado: " + funcionario);
+		return funcionario;
 	}
 }

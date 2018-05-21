@@ -1,9 +1,9 @@
 package edu.uepb.web.biblioteca.model;
 
 /**
+ * A classe POJO do Emprestimo
+ * 
  * @autor geovanniovinhas <vinhasgeovannio@gmail.com
- *
- *
  */
 public class Emprestimo {
 	private int id;
@@ -12,6 +12,8 @@ public class Emprestimo {
 	private Item item;
 	private String dataCadastrado;
 	private String dataDevolucao;
+	private int renovacao;
+	private boolean entregou;
 
 	public String getDataDevolucao() {
 		return dataDevolucao;
@@ -61,10 +63,27 @@ public class Emprestimo {
 		this.dataCadastrado = dataCadastrado;
 	}
 
+	public int getRenovacao() {
+		return renovacao;
+	}
+
+	public void setRenovacao(int renovacao) {
+		this.renovacao = renovacao;
+	}
+
+	public boolean isEntregou() {
+		return entregou;
+	}
+
+	public void setEntregou(boolean entregou) {
+		this.entregou = entregou;
+	}
+
 	@Override
 	public String toString() {
 		return "Emprestimo [id=" + id + ", funcionario=" + funcionario + ", aluno=" + aluno + ", item=" + item
-				+ ", dataCadastrado=" + dataCadastrado + ", dataDevolucao=" + dataDevolucao + "]";
+				+ ", dataCadastrado=" + dataCadastrado + ", dataDevolucao=" + dataDevolucao + ", renovacao=" + renovacao
+				+ ", entregou=" + entregou + "]";
 	}
 
 }

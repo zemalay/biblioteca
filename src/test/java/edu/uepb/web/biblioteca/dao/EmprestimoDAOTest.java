@@ -8,14 +8,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 import edu.uepb.web.biblioteca.enums.TipoNivel;
-import edu.uepb.web.biblioteca.exception.DAOException;
 import edu.uepb.web.biblioteca.model.Emprestimo;
 import edu.uepb.web.biblioteca.utils.BibliotecaDateTime;
 
 /**
  * @autor geovanniovinhas <vinhasgeovannio@gmail.com
- *
- *
  */
 public class EmprestimoDAOTest {
 	Connection conn;
@@ -49,21 +46,21 @@ public class EmprestimoDAOTest {
 //	}
 
 	@Test
-	public void get() throws DAOException {
+	public void get() {
 		emprestimo = new Emprestimo();
 
-		TipoNivel tipo = alunoDAO.get(4).getCurso().getNivel();
-		emprestimo.setFuncionario(funcDAO.get(3));
-		emprestimo.setAluno(alunoDAO.get(4));
-		emprestimo.setItem(itemDAO.get(4));
+		TipoNivel tipo = alunoDAO.getById(4).getCurso().getNivel();
+		emprestimo.setFuncionario(funcDAO.getById(3));
+		emprestimo.setAluno(alunoDAO.getById(4));
+		emprestimo.setItem(itemDAO.getById(4));
 		emprestimo.setDataCadastrado(BibliotecaDateTime.getDataCadastrado());
 		emprestimo.setDataDevolucao(BibliotecaDateTime.getDataDevolucao(tipo));
 
-		assertNotEquals(null, manager.get(manager.inserir(emprestimo)));
+		assertNotEquals(null, manager.getById(manager.inserir(emprestimo)));
 	}
 
 //	@Test
-//	public void getLista() throws DAOException {
+//	public void getLista() {
 //		emprestimo = new Emprestimo();
 //
 //		TipoNivel tipo = alunoDAO.get(6).getCurso().getNivel();
@@ -77,7 +74,7 @@ public class EmprestimoDAOTest {
 //	}
 //
 //	@Test
-//	public void atualizar() throws DAOException {
+//	public void atualizar() {
 //		emprestimo = new Emprestimo();
 //
 //		TipoNivel tipo = alunoDAO.get(5).getCurso().getNivel();

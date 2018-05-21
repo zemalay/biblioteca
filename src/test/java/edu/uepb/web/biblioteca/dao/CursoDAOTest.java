@@ -10,10 +10,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import edu.uepb.web.biblioteca.dao.Conexao;
-import edu.uepb.web.biblioteca.dao.CursoDAOImpl;
 import edu.uepb.web.biblioteca.enums.TipoNivel;
-import edu.uepb.web.biblioteca.exception.DAOException;
 import edu.uepb.web.biblioteca.model.Curso;
 
 /**
@@ -41,7 +38,7 @@ public class CursoDAOTest {
 	}
 
 	@Test
-	public void inserir() throws DAOException {
+	public void inserir()  {
 		int id = manager.inserir(energia);
 		if (id < 0) {
 			Assert.fail();
@@ -49,13 +46,13 @@ public class CursoDAOTest {
 	}
 
 	@Test
-	public void get() throws DAOException {
+	public void get()  {
 		int id = manager.inserir(administracao);
-		assertNotEquals(null, manager.get(id));
+		assertNotEquals(null, manager.getById(id));
 	}
 
 	@Test
-	public void getLista() throws DAOException {
+	public void getLista()  {
 		listaCurso = manager.getLista();
 
 		if (listaCurso.size() < 0) {
@@ -65,25 +62,25 @@ public class CursoDAOTest {
 	}
 
 	@Test
-	public void remover() throws DAOException {
+	public void remover()  {
 		letras.setId(manager.inserir(letras));
 		manager.remover(letras);
 
-		assertEquals(null, manager.get(letras.getId()));
+		assertEquals(null, manager.getById(letras.getId()));
 	}
 
 	@Test
-	public void atualizar() throws DAOException {
+	public void atualizar()  {
 		int id = manager.inserir(direito);
 		direito.setId(id);
 		direito.setNivel(TipoNivel.ESPECIALIZACAO);
 		manager.atualizar(direito);
 
-		assertEquals(TipoNivel.ESPECIALIZACAO, manager.get(id).getNivel());
+		assertEquals(TipoNivel.ESPECIALIZACAO, manager.getById(id).getNivel());
 	}
 
 	@Test
-	public void isExiste() throws DAOException {
+	public void isExiste()  {
 
 		Curso fisica = new Curso();
 		fisica.setNome("Fisica");

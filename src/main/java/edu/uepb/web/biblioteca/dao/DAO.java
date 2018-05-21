@@ -2,8 +2,6 @@ package edu.uepb.web.biblioteca.dao;
 
 import java.util.List;
 
-import edu.uepb.web.biblioteca.exception.DAOException;
-
 /**
  * Interface DAO . Alem dos metodos (CRUD) adicionamos
  * tambem metodo para verificar se a entidade ja existe
@@ -19,17 +17,17 @@ public interface DAO<T> {
 	 * @param id
 	 *            O id do objeto no banco de dados
 	 * @return T O objeto
-	 * @throws DAOException
+	 * @
 	 */
-	T get(int id) throws DAOException;
+	T getById(int id) ;
 
 	/**
 	 * Retorna uma lista com todos objeto cadastrados no banco de dados
 	 *
 	 * @return List<T> Lista de objetos
-	 * @throws DAOException
+	 * @
 	 */
-	List<T> getLista() throws DAOException;
+	List<T> getLista() ;
 
 	/**
 	 * Insere um novo objeto no banco de dados. Se a operação for realizada com
@@ -38,9 +36,9 @@ public interface DAO<T> {
 	 * @param obj
 	 *            O objeto a ser inserido
 	 * @return int retorna o id do objeto salvo
-	 * @throws DAOException
+	 * @
 	 */
-	int inserir(T obj) throws DAOException;
+	int inserir(T obj) ;
 
 	/**
 	 * Remove o objeto do banco de dados. Se a operação for realizada com sucesso é
@@ -48,9 +46,9 @@ public interface DAO<T> {
 	 *
 	 * @param obj
 	 *            O objeto a ser removido
-	 * @throws DAOException
+	 * @
 	 */
-	void remover(T obj) throws DAOException;
+	void remover(T obj) ;
 
 	/**
 	 * Atualiza os dados do objeto no banco de dados. Se a operação for realizada
@@ -58,9 +56,9 @@ public interface DAO<T> {
 	 *
 	 * @param obj
 	 *            O objeto com os dados sa serem atualizados
-	 * @throws DAOException
+	 * @
 	 */
-	void atualizar(T obj) throws DAOException;
+	void atualizar(T obj) ;
 
 	/**
 	 * Verifica se o objeto ja existe no banco de dados. Se a operação for
@@ -69,8 +67,8 @@ public interface DAO<T> {
 	 * @param item
 	 * 
 	 * @return boolean
-	 * @throws DAOException
+	 * @
 	 */
-	boolean isExiste(T obj) throws DAOException;
+	boolean isExiste(T obj) ;
 
 }
