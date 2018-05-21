@@ -16,6 +16,9 @@ import edu.uepb.web.biblioteca.service.DividaService;
 import edu.uepb.web.biblioteca.service.EmprestimoService;
 
 /**
+ * Controller do Emprestimo, oferece as rotas para carregar as paginas de acordo
+ * com as suas operacoes do Emprestimo
+ * 
  * @autor geovanniovinhas <vinhasgeovannio@gmail.com
  */
 @Controller
@@ -27,6 +30,13 @@ public class EmprestimoController {
 	@Autowired
 	private DividaService dividaService;
 
+	/**
+	 * Carregar a pagina home com os emprestimos ativos
+	 * 
+	 * @param funcionarioLogado
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = "/home", method = RequestMethod.GET)
 	public String home(@SessionAttribute("funcionarioLogado") Funcionario funcionarioLogado, Model model) {
 		model.addAttribute("funcionarioLogado", funcionarioLogado);
@@ -35,6 +45,13 @@ public class EmprestimoController {
 		return "home";
 	}
 
+	/**
+	 * Funcionario registra emprestimo do Item do Aluno
+	 * 
+	 * @param emprestimo
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = "/emprestimo/add", method = RequestMethod.POST)
 	public String cadastraEmprestimo(@ModelAttribute("emprestimo") Emprestimo emprestimo, Model model) {
 		try {
@@ -48,19 +65,42 @@ public class EmprestimoController {
 		return "redirect:/emprestimos";
 	}
 
+
+	/**
+	 * Carregar o formulario do emprestimo String
+	 * 
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = "/emprestimo/form", method = RequestMethod.GET)
 	public String getEmprestimoForm(Model model) {
 		model.addAttribute("emprestimo", new Emprestimo());
 		return "emprestimoForm";
 	}
 
+	/**
+	 * Carrega pagina para listar todos os Emprestimos registrados
+	 * 
+	 * @param funcionarioLogado
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = "/emprestimos", method = RequestMethod.GET)
-	public String getListaEmprestimo(@SessionAttribute("funcionarioLogado") Funcionario funcionarioLogado, Model model) {
+	public String getListaEmprestimo(@SessionAttribute("funcionarioLogado") Funcionario funcionarioLogado,
+			Model model) {
 		model.addAttribute("funcionarioLogado", funcionarioLogado);
 		model.addAttribute("listaEmprestimo", emprestimoService.getListaEmprestimoAll());
 		return "listaEmprestimos";
 	}
 
+	/**
+	 * Funcionario renovar o Emprestimo de um Aluno dado ID pela URL
+	 * 
+	 * @param funcionarioLogado
+	 * @param idEmprestimo
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = "/emprestimo/renovar/{id}", method = RequestMethod.GET)
 	public String renovarEmprestimo(@SessionAttribute("funcionarioLogado") Funcionario funcionarioLogado,
 			@PathVariable("id") int idEmprestimo, Model model) {
@@ -77,6 +117,14 @@ public class EmprestimoController {
 		return "redirect:/home";
 	}
 
+	/**
+	 * Funcionario confirma a entrega de um Item
+	 * 
+	 * @param funcionarioLogado
+	 * @param idEmprestimo
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = "/emprestimo/entregar/{id}", method = RequestMethod.GET)
 	public String entregaEmprestimo(@SessionAttribute("funcionarioLogado") Funcionario funcionarioLogado,
 			@PathVariable("id") int idEmprestimo, Model model) {
@@ -87,14 +135,5 @@ public class EmprestimoController {
 		return "home";
 	}
 
-	@RequestMapping(value = "/emprestimo/{id}", method = RequestMethod.GET)
-	public String getEmprestimo(@SessionAttribute("funcionarioLogado") Funcionario funcionarioLogado,
-			@PathVariable("id") int idEmprestimo, Model model) {
-
-		model.addAttribute("emprestimo", emprestimoService.getEmprestimo(idEmprestimo));
-		model.addAttribute("funcionarioLogado", funcionarioLogado);
-		return "emprestimoDetail";
-
-	}
 
 }

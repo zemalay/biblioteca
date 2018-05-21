@@ -165,7 +165,7 @@ public class AlunoService {
 
 			// remover as suas dividas registradas
 			dividaDAO.removerDividasAluno(aluno.getId());
-			
+
 			// remover os seus remprestimos registrados
 			emprestimoDAO.removerEmprestimoAluno(aluno.getId());
 

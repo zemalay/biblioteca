@@ -18,6 +18,8 @@ import edu.uepb.web.biblioteca.utils.BibliotecaDateTime;
 import edu.uepb.web.biblioteca.utils.Email;
 
 /**
+ * A classe Service da Reserva
+ * 
  * @autor geovanniovinhas <vinhasgeovannio@gmail.com
  */
 @Service
@@ -39,8 +41,14 @@ public class ReservaService {
 		reservaDAO = new ReservaDAOImpl();
 		return reservaDAO.getLista();
 	}
-	
-	public List<Reserva> getListaReservaByAluno(int idAluno){
+
+	/**
+	 * Pegar todas as reservas do Aluno
+	 * 
+	 * @param idAluno
+	 * @return
+	 */
+	public List<Reserva> getListaReservaByAluno(int idAluno) {
 		logger.info("Executa o metodo 'getListaReservaByAluno' do reservaService " + idAluno);
 		reservaDAO = new ReservaDAOImpl();
 		return reservaDAO.getReservasByAlunoId(idAluno);
@@ -109,7 +117,7 @@ public class ReservaService {
 		}
 		return true;
 	}
-	
+
 	/**
 	 * Cancelar a reserva do item
 	 * 

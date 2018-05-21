@@ -21,6 +21,13 @@ public class UniversidadeController {
 	@Autowired
 	private UniversidadeService universidadeService;
 
+	/**
+	 * Registra novo Universidade do Sistema
+	 * 
+	 * @param universidade
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = "/universidade/add", method = RequestMethod.POST)
 	public String cadastra(@ModelAttribute("universidade") Universidade universidade, Model model) {
 		if (universidade.getId() == 0) {
@@ -32,6 +39,13 @@ public class UniversidadeController {
 
 	}
 
+	/**
+	 * Carregar a informacao da Universidade
+	 * 
+	 * @param funcionarioLogado
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = "/universidade", method = RequestMethod.GET)
 	public String getAlunoForm(@SessionAttribute("funcionarioLogado") Funcionario funcionarioLogado, Model model) {
 		model.addAttribute("funcionarioLogado", funcionarioLogado);
@@ -42,5 +56,4 @@ public class UniversidadeController {
 		model.addAttribute("universidade", new Universidade());
 		return "universidadeForm";
 	}
-
 }

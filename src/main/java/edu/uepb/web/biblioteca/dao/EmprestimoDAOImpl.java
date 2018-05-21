@@ -234,7 +234,28 @@ public class EmprestimoDAOImpl implements DAO<Emprestimo> {
 
 	@Override
 	public boolean isExiste(Emprestimo obj) {
-		// TODO Auto-generated method stub
+		logger.info("Executar metodo 'isExiste' da reserva: " + obj);
+		if (obj != null) {
+			String sql = "SELECT * FROM emprestimo WHERE aluno_id = ? and item_id = ?";
+
+			try {
+				statement = (PreparedStatement) connection.prepareStatement(sql);
+				statement.setInt(1, obj.getAluno().getId());
+				statement.setInt(2, obj.getItem().getId());
+				resultSet = statement.executeQuery();
+
+				if (resultSet.next()) {
+					statement.close();
+					logger.info("O Aluno ja realizou emprestimo nesse item " + obj);
+					return true;
+				}
+				statement.close();
+				logger.info("O emprestimo nao existe ainda para esse aluno: " + obj);
+				return false;
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 		return false;
 	}
 

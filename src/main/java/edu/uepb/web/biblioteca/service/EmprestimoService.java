@@ -21,6 +21,8 @@ import edu.uepb.web.biblioteca.utils.BibliotecaDateTime;
 import edu.uepb.web.biblioteca.utils.Email;
 
 /**
+ * A classe Service do Emprestimo
+ * 
  * @autor geovanniovinhas <vinhasgeovannio@gmail.com
  */
 @Service
@@ -91,6 +93,9 @@ public class EmprestimoService {
 		emprestimo.setFuncionario(funcionarioDAO.getById(idFuncionario));
 		emprestimo.setAluno(aluno);
 		emprestimo.setItem(item);
+		if (emprestimoDAO.isExiste(emprestimo)) {
+			throw new EmprestimoException("Este aluno ja fez emprestimo com este Item");
+		}
 		emprestimo.setDataCadastrado(BibliotecaDateTime.getDataCadastrado());
 		emprestimo.setDataDevolucao(BibliotecaDateTime.getDataDevolucao(aluno.getCurso().getNivel()));
 		emprestimo.setRenovacao(0);

@@ -30,7 +30,8 @@ import edu.uepb.web.biblioteca.service.ItemService;
 import edu.uepb.web.biblioteca.service.ReservaService;
 
 /**
- * Controller do Aluno
+ * Controller do Aluno, Responsaveis para carregar as paginas especificas do
+ * aluno e os seu login e demais
  * 
  * @autor geovanniovinhas <vinhasgeovannio@gmail.com
  */
@@ -101,7 +102,7 @@ public class AlunoController {
 	}
 
 	/**
-	 * 
+	 * Pegar os itens da biblioteca para o aluno
 	 * 
 	 * @param model
 	 * @return
@@ -112,6 +113,13 @@ public class AlunoController {
 		return "listaItemAluno";
 	}
 
+	/**
+	 * Aluno realizar reserva do item
+	 * 
+	 * @param reserva
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = "/aluno/reserva/add", method = RequestMethod.POST)
 	public String alunoCadastraReserva(@ModelAttribute("reserva") Reserva reserva, Model model) {
 		try {
@@ -124,6 +132,13 @@ public class AlunoController {
 		return "redirect:/aluno/home";
 	}
 
+	/**
+	 * Pegar o formulario do aluno
+	 * 
+	 * @param alunoLogado
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = "/aluno/reserva/form", method = RequestMethod.GET)
 	public String getAlunoReservaForm(@SessionAttribute("aluno") Aluno alunoLogado, Model model) {
 		System.err.println(alunoLogado);
@@ -134,6 +149,14 @@ public class AlunoController {
 		return "alunoReservaForm";
 	}
 
+	/**
+	 * Aluno realizar sua renovacao do emprestimo
+	 * 
+	 * @param alunoLogado
+	 * @param idEmprestimo
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = "/aluno/emprestimo/renovar/{id}", method = RequestMethod.GET)
 	public String renovarEmprestimo(@SessionAttribute("aluno") Aluno alunoLogado, @PathVariable("id") int idEmprestimo,
 			Model model) {
@@ -150,12 +173,27 @@ public class AlunoController {
 		return "redirect:/homeAluno";
 	}
 
+	/**
+	 * Carregar a pagina perfil do aluno
+	 * 
+	 * @param alunoLogado
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = "/aluno/perfil", method = RequestMethod.GET)
 	public String perfilAluno(@SessionAttribute("aluno") Aluno alunoLogado, Model model) {
 		model.addAttribute("aluno", alunoService.getAlunoById(alunoLogado.getId()));
 		return "alunoPerfil";
 	}
 
+	/**
+	 * Funcionario cadastar aluno no sistema
+	 * 
+	 * @param funcionarioLogado
+	 * @param aluno
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = "/aluno/add", method = RequestMethod.POST)
 	public String cadastraAluno(@SessionAttribute("funcionarioLogado") Funcionario funcionarioLogado,
 			@ModelAttribute("aluno") Aluno aluno, Model model) {
@@ -171,6 +209,13 @@ public class AlunoController {
 		return "redirect:/alunos";
 	}
 
+	/**
+	 * Carregar o formulario do aluno para Funcionario
+	 * 
+	 * @param funcionarioLogado
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = "/aluno/form", method = RequestMethod.GET)
 	public String getAlunoForm(@SessionAttribute("funcionarioLogado") Funcionario funcionarioLogado, Model model) {
 		model.addAttribute("funcionarioLogado", funcionarioLogado);
@@ -178,6 +223,13 @@ public class AlunoController {
 		return "alunoForm";
 	}
 
+	/**
+	 * Carregar a pagina dos alunos cadastrados
+	 * 
+	 * @param funcionarioLogado
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = "/alunos", method = RequestMethod.GET)
 	public String getListaAluno(@SessionAttribute("funcionarioLogado") Funcionario funcionarioLogado, Model model) {
 		model.addAttribute("funcionarioLogado", funcionarioLogado);
@@ -185,6 +237,14 @@ public class AlunoController {
 		return "listaAluno";
 	}
 
+	/**
+	 * Pegar o aluno pelo id e carregar a pagina alunoDetail
+	 * 
+	 * @param funcionarioLogado
+	 * @param idAluno
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = "/aluno/{id}", method = RequestMethod.GET)
 	public String getAluno(@SessionAttribute("funcionarioLogado") Funcionario funcionarioLogado,
 			@PathVariable("id") int idAluno, Model model) {
@@ -196,6 +256,14 @@ public class AlunoController {
 		return "alunoDetail";
 	}
 
+	/**
+	 * Funcionario deletar o aluno pelo seu ID
+	 * 
+	 * @param funcionarioLogado
+	 * @param idAluno
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = "/aluno/delete/{id}", method = RequestMethod.GET)
 	public String removerAlunos(@SessionAttribute("funcionarioLogado") Funcionario funcionarioLogado,
 			@PathVariable("id") int idAluno, Model model) {
@@ -211,6 +279,13 @@ public class AlunoController {
 		return "redirect:/alunos";
 	}
 
+	/**
+	 * Funcionario atualizar os dados do aluno
+	 * 
+	 * @param aluno
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = "/aluno/update", method = RequestMethod.POST)
 	public String atualizarAluno(@ModelAttribute("aluno") Aluno aluno, Model model) {
 		alunoService.atualizarAluno(aluno);

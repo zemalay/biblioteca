@@ -21,6 +21,9 @@ import edu.uepb.web.biblioteca.model.Item;
 import edu.uepb.web.biblioteca.service.ItemService;
 
 /**
+ * Controller do Item, oferece as rotas para carregar as paginas de acordo com
+ * as suas operacoes do Item
+ * 
  * @autor geovanniovinhas <vinhasgeovannio@gmail.com
  */
 @Controller
@@ -29,6 +32,14 @@ public class ItemController {
 	@Autowired
 	private ItemService itemService;
 
+	/**
+	 * Funcionario registra o novo Item no Sistema
+	 * 
+	 * @param funcionarioLogado
+	 * @param item
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = "/item/add", method = RequestMethod.POST)
 	public String cadastra(@SessionAttribute("funcionarioLogado") Funcionario funcionarioLogado,
 			@ModelAttribute("item") Item item, Model model) {
@@ -43,6 +54,13 @@ public class ItemController {
 		return "redirect:/itens";
 	}
 
+	/**
+	 * Carregar o formulario para registrar novo Item
+	 * 
+	 * @param funcionarioLogado
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = "/item/form", method = RequestMethod.GET)
 	public String getItemForm(@SessionAttribute("funcionarioLogado") Funcionario funcionarioLogado, Model model) {
 		model.addAttribute("funcionarioLogado", funcionarioLogado);
@@ -50,6 +68,13 @@ public class ItemController {
 		return "itemForm";
 	}
 
+	/**
+	 * Carrega pagina para listar todos os Itens registrados
+	 * 
+	 * @param funcionarioLogado
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = "/itens", method = RequestMethod.GET)
 	public String getListaItem(@SessionAttribute("funcionarioLogado") Funcionario funcionarioLogado, Model model) {
 		model.addAttribute("funcionarioLogado", funcionarioLogado);
@@ -57,6 +82,14 @@ public class ItemController {
 		return "listaItem";
 	}
 
+	/**
+	 * Carrega detalhes de um Item pelo seu ID
+	 * 
+	 * @param funcionarioLogado
+	 * @param idItem
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = "/item/{id}", method = RequestMethod.GET)
 	public String getItem(@SessionAttribute("funcionarioLogado") Funcionario funcionarioLogado,
 			@PathVariable("id") int idItem, Model model) {
@@ -65,6 +98,14 @@ public class ItemController {
 		return "itemDetail";
 	}
 
+	/**
+	 * Remover Item pelo seu ID
+	 * 
+	 * @param funcionarioLogado
+	 * @param idItem
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = "/item/delete/{id}", method = RequestMethod.GET)
 	public String removerFuncionario(@SessionAttribute("funcionarioLogado") Funcionario funcionarioLogado,
 			@PathVariable("id") int idItem, Model model) {
@@ -79,6 +120,14 @@ public class ItemController {
 		return "redirect:/funcionarios";
 	}
 
+	/**
+	 * Atualiza o Item
+	 * 
+	 * @param funcionarioLogado
+	 * @param item
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = "/item/update", method = RequestMethod.POST)
 	public String atualizar(@SessionAttribute("funcionarioLogado") Funcionario funcionarioLogado,
 			@ModelAttribute("item") Item item, Model model) {

@@ -21,6 +21,8 @@ import edu.uepb.web.biblioteca.model.Funcionario;
 import edu.uepb.web.biblioteca.service.CursoService;
 
 /**
+ * Controller do Curso, carregar as paginas do curso e realizar operacoes
+ * 
  * @autor geovanniovinhas <vinhasgeovannio@gmail.com
  */
 @Controller
@@ -29,6 +31,14 @@ public class CursoController {
 	@Autowired
 	private CursoService cursoService;
 
+	/**
+	 * Funcionario cadastrar Curso
+	 * 
+	 * @param funcionarioLogado
+	 * @param curso
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = "/curso/add", method = RequestMethod.POST)
 	public String cadastraCurso(@SessionAttribute("funcionarioLogado") Funcionario funcionarioLogado,
 			@ModelAttribute("curso") Curso curso, Model model) {
@@ -42,6 +52,13 @@ public class CursoController {
 		return "redirect:/cursos";
 	}
 
+	/**
+	 * Carregar formulario para cadastrar Curso
+	 * 
+	 * @param funcionarioLogado
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = "/curso/form", method = RequestMethod.GET)
 	public String getCursoForm(@SessionAttribute("funcionarioLogado") Funcionario funcionarioLogado, Model model) {
 		model.addAttribute("funcionarioLogado", funcionarioLogado);
@@ -49,6 +66,13 @@ public class CursoController {
 		return "cursoForm";
 	}
 
+	/**
+	 * Carregar a pagina para listar todos os Cursos cadastrados
+	 * 
+	 * @param funcionarioLogado
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = "/cursos", method = RequestMethod.GET)
 	public String getListaCurso(@SessionAttribute("funcionarioLogado") Funcionario funcionarioLogado, Model model) {
 		model.addAttribute("funcionarioLogado", funcionarioLogado);
@@ -75,6 +99,14 @@ public class CursoController {
 		return resultado;
 	}
 
+	/**
+	 * Funcionario deletar o Curso pelo seu ID
+	 * 
+	 * @param funcionarioLogado
+	 * @param idCurso
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = "/curso/delete/{id}", method = RequestMethod.GET)
 	public String removerCurso(@SessionAttribute("funcionarioLogado") Funcionario funcionarioLogado,
 			@PathVariable("id") int idCurso, Model model) {
