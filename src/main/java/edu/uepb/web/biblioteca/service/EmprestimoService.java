@@ -137,7 +137,7 @@ public class EmprestimoService {
 		if (reserva != null) {
 			logger.info("Enviar email no metodo 'devolucaoEmprestimo' " + aluno.getEmail());
 			Email email = new Email();
-			email.setEmailDestino(aluno.getEmail());
+			email.setEmailDestino(reserva.getAluno().getEmail());
 			email.sendNotificacaoDevolucao(item);
 		}
 

@@ -117,7 +117,7 @@ public class ItemController {
 			model.addAttribute("mensagem", e.getMessage());
 			return "listaItem";
 		}
-		return "redirect:/funcionarios";
+		return "redirect:/itens";
 	}
 
 	/**
